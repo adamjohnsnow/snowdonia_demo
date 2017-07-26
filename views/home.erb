@@ -1,2 +1,8 @@
 <h1>Home</h1>
-<h2>Welcome back, <%= @user %></h2>
+<h2>Welcome back, <%= @user.firstname %></h2>
+<h4>Projects</h4>
+<% @user.projects.each do |project| %>
+  <div>
+    <%= project.title %>
+  </div>
+<% end %>

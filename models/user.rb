@@ -10,6 +10,9 @@ class User
   property :surname, String
   property :email, String, :unique => true
   property :password_digest, Text
+  property :level, Integer, :default => 1
+
+  has n, :projects
 
   def password=(pass)
     self.password_digest = BCrypt::Password.create(pass)
@@ -26,7 +29,7 @@ class User
     @user = User.new(
             firstname: firstname,
             surname: surname,
-            email: email,
+            email: email
             )
     @user.password = password
     @user.save!

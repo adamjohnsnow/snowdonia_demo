@@ -15,7 +15,8 @@ class FactorySettingsElemental < Sinatra::Base
   end
 
   get '/home' do
-    @user = session[:user]
+    @user = User.get(session[:user_id])
+    @projects = @user.projects.all
     erb :home
   end
 
@@ -27,11 +28,11 @@ class FactorySettingsElemental < Sinatra::Base
     redirect '/home'
   end
 
-  get '/sign-up' do
+  get '/new-user' do
     erb :new_user
   end
 
-  post '/sign-up' do
+  post '/new-user' do
     params[:password] == params[:verify_password] ? register_user(params) : bad_password
   end
 
