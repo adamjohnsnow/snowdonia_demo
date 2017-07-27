@@ -10,7 +10,9 @@ class Element
   property :build_start, Date
   property :build_end, Date
   property :markup, Float
+  property :quote_include, Boolean
 
+  belongs_to :project
   has n, :materials, through: Resource
 
 end

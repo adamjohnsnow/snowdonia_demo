@@ -12,7 +12,7 @@ class User
   property :password_digest, Text
   property :level, Integer, :default => 1
 
-  has n, :projects
+  has n, :projects, through: Resource
 
   def password=(pass)
     self.password_digest = BCrypt::Password.create(pass)

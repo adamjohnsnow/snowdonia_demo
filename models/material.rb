@@ -4,7 +4,7 @@ class Material
   include DataMapper::Resource
 
   property :id, Serial
-  property :description, String
+  property :description, Text
   property :unit_cost, Float
 
   belongs_to :supplier

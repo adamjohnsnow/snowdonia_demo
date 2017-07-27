@@ -41,15 +41,9 @@ body{
   font-family: 'Montserrat', sans-serif;
   margin: auto;
   text-align: center;
-  font-size: 125%;
+  font-size: 100%;
   }
-input {
-  height: 35px;
-  font-size: 90%;
-  }
-textarea{
-  font-size: 90%;
-  }
+
 .btn {
   background: #000000;
   -webkit-border-radius: 6;
@@ -77,24 +71,25 @@ textarea{
 
 .table{
    display: inline-table;
-   width: 80%;
+   width: 90%;
+   font-size: 90%;
    }
-
+.summary{
+  max-width: 500px;
+}
 .table-row {
-  border: 1px solid #e3e3e3;
 	display: table-row;
   }
 .table-cell {
+  border: 1px solid #eff0f2;
 	display: table-cell;
-	padding: 30px 6px 30px 6px;
+	padding: 10px 16px 10px 16px;
   vertical-align: top;
   }
 .table-body {
 	display: table-row-group;
   }
-
-.event {
-  color: white;
-  background-color: #EA5900;
-  padding: 0px 5px 0px 5px;
+.header-row {
+  background-color: #ede1de;
+  font-weight: bold;
   }

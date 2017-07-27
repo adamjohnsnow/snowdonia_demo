@@ -10,6 +10,8 @@ class FactorySettingsElemental < Sinatra::Base
   set :session_secret, ENV['SESSION_SECRET'] || 'something'
   register Sinatra::Flash
 
+  STATUS = ['New', 'Tender', 'In Design', 'In Build', 'On Site', 'Complete', 'Cancelled']
+
   get '/' do
     erb :index
   end
@@ -36,6 +38,45 @@ class FactorySettingsElemental < Sinatra::Base
     params[:password] == params[:verify_password] ? register_user(params) : bad_password
   end
 
+  get '/project' do
+    @user_id = session[:user_id]
+    if params[:new]
+      redirect '/home' if params[:new] == ""
+      @project = Project.create(:title => params[:new], :site_id => 1, :client_id => 1, :pm_id => @user_id)
+      @project.users << User.get(session[:user_id])
+      @project.save!
+    else
+      @project = Project.get(params[:id])
+    end
+    @status = STATUS
+    @clients = Client.all
+    @sites = Site.all
+    erb :project
+  end
+
+  post '/project' do
+    @project = Project.get(params[:project_id])
+    params.tap{ |keys| keys.delete(:project_id) }
+    @project.update(params)
+    @project.save!
+    redirect '/project-summary?project_id=' + @project.id.to_s
+  end
+
+  get '/project-summary' do
+    @project = Project.get(params[:project_id])
+    @pm = User.get(@project.pm_id)
+    erb :project_summary
+  end
+
+  post '/new-element' do
+    Element.create(:title => params[:title], :project_id => params[:project_id])
+    redirect '/project-summary?project_id=' + params[:project_id]
+  end
+
+  get '/element' do
+    @element = Element.get(params[:id])
+    erb :element
+  end
   private
 
   def register_user(params)
