@@ -30,7 +30,7 @@
       <div class="table-cell"><%= @project.on_site.strftime("%d/%m/%Y") %></div>
     </div>
   </div>
-</div><a href="/project?id=<%= @project.id %>">Edit Project</a>
+</div><a href="/project?id=<%= @project.id %>">Edit Project Details</a>
 <br><br>
 <div class="table">
   <div class="table-body">
@@ -92,6 +92,6 @@
 </div>
 <form action="/new-element" method="post">
   <input type="hidden" name="project_id" value="<%= @project.id %>">
-  <input type="text" name="title">
+  <input type="text" name="title" placeholder="New Element Name">
   <input class="btn" type="submit" value="Add New Element">
 </form>

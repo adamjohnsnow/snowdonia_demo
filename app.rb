@@ -2,6 +2,7 @@ require 'sinatra/base'
 require 'sinatra/flash'
 require 'pry'
 require_relative './data_mapper_setup'
+require_relative './models/totals'
 
 ENV['RACK_ENV'] ||= 'development'
 
@@ -11,6 +12,10 @@ class FactorySettingsElemental < Sinatra::Base
   register Sinatra::Flash
 
   STATUS = ['New', 'Tender', 'In Design', 'In Build', 'On Site', 'Complete', 'Cancelled']
+
+  before do
+    redirect '/' unless session[:user_id] || request.path_info == '/' || request.path_info == '/sign-in'
+  end
 
   get '/' do
     erb :index
@@ -51,12 +56,13 @@ class FactorySettingsElemental < Sinatra::Base
     @status = STATUS
     @clients = Client.all
     @sites = Site.all
+    @users = User.all(:order => [ :firstname.asc ])
     erb :project
   end
 
   post '/project' do
     @project = Project.get(params[:project_id])
-    params.tap{ |keys| keys.delete(:project_id) }
+    params.tap{ |keys| keys.delete(:project_id) && keys.delete(:captures) }
     @project.update(params)
     @project.save!
     redirect '/project-summary?project_id=' + @project.id.to_s
@@ -75,7 +81,14 @@ class FactorySettingsElemental < Sinatra::Base
 
   get '/element' do
     @element = Element.get(params[:id])
+    @materials = @element.element_materials(:order => [ material.category_id.asc ])
+    @totals = Totals.new(@materials)
     erb :element
+  end
+
+  get '/logout' do
+    session.destroy
+    redirect '/'
   end
   private
 

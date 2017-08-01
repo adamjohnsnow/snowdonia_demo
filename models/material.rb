@@ -6,9 +6,10 @@ class Material
   property :id, Serial
   property :description, Text
   property :unit_cost, Float
+  property :workshop, Float
 
   belongs_to :supplier
   belongs_to :category
-  has n, :elements, through: Resource
+  has n, :element_materials
 
 end

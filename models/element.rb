@@ -13,6 +13,6 @@ class Element
   property :quote_include, Boolean
 
   belongs_to :project
-  has n, :materials, through: Resource
+  has n, :element_materials
 
 end

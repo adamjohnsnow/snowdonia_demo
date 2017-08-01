@@ -1,1 +1,72 @@
-<%= @element.title %>
+<h2><%= @element.title %></h2>
+<h3>Materials</h3>
+<div class="table">
+  <div class="table-body">
+    <div class="table-row header-row">
+      <div class="table-cell">Type</div>
+      <div class="table-cell">Description</div>
+      <div class="table-cell">Supplier</div>
+      <div class="table-cell">Unit Cost</div>
+      <div class="table-cell">Mark-up</div>
+      <div class="table-cell">Units</div>
+      <div class="table-cell">At Cost</div>
+      <div class="table-cell">With Mark-up</div>
+      <div class="table-cell">Notes</div>
+      <div class="table-cell">Units After Drawing</div>
+    </div>
+    <% @materials.each do |unit| %>
+      <% if unit.material.category.type != "Labour" %>
+      <div class="table-row">
+        <div class="table-cell"><%= unit.material.category.type %></div>
+        <div class="table-cell"><%= unit.material.description %></div>
+        <div class="table-cell"><%= unit.material.supplier.company %></div>
+        <div class="table-cell">£<%= sprintf('%.2f', unit.material.unit_cost) %></div>
+        <div class="table-cell"><%= unit.markup * 100 %>%</div>
+        <div class="table-cell"><%= unit.units %></div>
+        <div class="table-cell">£<%= sprintf('%.2f', unit.units * unit.material.unit_cost) %></div>
+        <div class="table-cell">£<%= sprintf('%.2f', unit.units * unit.material.unit_cost * (1 + unit.markup) ) %></div>
+        <div class="table-cell"><%= unit.notes %></div>
+        <div class="table-cell"><%= unit.units_after_drawing %></div>
+        <a href="/element-edit?id=<%= unit.id %>">edit</a>
+      </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+<br>
+<div class="table" style="max-width: 25%;">
+  <div class="table-body">
+    <div class="table-row header-row">
+      <div class="table-cell">Materials at Cost</div>
+      <div class="table-cell">With Markup</div>
+      <div class="table-cell">Markup</div>
+    </div>
+    <div class="table-row">
+      <div class="table-cell">£<%= sprintf('%.2f', @totals.materials[:at_cost]) %> </div>
+      <div class="table-cell">£<%= sprintf('%.2f', @totals.materials[:with_markup]) %> </div>
+      <div class="table-cell">£<%= sprintf('%.2f', @totals.materials[:markup]) %> </div>
+    </div>
+  </div>
+</div>
+<br>
+<h3>Labour</h3>
+<div class="table" style="max-width: 65%;">
+  <div class="table-body">
+    <div class="table-row header-row">
+      <div class="table-cell">Labour Breakdown</div>
+      <div class="table-cell">Rate</div>
+      <div class="table-cell">Mark-up</div>
+      <div class="table-cell">Days</div>
+    </div>
+    <% @materials.each do |unit| %>
+      <% if unit.material.category.type == "Labour" %>
+      <div class="table-row">
+        <div class="table-cell"><%= unit.material.description %></div>
+        <div class="table-cell">£<%= sprintf('%.2f', unit.material.unit_cost) %></div>
+        <div class="table-cell"><%= unit.markup * 100 %>%</div>
+        <div class="table-cell"><%= unit.units %></div>
+      </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>
