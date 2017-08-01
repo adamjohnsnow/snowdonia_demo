@@ -71,6 +71,9 @@ class FactorySettingsElemental < Sinatra::Base
   get '/project-summary' do
     @project = Project.get(params[:project_id])
     @pm = User.get(@project.pm_id)
+    @totals = Totals.new
+    @grand_total = Totals.new
+    @grand_total.summarise_project(@project)
     erb :project_summary
   end
 
@@ -81,8 +84,9 @@ class FactorySettingsElemental < Sinatra::Base
 
   get '/element' do
     @element = Element.get(params[:id])
-    @materials = @element.element_materials(:order => [ material.category_id.asc ])
-    @totals = Totals.new(@materials)
+    @materials = @element.element_materials
+    @totals = Totals.new
+    @totals.summarise_element(@materials)
     erb :element
   end
 

@@ -30,8 +30,21 @@
       <div class="table-cell"><%= @project.on_site.strftime("%d/%m/%Y") %></div>
     </div>
   </div>
-</div><a href="/project?id=<%= @project.id %>">Edit Project Details</a>
-<br><br>
+</div>
+<div class="table summary">
+  <div class="table-body">
+    <div class="table-row header-row">
+      <div class="table-cell">Project Summary</div>
+      <div class="table-cell">Technical Site Requirements</div>
+    </div>
+    <div class="table-row">
+      <div class="table-cell"><%= @project.summary %></div>
+      <div class="table-cell">Project Summary</div>
+    </div>
+  </div>
+</div>
+<br><a href="/project?id=<%= @project.id %>">Edit Project Details</a>
+<br>
 <div class="table">
   <div class="table-body">
     <div class="table-row header-row">
@@ -52,41 +65,43 @@
       <div class="table-cell">Total</div>
     </div>
     <% @project.elements.each do |element| %>
+    <% @totals.summarise_element(element.element_materials) %>
       <div class="table-row">
         <div class="table-cell">
           <a href="/element?id=<%= element.id %>"><%= element.title %></a>
         </div>
-        <div class="table-cell">Materials</div>
-        <div class="table-cell">Labour</div>
-        <div class="table-cell">Prime</div>
-        <div class="table-cell">OHP</div>
-        <div class="table-cell">With OHP</div>
-        <div class="table-cell">Quantity</div>
-        <div class="table-cell">Sub-total</div>
-        <div class="table-cell">Rounded</div>
-        <div class="table-cell">Draw</div>
-        <div class="table-cell">Build</div>
-        <div class="table-cell">Paint</div>
-        <div class="table-cell">Site</div>
-        <div class="table-cell">PM</div>
-        <div class="table-cell">Total</div>
+        <div class="table-cell">£<%= sprintf('%.2f', @totals.materials[:at_cost]) %></div>
+        <div class="table-cell">£<%= sprintf('%.2f', @totals.labour[:at_cost]) %></div>
+        <div class="table-cell">£<%= sprintf('%.2f', @totals.labour[:at_cost] + @totals.materials[:at_cost]) %></div>
+        <div class="table-cell">£<%= sprintf('%.2f', @totals.labour[:markup] + @totals.materials[:markup]) %></div>
+        <div class="table-cell">£<%= sprintf('%.2f', @totals.labour[:with_markup] + @totals.materials[:with_markup]) %></div>
+        <div class="table-cell"><%= element.quantity %></div>
+        <div class="table-cell">£<%= sprintf('%.2f', element.quantity * (@totals.labour[:with_markup] + @totals.materials[:with_markup])) %></div>
+        <div class="table-cell">£<%= element.quantity * (@totals.labour[:with_markup] + @totals.materials[:with_markup]).round(-1) %>.00</div>
+        <div class="table-cell"><%= @totals.days[:draw] %></div>
+        <div class="table-cell"><%= @totals.days[:build] %></div>
+        <div class="table-cell"><%= @totals.days[:paint] %></div>
+        <div class="table-cell"><%= @totals.days[:site] %></div>
+        <div class="table-cell"><%= @totals.days[:pm] %></div>
+        <div class="table-cell"><%= @totals.days.values.inject(0) { |a,b| a + b } %></div>
       </div>
-    <% end %>  <div class="table-row header-row">
+    <% end %>
+    <div class="table-row header-row">
         <div class="table-cell">Total</div>
-        <div class="table-cell">Materials</div>
-        <div class="table-cell">Labour</div>
-        <div class="table-cell">Prime</div>
-        <div class="table-cell">OHP</div>
-        <div class="table-cell">With OHP</div>
+        <div class="table-cell">£<%= sprintf('%.2f', @grand_total.materials[:at_cost]) %></div>
+        <div class="table-cell">£<%= sprintf('%.2f', @grand_total.labour[:at_cost]) %></div>
+        <div class="table-cell">£<%= sprintf('%.2f', @grand_total.labour[:at_cost] + @grand_total.materials[:at_cost]) %></div>
+        <div class="table-cell">£<%= sprintf('%.2f', @grand_total.labour[:markup] + @grand_total.materials[:markup]) %></div>
+        <div class="table-cell">£<%= sprintf('%.2f', @grand_total.labour[:with_markup] + @grand_total.materials[:with_markup]) %></div>
         <div class="table-cell"></div>
-        <div class="table-cell">Sub-total</div>
-        <div class="table-cell">Rounded</div>
-        <div class="table-cell">Draw</div>
-        <div class="table-cell">Build</div>
-        <div class="table-cell">Paint</div>
-        <div class="table-cell">Site</div>
-        <div class="table-cell">PM</div>
-        <div class="table-cell">Total</div>
+        <div class="table-cell"></div>
+        <div class="table-cell"></div>
+        <div class="table-cell"><%= @grand_total.days[:draw] %></div>
+        <div class="table-cell"><%= @grand_total.days[:build] %></div>
+        <div class="table-cell"><%= @grand_total.days[:paint] %></div>
+        <div class="table-cell"><%= @grand_total.days[:site] %></div>
+        <div class="table-cell"><%= @grand_total.days[:pm] %></div>
+        <div class="table-cell"><%= @grand_total.days.values.inject(0) { |a,b| a + b } %></div>
       </div>
   </div>
 </div>

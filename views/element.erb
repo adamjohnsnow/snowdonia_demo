@@ -55,18 +55,56 @@
     <div class="table-row header-row">
       <div class="table-cell">Labour Breakdown</div>
       <div class="table-cell">Rate</div>
+      <div class="table-cell">Workshop</div>
       <div class="table-cell">Mark-up</div>
       <div class="table-cell">Days</div>
+      <div class="table-cell">At Cost</div>
+      <div class="table-cell">With Mark-up</div>
+      <div class="table-cell">Mark-up</div>
     </div>
     <% @materials.each do |unit| %>
       <% if unit.material.category.type == "Labour" %>
       <div class="table-row">
         <div class="table-cell"><%= unit.material.description %></div>
         <div class="table-cell">£<%= sprintf('%.2f', unit.material.unit_cost) %></div>
+        <div class="table-cell">£<%= sprintf('%.2f', unit.material.workshop) %></div>
         <div class="table-cell"><%= unit.markup * 100 %>%</div>
         <div class="table-cell"><%= unit.units %></div>
+        <div class="table-cell">£<%= sprintf('%.2f', unit.units * (unit.material.unit_cost + unit.material.workshop)) %></div>
+        <div class="table-cell">£<%= sprintf('%.2f', unit.units * (unit.material.unit_cost + unit.material.workshop) * (1 + unit.markup) ) %></div>
+        <div class="table-cell">£<%= sprintf('%.2f', unit.units * (unit.material.unit_cost + unit.material.workshop) * unit.markup) %></div>
       </div>
       <% end %>
     <% end %>
+  </div>
+</div>
+<br>
+<div class="table" style="max-width: 25%;">
+  <div class="table-body">
+    <div class="table-row header-row">
+      <div class="table-cell">Labour at Cost</div>
+      <div class="table-cell">With Markup</div>
+      <div class="table-cell">Markup</div>
+    </div>
+    <div class="table-row">
+      <div class="table-cell">£<%= sprintf('%.2f', @totals.labour[:at_cost]) %> </div>
+      <div class="table-cell">£<%= sprintf('%.2f', @totals.labour[:with_markup]) %> </div>
+      <div class="table-cell">£<%= sprintf('%.2f', @totals.labour[:markup]) %> </div>
+    </div>
+  </div>
+</div>
+<br>
+<div class="table" style="max-width: 25%;">
+  <div class="table-body">
+    <div class="table-row header-row">
+      <div class="table-cell">Element at Cost</div>
+      <div class="table-cell">With Markup</div>
+      <div class="table-cell">Markup</div>
+    </div>
+    <div class="table-row">
+      <div class="table-cell">£<%= sprintf('%.2f', @totals.labour[:at_cost] + @totals.materials[:at_cost]) %> </div>
+      <div class="table-cell">£<%= sprintf('%.2f', @totals.labour[:with_markup] + @totals.materials[:with_markup]) %> </div>
+      <div class="table-cell">£<%= sprintf('%.2f', @totals.labour[:markup] + @totals.materials[:markup]) %> </div>
+    </div>
   </div>
 </div>

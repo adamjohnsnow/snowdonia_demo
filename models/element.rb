@@ -5,7 +5,7 @@ class Element
 
   property :id, Serial
   property :title, String
-  property :quantity, Integer
+  property :quantity, Integer, :default => 1
   property :notes, Text
   property :build_start, Date
   property :build_end, Date
