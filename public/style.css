@@ -14,11 +14,11 @@ input, select {
   letter-spacing: 4px;
   font-size: 35px;
   text-align: center;
-  }
+}
 
 .logo{
   padding-top: 20px;
-  }
+}
 
 .banner {
   font-family: 'Montserrat', sans-serif;
@@ -39,52 +39,52 @@ input, select {
   position: fixed;
   bottom: 0;
   width: 100%;
-  }
+}
 
 body{
   font-family: 'Montserrat', sans-serif;
   margin: auto;
   text-align: center;
   font-size: 100%;
-  }
+}
 
 .btn {
   background: #000000;
-  -webkit-border-radius: 6;
-  -moz-border-radius: 6;
-  border-radius: 6px;
-  border-width: 0;
+  -webkit-border-radius: 5;
+  -moz-border-radius: 5;
+  border-radius: 5px;
+  border-width: 0.5px;
   color: #ffffff;
   font-family: 'Montserrat', sans-serif;
-  font-size: 18px;
-  padding: 6px 10px 6px 10px;
+  font-size: 14px;
+  padding: 5px 8px 5px 8px;
   text-decoration: none;
-  }
+}
 
 .btn:hover {
   background: #ffffff;
   color: #000000;
   text-decoration: none;
-  border: 1px solid black;
-  }
+  border: 0.5px solid black;
+}
 
 .flash {
   color: red;
   font-style: italic;
-  }
+}
 
 .table{
    display: inline-table;
    width: 90%;
    font-size: 90%;
    margin: 3px;
-   }
+}
 .summary{
   max-width: 500px;
 }
 .table-row {
 	display: table-row;
-  }
+}
 .table-cell {
   border: 1px solid #eff0f2;
 	display: table-cell;
@@ -93,8 +93,13 @@ body{
   }
 .table-body {
 	display: table-row-group;
-  }
+}
 .header-row {
   background-color: #ede1de;
   font-weight: bold;
-  }
+}
+
+.project-link{
+  font-weight: bold;
+  font-size: 120%;
+}

@@ -1,10 +1,6 @@
-<h2>Project Summary</h2>
+<h2><%= @project.title %> Summary</h2>
 <div class="table summary">
   <div class="table-body">
-    <div class="table-row">
-      <div class="table-cell header-row">Project</div>
-      <div class="table-cell"><%= @project.title %></div>
-    </div>
     <div class="table-row">
       <div class="table-cell header-row">Job Code</div>
       <div class="table-cell"><%= @project.job_code %></div>
@@ -31,7 +27,8 @@
     </div>
   </div>
 </div>
-<div class="table summary">
+<a href="/project?id=<%= @project.id %>">Edit Project Details</a>
+<div class="table">
   <div class="table-body">
     <div class="table-row header-row">
       <div class="table-cell">Project Summary</div>
@@ -39,11 +36,10 @@
     </div>
     <div class="table-row">
       <div class="table-cell"><%= @project.summary %></div>
-      <div class="table-cell">Project Summary</div>
+      <div class="table-cell"><%= @project.technical_requirements %></div>
     </div>
   </div>
 </div>
-<br><a href="/project?id=<%= @project.id %>">Edit Project Details</a>
 <br>
 <div class="table">
   <div class="table-body">
@@ -63,6 +59,7 @@
       <div class="table-cell">Site</div>
       <div class="table-cell">PM</div>
       <div class="table-cell">Total</div>
+      <div class="table-cell">Included in quote</div>
     </div>
     <% @project.elements.each do |element| %>
     <% @totals.summarise_element(element.element_materials) %>
@@ -84,6 +81,7 @@
         <div class="table-cell"><%= @totals.days[:site] %></div>
         <div class="table-cell"><%= @totals.days[:pm] %></div>
         <div class="table-cell"><%= @totals.days.values.inject(0) { |a,b| a + b } %></div>
+        <div class="table-cell"><%= 'Yes' if element.quote_include %></div>
       </div>
     <% end %>
     <div class="table-row header-row">
@@ -94,14 +92,15 @@
         <div class="table-cell">£<%= sprintf('%.2f', @grand_total.labour[:markup] + @grand_total.materials[:markup]) %></div>
         <div class="table-cell">£<%= sprintf('%.2f', @grand_total.labour[:with_markup] + @grand_total.materials[:with_markup]) %></div>
         <div class="table-cell"></div>
-        <div class="table-cell"></div>
-        <div class="table-cell"></div>
+        <div class="table-cell">£<%= sprintf('%.2f', @grand_total.labour[:with_markup] + @grand_total.materials[:with_markup]) %></div>
+        <div class="table-cell">£<%= (@grand_total.labour[:with_markup] + @grand_total.materials[:with_markup]).round(-1) %>.00</div>
         <div class="table-cell"><%= @grand_total.days[:draw] %></div>
         <div class="table-cell"><%= @grand_total.days[:build] %></div>
         <div class="table-cell"><%= @grand_total.days[:paint] %></div>
         <div class="table-cell"><%= @grand_total.days[:site] %></div>
         <div class="table-cell"><%= @grand_total.days[:pm] %></div>
         <div class="table-cell"><%= @grand_total.days.values.inject(0) { |a,b| a + b } %></div>
+        <div class="table-cell"></div>
       </div>
   </div>
 </div>

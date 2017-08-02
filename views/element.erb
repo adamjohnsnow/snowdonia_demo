@@ -1,4 +1,22 @@
-<h2><%= @element.title %></h2>
+<h3><a href="/project-summary?project_id=<%= @element.project_id %>">Back to <%= @element.project.title %></a>
+  <% p @element %>
+<form action="/update-element" method="post">
+  <input type="hidden" name="element_id" value="<%= @element.id %>">
+  Element Name <input type="text" name="title" value="<%= @element.title %>"><br>
+  Quantity<input type="number" name="quantity" value="<%= @element.quantity %>" style="width: 50px;"><br>
+  Build Start <input type="date" name="build_start" value="<%= @element.build_start %>"><br>
+  Build End <input type="date" name="build_end" value="<%= @element.build_end %>"><br>
+  Include in Quote
+  <% if @element.quote_include %>
+    <input type="checkbox" name="quote_include" checked>
+  <% else %>
+    <input type="checkbox" name="quote_include">
+  <% end %>
+  Notes<br>
+  <textarea name="notes" cols="50" rows="4"><%= @element.notes %></textarea><br>
+
+  <input class="btn" type="submit" value="Update Element">
+</form>
 <h3>Materials</h3>
 <div class="table">
   <div class="table-body">
@@ -27,12 +45,25 @@
         <div class="table-cell">£<%= sprintf('%.2f', unit.units * unit.material.unit_cost * (1 + unit.markup) ) %></div>
         <div class="table-cell"><%= unit.notes %></div>
         <div class="table-cell"><%= unit.units_after_drawing %></div>
-        <a href="/element-edit?id=<%= unit.id %>">edit</a>
+        <a href="/material?id=<%= unit.id %>">edit</a>
       </div>
       <% end %>
     <% end %>
   </div>
 </div>
+<form action="/material" method="get">
+  <input type="hidden" name="element" value="<%= @element.id %>">
+  <select name="category">
+    <option value="0" selected>All</option>
+    <% @categories.each do |category| %>
+      <% if category.type != 'Labour' %>
+        <option value="<%= category.id %>"><%= category.type %></option>
+      <% end %>
+    <% end %>
+  </select>
+  <input class="btn" type="submit" value="Add Material">
+</form>
+
 <br>
 <div class="table" style="max-width: 25%;">
   <div class="table-body">

@@ -78,6 +78,7 @@ class FactorySettingsElemental < Sinatra::Base
   end
 
   post '/new-element' do
+    params[:title] = 'Unnamed Element' if params[:title] == ''
     Element.create(:title => params[:title], :project_id => params[:project_id])
     redirect '/project-summary?project_id=' + params[:project_id]
   end
@@ -87,7 +88,47 @@ class FactorySettingsElemental < Sinatra::Base
     @materials = @element.element_materials
     @totals = Totals.new
     @totals.summarise_element(@materials)
+    @categories = Category.all
     erb :element
+  end
+
+  get '/material' do
+    if params[:id]
+      @element_material = ElementMaterial.get(params[:id])
+      @element_id = @element_material.element_id
+      @materials = Material.all(:category_id => @element_material.material.category_id)
+    else
+      @element_id = params[:element]
+      if params[:category] == "0"
+        @materials = Material.all
+      else
+        @materials = Material.all(:category_id => params[:category])
+      end
+    end
+    erb :add_material
+  end
+
+  post '/material' do
+    params[:markup] = (params[:markup].to_f / 100)
+    params.tap{ |keys| keys.delete(:captures) }
+    if params[:element_material_id]
+      element_material = ElementMaterial.get(params[:element_material_id])
+      params.tap{ |keys| keys.delete(:element_material_id) }
+      element_material.update(params)
+      element_material.save!
+    else
+      element_material = ElementMaterial.create(params)
+    end
+    redirect '/element?id=' + params[:element_id]
+  end
+
+  post '/update-element' do
+    params[:quote_include] ? params[:quote_include] = 't' : params[:quote_include] = 'f'
+    p params
+    @element = Element.get(params[:element_id])
+    params.tap{ |keys| keys.delete(:element_id) && keys.delete(:captures) }
+    @element.update(params)
+    redirect '/element?id=' + @element.id.to_s
   end
 
   get '/logout' do

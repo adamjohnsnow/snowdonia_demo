@@ -26,21 +26,25 @@ attr_reader :materials, :labour, :days
       else
         subtotal = @materials
       end
-      cost = unit.material.unit_cost * unit.units * quantity
-      subtotal[:at_cost] += cost * quantity
-      subtotal[:markup] += cost * unit.markup * quantity
-      subtotal[:with_markup] += cost * (1 + unit.markup) * quantity
+      cost = unit.material.unit_cost * unit.units
+      subtotal[:at_cost] += (cost * quantity)
+      subtotal[:markup] += (cost * unit.markup * quantity)
+      subtotal[:with_markup] += (cost * (1 + unit.markup) * quantity)
     end
   end
 
   def count_days(unit, quantity)
     case unit.material.description
     when 'Project Management'
-      @days[:pm] += unit.units * quantity
+      @days[:pm] += (unit.units * quantity)
     when 'Draughting'
-      @days[:draw] += unit.units * quantity
+      @days[:draw] += (unit.units * quantity)
+    when 'On Site days'
+      @days[:site] += (unit.units * quantity)
+    when /.Paint/
+      @days[:paint] += (unit.units * quantity)
     else
-      @days[:build] += unit.units * quantity 
+      @days[:build] += (unit.units * quantity)
     end
   end
 end

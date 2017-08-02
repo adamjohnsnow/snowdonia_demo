@@ -1,0 +1,19 @@
+<h3> Edit Material</h3>
+<form class="" action="/material" method="post">
+  <% if @element_material %>
+    <input type="hidden" name="element_material_id" value="<%= @element_material.id %>">
+  <% end %>
+  <input type="hidden" name="element_id" value="<%= @element_id %>">
+  <select name="material_id">
+    <% @materials.each do |material| %>
+    <% if @element_material && @element_material.material_id == material.id %>
+        <option selected value="<%= material.id %>"><%= material.description %> (<%= material.supplier.company %>) - £<%= sprintf('%.2f',material.unit_cost) %></option>
+      <% else %>
+        <option value="<%= material.id %>"><%= material.description %> (<%= material.supplier.company %>) - £<%= sprintf('%.2f',material.unit_cost) %></option>
+      <% end %>
+    <% end %>
+  </select><br>
+  Units <input type="number" name="units" value="<%= @element_material ? @element_material.units : 1 %>" style="width: 50px;"> Markup <input name="markup" type="number" min="1" max="100" value="30">%<br>
+  <textarea name="notes" cols="30" rows="4" placeholder="Notes"><%= @element_material.notes if @element_material %></textarea><br>
+  <input class="btn" type="submit" value="Save Material to Element">
+</form>

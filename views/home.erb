@@ -3,7 +3,7 @@
 <h4>Projects</h4>
 <% @user.projects.each do |project| %>
   <div>
-    <a href="/project-summary?project_id=<%= project.id %>"><%= project.title %></a>
+    <a class="project-link" href="/project-summary?project_id=<%= project.id %>"><%= project.title %></a>
   </div>
 <% end %>
 <form action='/project'>
