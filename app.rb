@@ -157,7 +157,7 @@ class FactorySettingsElemental < Sinatra::Base
 
   def register_user(params)
     @user = User.create(params[:firstname], params[:surname],
-    params[:email], params[:password])
+    params[:email], params[:password], params[:role])
     redirect '/users'
   end
 
