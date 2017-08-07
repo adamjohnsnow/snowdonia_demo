@@ -1,0 +1,20 @@
+
+<h3>Materials</h3>
+<div class="table">
+  <div class="table-body">
+    <div class="table-row header-row">
+      <div class="table-cell">Category</div>
+      <div class="table-cell">Description</div>
+      <div class="table-cell">Supplier</div>
+      <div class="table-cell">Unit Cost</div>
+    </div>
+    <% @materials.each do |material| %>
+      <div class="table-row">
+        <div class="table-cell"><%= material.category.type %></div>
+        <div class="table-cell"><%= material.description %></div>
+        <div class="table-cell"><%= material.supplier.company %></div>
+        <div class="table-cell">£<%= sprintf('%.2f', material.unit_cost) %></div>
+      </div>
+    <% end %>
+  </div>
+</div>

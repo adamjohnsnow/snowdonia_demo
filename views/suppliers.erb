@@ -1,0 +1,22 @@
+
+<h3>Suppliers</h3>
+<div class="table">
+  <div class="table-body">
+    <div class="table-row header-row">
+      <div class="table-cell">Company</div>
+      <div class="table-cell">Address</div>
+      <div class="table-cell">Website</div>
+      <div class="table-cell">Email</div>
+      <div class="table-cell">Phone</div>
+    </div>
+    <% @suppliers.each do |company| %>
+      <div class="table-row">
+        <div class="table-cell"><%= company.company %></div>
+        <div class="table-cell"><%= company.address %></div>
+        <div class="table-cell"><a href="<%= company.website %>"></a></div>
+        <div class="table-cell"><%= company.email %></div>
+        <div class="table-cell"><%= company.phone %></div>
+      </div>
+    <% end %>
+  </div>
+</div>

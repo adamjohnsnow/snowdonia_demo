@@ -18,13 +18,33 @@ class FactorySettingsElemental < Sinatra::Base
   end
 
   get '/' do
-    erb :index
+    erb :index, :layout => false
   end
 
   get '/home' do
     @user = User.get(session[:user_id])
     @projects = @user.projects.all
     erb :home
+  end
+
+  get '/projects' do
+    @projects = Project.all
+    erb :projects
+  end
+
+  get '/suppliers' do
+    @suppliers = Supplier.all
+    erb :suppliers
+  end
+
+  get '/materials' do
+    @materials = Material.all(:order => [ :category_id.asc ])
+    erb :materials
+  end
+
+  get '/clients' do
+    @clients = Client.all
+    erb :clients
   end
 
   post '/sign-in' do

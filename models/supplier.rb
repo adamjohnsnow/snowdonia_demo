@@ -7,6 +7,8 @@ class Supplier
   property :company, String, :required => true
   property :website, URI
   property :address, Text
+  property :email, String
+  property :phone, String
 
   has n, :materials
 

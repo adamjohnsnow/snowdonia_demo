@@ -6,8 +6,20 @@
 
 <div class="banner header">
   <a href="/home"><strong>FACTORY SETTINGS </strong>
+    <img src="white_logo.png" width="160">
     <span class="title"> elemental </span></a><br>
-    <span class="logout"><a href="/logout">Log-out</a></span>
 </div>
 
-<%= yield %>
+<div class="table content">
+  <div class="table-body">
+    <div class="table-cell menu">
+      <div class="menu-item"><a href="/projects">Projects</a></div>
+      <div class="menu-item"><a href="/users">Users</a></div>
+      <div class="menu-item"><a href="/clients">Clients</a></div>
+      <div class="menu-item"><a href="/materials">Materials</a></div>
+      <div class="menu-item"><a href="/suppliers">Suppliers</a></div><br>
+      <div class="menu-item"><a href="/logout">Log Out</a></div>
+    </div>
+    <div class="table-cell"><%= yield %></div>
+  </div>
+</div>
