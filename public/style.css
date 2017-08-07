@@ -75,7 +75,7 @@ body{
 
 .table{
    display: inline-table;
-   width: 90%;
+   max-width: 90%;
    font-size: 90%;
    margin: 3px;
 }
@@ -86,9 +86,8 @@ body{
 	display: table-row;
 }
 .table-cell {
-  border: 1px solid #eff0f2;
 	display: table-cell;
-	padding: 10px 16px 10px 16px;
+	padding: 5px 10px 5px 10px;
   vertical-align: top;
   }
 .table-body {
@@ -131,4 +130,8 @@ body{
 .menu-item a{
   text-decoration: none;
   color: white;
+}
+
+.border {
+  border: 1px solid #eff0f2;
 }
