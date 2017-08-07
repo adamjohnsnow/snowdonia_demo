@@ -1,7 +1,24 @@
 <h2>Welcome back, <%= @user.firstname %></h2>
-<h4>Your Projects</h4>
-<% @user.projects.each do |project| %>
-  <div>
-    <a class="project-link" href="/project-summary?project_id=<%= project.id %>"><%= project.title %></a>
+
+
+<div class="">
+  <div class="table">
+    <div class="table-body">
+      <div class="table-row">
+        <div class="table-cell border"><h2>Your Projects</h2>
+        <% @user.projects.each do |project| %>
+          <div>
+            <a class="project-link" href="/project-summary?project_id=<%= project.id %>"><%= project.title %></a>
+          </div>
+        <% end %></div>
+        <div class="table-cell dashboard border">Dashboard Placeholder</div>
+        <div class="table-cell dashboard border">Dashboard Placeholder</div>
+      </div>
+      <div class="table-row">
+        <div class="table-cell dashboard border">Dashboard Placeholder</div>
+        <div class="table-cell dashboard border">Dashboard Placeholder</div>
+        <div class="table-cell dashboard border">Dashboard Placeholder</div>
+      </div>
+    </div>
   </div>
-<% end %>
+</div>
