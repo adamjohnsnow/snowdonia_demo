@@ -71,7 +71,8 @@ class FactorySettingsElemental < Sinatra::Base
     @project = Project.get(params[:project_id])
     @pm = User.get(@project.pm_id)
     @totals = Totals.new
-    @grand_total = @totals.summarise_project(@project)
+    @grand_total = Totals.new
+    @grand_total.summarise_project(@project)
     erb :project_summary
   end
 
