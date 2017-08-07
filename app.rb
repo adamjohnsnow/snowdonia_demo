@@ -32,31 +32,29 @@ class FactorySettingsElemental < Sinatra::Base
     bad_sign_in if @user.nil?
     session[:user] = @user.firstname
     session[:user_id] = @user.id
+    session[:user_auth] = @user.level
     redirect '/home'
   end
 
-  get '/new-user' do
-    erb :new_user
+  get '/users' do
+    redirect '/home' if session[:user_auth] < 3
+    @users = User.all
+    erb :users
   end
 
   post '/new-user' do
+    redirect '/home' if session[:user_auth] < 3
     params[:password] == params[:verify_password] ? register_user(params) : bad_password
   end
 
   get '/project' do
     @user_id = session[:user_id]
     if params[:new]
-      redirect '/home' if params[:new] == ""
-      @project = Project.create(:title => params[:new], :site_id => 1, :client_id => 1, :pm_id => @user_id)
-      @project.users << User.get(session[:user_id])
-      @project.save!
+      @project = new_project(params)
     else
       @project = Project.get(params[:id])
     end
-    @status = STATUS
-    @clients = Client.all
-    @sites = Site.all
-    @users = User.all(:order => [ :firstname.asc ])
+    @dropdowns = get_dropdowns
     erb :project
   end
 
@@ -64,6 +62,7 @@ class FactorySettingsElemental < Sinatra::Base
     @project = Project.get(params[:project_id])
     params.tap{ |keys| keys.delete(:project_id) && keys.delete(:captures) }
     @project.update(params)
+    @project.add_user(params[:pm_id])
     @project.save!
     redirect '/project-summary?project_id=' + @project.id.to_s
   end
@@ -72,8 +71,7 @@ class FactorySettingsElemental < Sinatra::Base
     @project = Project.get(params[:project_id])
     @pm = User.get(@project.pm_id)
     @totals = Totals.new
-    @grand_total = Totals.new
-    @grand_total.summarise_project(@project)
+    @grand_total = @totals.summarise_project(@project)
     erb :project_summary
   end
 
@@ -89,6 +87,7 @@ class FactorySettingsElemental < Sinatra::Base
     @totals = Totals.new
     @totals.summarise_element(@materials)
     @categories = Category.all
+    @labour_types = Material.all(:category_id => 3)
     erb :element
   end
 
@@ -124,34 +123,65 @@ class FactorySettingsElemental < Sinatra::Base
 
   post '/update-element' do
     params[:quote_include] ? params[:quote_include] = 't' : params[:quote_include] = 'f'
-    p params
     @element = Element.get(params[:element_id])
     params.tap{ |keys| keys.delete(:element_id) && keys.delete(:captures) }
     @element.update(params)
     redirect '/element?id=' + @element.id.to_s
   end
 
+  get '/edit-user' do
+    redirect '/home' if session[:user_auth] < 3
+    @user = User.get(params[:id])
+    erb :edit_user
+  end
+
+  post '/edit-user' do
+    redirect '/home' if session[:user_auth] < 3
+    update_user(params)
+    redirect '/users'
+  end
+
   get '/logout' do
-    session.destroy
+    session.clear
     redirect '/'
   end
   private
+  def get_dropdowns
+    return { status: STATUS,
+      clients: Client.all,
+      sites: Site.all,
+      users: User.all(:order => [ :firstname.asc ])
+    }
+  end
 
   def register_user(params)
     @user = User.create(params[:firstname], params[:surname],
     params[:email], params[:password])
-    session[:user] = @user.firstname
-    session[:user_id] = @user.id
-    redirect '/home'
+    redirect '/users'
   end
 
   def bad_password
-    flash.next[:notice] = 'your passwords did not match, try again'
-    redirect '/'
+    flash.next[:notice] = 'Passwords did not match, try again'
+    redirect '/users'
   end
 
   def bad_sign_in
     flash.next[:notice] = 'you could not be signed in, try again'
     redirect '/'
+  end
+
+  def update_user(params)
+    user = User.get(params[:user_id])
+    params.tap{ |keys| keys.delete(:captures) && keys.delete(:user_id) }
+    user.update(params)
+    user.save!
+  end
+
+  def new_project(params)
+    redirect '/home' if params[:new] == ""
+    project = Project.create(:title => params[:new], :site_id => 1, :client_id => 1, :pm_id => session[:user_id])
+    project.add_user(session[:user_id])
+    project.save!
+    return project
   end
 end

@@ -9,7 +9,7 @@
         </div>
         <div class="table-cell">
           Status <select name="status">
-            <% @status.each do |status| %>
+            <% @dropdowns[:status].each do |status| %>
               <% if status == @project.status %>
                 <option selected value="<%= status %>"><%= status %></option>
               <% else %>
@@ -25,7 +25,7 @@
         </div>
         <div class="table-cell">
           Factory Settings PM <select name="pm_id">
-          <% @users.each do |pm| %>
+          <% @dropdowns[:users].each do |pm| %>
             <% if @project.pm_id && pm.id == @project.pm_id %>
               <option selected value="<%= pm.id %>"><%= pm.firstname + ' ' + pm.surname %></option>
             <% else %>
@@ -42,7 +42,7 @@
         <div class="table-cell">
           Client
           <select name="client_id">
-            <% @clients.each do |client| %>
+            <% @dropdowns[:clients].each do |client| %>
               <% if @project.client && client.id == @project.client.id %>
                 <option selected value="<%= client.id %>"><%= client.name %></option>
               <% else %>
@@ -58,7 +58,7 @@
         </div>
         <div class="table-cell">
           Site <select name="site_id">
-            <% @sites.each do |site| %>
+            <% @dropdowns[:sites].each do |site| %>
               <% if @project.site && site.id == @project.site.id %>
                 <option selected value="<%= site.id %>"><%= site.name %></option>
               <% else %>

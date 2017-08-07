@@ -1,5 +1,4 @@
 <h3><a href="/project-summary?project_id=<%= @element.project_id %>">Back to <%= @element.project.title %></a>
-  <% p @element %>
 <form action="/update-element" method="post">
   <input type="hidden" name="element_id" value="<%= @element.id %>">
   Element Name <input type="text" name="title" value="<%= @element.title %>"><br>
@@ -50,8 +49,8 @@
       <% end %>
     <% end %>
   </div>
-</div>
-<form action="/material" method="get">
+</div><br>
+Add Material <form action="/material" method="get">
   <input type="hidden" name="element" value="<%= @element.id %>">
   <select name="category">
     <option value="0" selected>All</option>
@@ -104,11 +103,24 @@
         <div class="table-cell">£<%= sprintf('%.2f', unit.units * (unit.material.unit_cost + unit.material.workshop)) %></div>
         <div class="table-cell">£<%= sprintf('%.2f', unit.units * (unit.material.unit_cost + unit.material.workshop) * (1 + unit.markup) ) %></div>
         <div class="table-cell">£<%= sprintf('%.2f', unit.units * (unit.material.unit_cost + unit.material.workshop) * unit.markup) %></div>
+        <a href="/material?id=<%= unit.id %>">edit</a>
       </div>
       <% end %>
     <% end %>
   </div>
-</div>
+</div><br>
+Add Labour <form action="/material" method="post">
+  <input type="hidden" name="element_id" value="<%= @element.id %>">
+  <select name="material_id">
+    <% @labour_types.each do |type| %>
+      <option value="<%= type.id %>"><%= type.description %></option>
+    <% end %>
+  </select>
+  <input type="number" name="units" min="1" max="100" value="1" >
+  <input type="number" name="markup" min="1" max="100" value="30">%
+  <input class="btn" type="submit" value="Add Labour">
+</form>
+
 <br>
 <div class="table" style="max-width: 25%;">
   <div class="table-body">

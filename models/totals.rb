@@ -9,6 +9,7 @@ attr_reader :materials, :labour, :days
 
   def summarise_project(project)
     project.elements.each { |element| count_costs(element.element_materials, element.quantity) }
+    return self
   end
 
   def summarise_element(element)

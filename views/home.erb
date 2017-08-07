@@ -9,4 +9,7 @@
 <form action='/project'>
   <input type="text" name="new" placeholder="New Project Title" size="50">
   <input class="btn" type="submit" value="Create New Project">
-</form>
+</form><br>
+<% if @user.level > 2 %>
+  <a href="/users">Edit Users</a>
+<% end %>

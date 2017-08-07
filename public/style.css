@@ -103,3 +103,13 @@ body{
   font-weight: bold;
   font-size: 120%;
 }
+
+.new-user {
+  border: 1px solid #eff0f2;
+  padding: 10px;
+  margin: 5px;
+}
+.logout {
+  text-align: right;
+  font-size: 10px;
+}

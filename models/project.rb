@@ -20,7 +20,7 @@ class Project
   belongs_to :site
   belongs_to :client
 
-  def self.add_user(user_id)
-    @project.users << User.get(user_id)
+  def add_user(user_id)
+    self.users << User.get(user_id)
   end
 end

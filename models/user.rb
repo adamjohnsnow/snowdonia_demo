@@ -10,6 +10,7 @@ class User
   property :surname, String
   property :email, String, :unique => true
   property :password_digest, Text
+  property :role, String
   property :level, Integer, :default => 1
 
   has n, :projects, through: Resource

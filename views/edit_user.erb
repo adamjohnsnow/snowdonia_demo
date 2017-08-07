@@ -1,0 +1,46 @@
+
+
+<div class="new-user">
+  <h3>Edit User</h3>
+  <div><%= flash[:notice] %></div>
+  <form class="register-form" action="/edit-user" method="post">
+    <input type="hidden" name="user_id" value="<%= @user.id %>">
+    First Name<input type="text" name="firstname" value="<%= @user.firstname %>">
+    Surname<input type="text" name="surname" value="<%= @user.surname %>"><br>
+    Email<input type="text" name="email" value="<%= @user.email %>" size="50">
+    Role<input type="text" name="role" value="<%= @user.role %>"><br>
+    Authorised Level <select name="level">
+      <% [1, 2, 3].each do |i| %>
+        <% if i == @user.level %>
+          <option selected value="<%= i %>"><%= i %></option>
+        <% else %>
+          <option value="<%= i %>"><%= i %></option>
+        <% end %>
+      <% end %>
+    </select>
+    <input class="btn" type="submit">
+  </form>
+</div>
+<h3>Current Projects</h3>
+<div class="table">
+  <div class="table-body">
+    <div class="table-row header-row">
+      <div class="table-cell">Title</div>
+      <div class="table-cell">Workshop Deadline</div>
+      <div class="table-cell">On Site Deadline</div>
+      <div class="table-cell">Client</div>
+      <div class="table-cell">Project Status</div>
+      <div class="table-cell">Lead PM</div>
+    </div>
+    <% @user.projects.each do |project| %>
+      <div class="table-row">
+        <div class="table-cell"><a href="/project-summary?project_id=<%= project.id %>"><%= project.title %></a></div>
+        <div class="table-cell"><%= project.workshop_deadline.strftime("%d/%m/%Y") %></div>
+        <div class="table-cell"><%= project.on_site.strftime("%d/%m/%Y") %></div>
+        <div class="table-cell"><%= project.client.name %></div>
+        <div class="table-cell"><%= project.status %></div>
+        <div class="table-cell"><%= 'Yes' if project.pm_id == @user.id %></div>
+      </div>
+    <% end %>
+  </div>
+</div>
