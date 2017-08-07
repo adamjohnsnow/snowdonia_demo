@@ -6,7 +6,7 @@
   Build Start <input type="date" name="build_start" value="<%= @element.build_start %>"><br>
   Build End <input type="date" name="build_end" value="<%= @element.build_end %>"><br>
   Include in Quote
-  <% if @element.quote_include %>
+  <% if @element.quote_include == true %>
     <input type="checkbox" name="quote_include" checked>
   <% else %>
     <input type="checkbox" name="quote_include">

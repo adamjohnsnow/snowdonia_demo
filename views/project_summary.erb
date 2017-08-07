@@ -81,7 +81,7 @@
         <div class="table-cell"><%= @totals.days[:site] %></div>
         <div class="table-cell"><%= @totals.days[:pm] %></div>
         <div class="table-cell"><%= @totals.days.values.inject(0) { |a,b| a + b } %></div>
-        <div class="table-cell"><%= 'Yes' if element.quote_include %></div>
+        <div class="table-cell"><%= 'Yes' if element.quote_include == true %></div>
       </div>
     <% end %>
     <div class="table-row header-row">
