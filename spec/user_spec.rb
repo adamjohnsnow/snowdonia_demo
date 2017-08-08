@@ -4,17 +4,17 @@ describe User do
   context 'user creation' do
 
     it 'create user' do
-      User.create("Firstname", "Surname", "email@email.com", "password")
+      User.create("Firstname", "Surname", "email@email.com", "password", "role")
       expect(User.all.count).to eq 1
     end
 
     it 'no duplicate user' do
-      User.create("Firstname", "Surname", "email@email.com", "password")
+      User.create("Firstname", "Surname", "email@email.com", "password", "role")
       expect(User.all.count).to eq 1
     end
 
     it 'add second user' do
-      User.create("Firstname", "Surname", "email2@email.com", "password")
+      User.create("Firstname", "Surname", "email2@email.com", "password", "role")
       expect(User.all.count).to eq 2
     end
 

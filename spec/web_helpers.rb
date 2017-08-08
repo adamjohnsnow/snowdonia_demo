@@ -1,7 +1,7 @@
 def set_up_users
-  will = User.create('Will', 'Jackson', 'will@factorysettings.co.uk', 'f4ct0ry')
+  will = User.create('Will', 'Jackson', 'will@factorysettings.co.uk', 'f4ct0ry', 'Manager')
   will.update(:level => 3)
-  adam = User.create('Adam', 'Snow', 'adamjohnsnow@icloud.com', 'b33chw00d')
+  adam = User.create('Adam', 'Snow', 'adamjohnsnow@icloud.com', 'b33chw00d', 'Developer')
   adam.update(:level => 3)
   Client.create(:name => "Dummy Client", :address => '1 High Street, London, E1 1AB', :manager => 'That Guy')
   Site.create(:name => "Dummy Site", :contact_name => 'Mrs Site', :address => '1 Site Lane, Sitetown, S12 1QW')
