@@ -1,6 +1,6 @@
 require 'data_mapper'
 
-class Category
+class Costcode
   include DataMapper::Resource
 
   property :id, Serial

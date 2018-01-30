@@ -18,6 +18,7 @@ describe Project do
     end
 
     it { expect(Project.first.status).to eq 'New' }
+    it { expect(Project.first.title).to eq 'Test Project' }
 
   end
 
