@@ -12,10 +12,9 @@ class Project
   property :technical_requirements, Text
   property :terms, Text
   property :status, String, :default => 'New'
-  property :pm_id, Integer
   property :current_version, String, :default => '0.1'
 
-  has n, :users, through: Resource
+  belongs_to :user
   has n, :project_versions
   belongs_to :site
   belongs_to :client
