@@ -7,8 +7,16 @@ class Material
   property :description, Text
   property :supplier, Text
   property :current_price, Float
+  property :scope, Integer
+  property :unit, Text
+  property :price_updated, Date, :default => Date.today
 
   belongs_to :costcode
   has n, :element_materials
 
+  def update_price(new_price)
+    self.current_price = new_price
+    self.price_updated = Date.today
+    self.save!
+  end
 end

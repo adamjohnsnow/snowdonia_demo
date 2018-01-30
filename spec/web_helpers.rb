@@ -1,14 +1,10 @@
-def set_up_users
-  will = User.create('Will', 'Jackson', 'will@factorysettings.co.uk', 'f4ct0ry', 'Manager')
-  will.update(:level => 3)
-  adam = User.create('Adam', 'Snow', 'adamjohnsnow@icloud.com', 'b33chw00d', 'Developer')
-  adam.update(:level => 3)
-  Client.create(:name => "Dummy Client", :address => '1 High Street, London, E1 1AB', :manager => 'That Guy')
-  Site.create(:name => "Dummy Site", :contact_name => 'Mrs Site', :address => '1 Site Lane, Sitetown, S12 1QW')
-  categories = ["Fabrics", "Hardware"]
-  categories.each { |category| Category.create(:type => category)}
-  suppliers = ["Aalco", "Access"]
-  suppliers.each { |supplier| Supplier.create(:company => supplier)}
-  Material.create(:description => "Cotton Scene Canvas Unbleached - 300cm - Roll", :supplier_id => 1, :category_id => 1, :unit_cost => 6.9)
-  Material.create(:description => "Calico 195gsm - 320cm - Roll", :supplier_id => 2, :category_id => 2, :unit_cost => 3.9)
+def set_up_project
+  DatabaseCleaner.clean
+  user = User.create('Adam', 'Snow', 'adamjohnsnow@icloud.com', 'password', 'Developer')
+  user.update(:level => 3)
+  client = Client.create(:name => "Made Up Client", :address => '1 Client Road, Clientville, CL1 1CL', :manager => 'Mrs Client')
+  site = Site.create(:name => "Made Up Site", :contact_name => 'Mr Site', :address => '2 Site Lane, Sitetown, S12 1QW')
+  Costcode.create(:code => 'C001')
+  project = Project.create(:title => 'Feature Project', :user_id => user.id, :site_id => site.id, :client_id => client.id)
+  return project
 end
