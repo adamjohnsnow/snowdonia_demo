@@ -10,6 +10,7 @@ describe Material do
       expect(Material.all.count).to eq 1
       expect(Material.first.costcode_id).to eq 1
       expect(Material.first.description).to eq 'test material'
+      expect(Material.first.global).to eq false
       DatabaseCleaner.clean
     end
   end

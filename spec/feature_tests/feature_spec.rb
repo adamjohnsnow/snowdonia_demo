@@ -2,7 +2,7 @@ describe 'feature test' do
 
   before do
     @project = set_up_project
-    @material = Material.create(:costcode_id => 1, :description => 'Test Material', :current_price => 5.5, :scope => @project.id, :unit => 'm2')
+    @material = Material.create(:costcode_id => 1, :description => 'Test Material', :current_price => 5.5, :project_id => @project.id, :unit => 'm2')
   end
 
   it 'creates a project with site, pm and client' do
@@ -42,9 +42,8 @@ describe 'feature test' do
     project_version = ProjectVersion.create(:version_name => @project.current_version, :project_id => @project.id)
     element = Element.create(:project_version_id => project_version.id, :title => 'Test Element')
     ElementMaterial.create(:element_id => element.id, :material_id => 1, :price => @material.current_price)
-    material_list = Material.all(:scope => @project.id)
-    material_list[0].update(:current_price => 7.3)
-    material_list.first.save!
+    material_list = Material.all(:project_id => @project.id)
+    material_list[0].update_price(7.3)
     PriceUpdater.new(element.element_materials, material_list)
     expect(element.element_materials[0].price).to eq 7.3
   end
