@@ -1,6 +1,65 @@
 {
   "RSpec": {
     "coverage": {
+      "/Users/adamsnow/OneDrive/MacBook/Coding/work_projects/factory_settings/spec/client_spec.rb": [
+        1,
+        null,
+        1,
+        null,
+        1,
+        1,
+        1,
+        null,
+        null,
+        1,
+        1,
+        1,
+        null,
+        null,
+        2,
+        2,
+        null,
+        null,
+        null,
+        null
+      ],
+      "/Users/adamsnow/OneDrive/MacBook/Coding/work_projects/factory_settings/spec/costcode_spec.rb": [
+        1,
+        null,
+        1,
+        null,
+        1,
+        1,
+        1,
+        null,
+        null,
+        2,
+        2,
+        null,
+        null,
+        null
+      ],
+      "/Users/adamsnow/OneDrive/MacBook/Coding/work_projects/factory_settings/spec/element_spec.rb": [
+        1,
+        null,
+        1,
+        null,
+        1,
+        1,
+        1,
+        null,
+        null,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        null,
+        null,
+        null,
+        null
+      ],
       "/Users/adamsnow/OneDrive/MacBook/Coding/work_projects/factory_settings/spec/project_spec.rb": [
         1,
         null,
@@ -21,6 +80,8 @@
         1,
         null,
         null,
+        2,
+        2,
         2,
         2,
         null,
@@ -72,6 +133,6 @@
         null
       ]
     },
-    "timestamp": 1517305699
+    "timestamp": 1517311086
   }
 }

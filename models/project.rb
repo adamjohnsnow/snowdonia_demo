@@ -8,15 +8,15 @@ class Project
   property :job_code, String
   property :workshop_deadline, Date, :default => Date.today
   property :on_site, Date, :default => Date.today
-  property :form, String
   property :summary, Text
   property :technical_requirements, Text
   property :terms, Text
   property :status, String, :default => 'New'
   property :pm_id, Integer
+  property :current_version, String, :default => '0.1'
 
   has n, :users, through: Resource
-  has n, :elements
+  has n, :project_versions
   belongs_to :site
   belongs_to :client
 

@@ -19,6 +19,8 @@ describe Project do
 
     it { expect(Project.first.status).to eq 'New' }
     it { expect(Project.first.title).to eq 'Test Project' }
+    it { expect(Project.first.current_version).to eq '0.1' }
+    it { expect(Project.first.project_versions.count).to eq 1 }
 
   end
 

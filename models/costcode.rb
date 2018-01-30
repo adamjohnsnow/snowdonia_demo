@@ -4,7 +4,8 @@ class Costcode
   include DataMapper::Resource
 
   property :id, Serial
-  property :type, String, :unique => true
+  property :code, String, :unique => true
+  property :description, String
 
   has n, :materials
 
