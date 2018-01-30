@@ -4,7 +4,7 @@ class ProjectVersion
   include DataMapper::Resource
 
   property :id, Serial
-  property :version_no, String
+  property :version_name, String
   property :created_date, Date, :default => Date.today
 
   belongs_to :project

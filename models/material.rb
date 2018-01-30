@@ -5,11 +5,10 @@ class Material
 
   property :id, Serial
   property :description, Text
-  property :workshop, Float
   property :supplier, Text
+  property :current_price, Float
 
   belongs_to :costcode
   has n, :element_materials
-  has n, :unit_costs
 
 end

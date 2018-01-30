@@ -1,8 +1,8 @@
 describe Client do
 
   context 'client creation' do
-
     it 'create client' do
+      DatabaseCleaner.clean
       Client.create(:name => 'Made Up Client', :address => '1 Client Road, Clientville, CL1 1CL', :manager => 'Mrs Client')
       expect(Client.all.count).to eq 1
     end
@@ -14,7 +14,5 @@ describe Client do
 
     it { expect(Client.first.name).to eq 'Made Up Client' }
     it { expect(Client.first.address).to eq '1 Client Road, Clientville, CL1 1CL' }
-
   end
-
 end

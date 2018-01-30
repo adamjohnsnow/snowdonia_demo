@@ -14,7 +14,6 @@ class Element
   property :overhead, Float, :default => 0.385
   property :profit, Float, :default => 0.1
   property :quote_include, Boolean, :default => true
-  property :version, String
 
   belongs_to :project_version
   has n, :element_materials

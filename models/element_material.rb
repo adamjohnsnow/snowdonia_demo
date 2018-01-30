@@ -6,7 +6,10 @@ class ElementMaterial
   property :id, Serial
   property :units, Integer, :default => 1
   property :notes, Text
-  property :markup, Float, :default => 0
+  property :price, Float
+  property :contingency, Float
+  property :overhead, Float
+  property :profit, Float
   property :units_after_drawing, Integer
 
   belongs_to :element
