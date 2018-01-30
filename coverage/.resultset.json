@@ -83,9 +83,22 @@
         2,
         2,
         2,
+        null,
+        null,
+        null,
+        null
+      ],
+      "/Users/adamsnow/OneDrive/MacBook/Coding/work_projects/factory_settings/spec/project_version_spec.rb": [
+        1,
+        null,
+        1,
+        null,
+        1,
         2,
         null,
         null,
+        2,
+        2,
         null,
         null
       ],
@@ -133,6 +146,6 @@
         null
       ]
     },
-    "timestamp": 1517311086
+    "timestamp": 1517314754
   }
 }

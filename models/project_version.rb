@@ -5,7 +5,7 @@ class ProjectVersion
 
   property :id, Serial
   property :version_no, String
-  property :created_date, Date
+  property :created_date, Date, :default => Date.today
 
   belongs_to :project
   has n, :elements

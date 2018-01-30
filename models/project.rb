@@ -23,4 +23,5 @@ class Project
   def add_user(user_id)
     self.users << User.get(user_id)
   end
+
 end
