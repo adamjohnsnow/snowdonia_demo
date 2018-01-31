@@ -20,17 +20,15 @@ describe 'feature test' do
 
     it 'can add project versions' do
       ProjectVersion.create(
-        :version_name => @project.current_version,
+        :version_name => 'v1',
         :project_id => @project.id
       )
       expect(@project.project_versions.count).to eq 1
-      expect(@project.project_versions.
-        first.version_name).to eq @project.current_version
     end
 
     it 'can add elements to projects' do
       project_version = ProjectVersion.create(
-        :version_name => @project.current_version,
+        :version_name => 'v1',
         :project_id => @project.id
       )
       Element.create(
@@ -44,7 +42,7 @@ describe 'feature test' do
 
     it 'can add materials to element' do
       project_version = ProjectVersion.create(
-        :version_name => @project.current_version,
+        :version_name => 'v1',
         :project_id => @project.id
       )
       element = Element.create(
@@ -68,7 +66,7 @@ describe 'feature test' do
   context 'updating and itterating' do
     it 'can update one material price' do
       project_version = ProjectVersion.create(
-        :version_name => @project.current_version,
+        :version_name => 'v1',
         :project_id => @project.id
       )
       element = Element.create(
@@ -95,7 +93,7 @@ describe 'feature test' do
 
     it 'can create new versions of projects' do
       project_version = ProjectVersion.create(
-        :version_name => @project.current_version,
+        :version_name => 'v1',
         :project_id => @project.id
       )
       element = Element.create(
@@ -120,6 +118,9 @@ describe 'feature test' do
       )
       expect(@project.project_versions[0].elements.count).to eq 2
       expect(@project.project_versions[1].elements.count).to eq 2
+      expect(@project.project_versions[0].current_version).to eq false
+      expect(@project.project_versions[1].current_version).to eq true
+      expect(Element.all.count).to eq 4
       expect(ElementMaterial.all.count).to eq 2
     end
   end

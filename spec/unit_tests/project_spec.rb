@@ -10,7 +10,6 @@ describe Project do
       expect(Project.all.count).to eq 1
       expect(Project.first.status).to eq 'New'
       expect(Project.first.title).to eq 'Test Project'
-      expect(Project.first.current_version).to eq '0.1'
     end
 
     it 'no duplicate project title' do

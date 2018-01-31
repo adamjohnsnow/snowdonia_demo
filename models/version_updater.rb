@@ -1,8 +1,12 @@
 class VersionUpdater
   def initialize(old_version, new_version)
     @old_version = old_version
-    @new_version= new_version
+    @new_version = new_version
+    @old_version.current_version = false
+    @new_version.current_version = true
     duplicate_elements
+    @old_version.save!
+    @new_version.save!
   end
 
   private
@@ -29,7 +33,7 @@ class VersionUpdater
     attributes.delete(:id)
     return attributes
   end
-  
+
   def get_el_mat_attributes(item)
     attributes = item.attributes
     attributes.update(:element_id => @new_element.id)

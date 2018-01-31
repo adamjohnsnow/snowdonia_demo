@@ -9,6 +9,8 @@ require_relative './models/client'
 require_relative './models/site'
 require_relative './models/element_material'
 require_relative './models/project_version'
+require_relative './models/version_updater'
+require_relative './models/price_updater'
 
 if ENV['RACK_ENV'] == 'test'
   @database = "postgres://localhost/factory_setting_test"
@@ -18,5 +20,6 @@ end
 
 p "Running on #{@database}"
 DataMapper.setup(:default, ENV['DATABASE_URL'] || @database)
+DataMapper::Property::String.length(255)
 DataMapper.finalize
 DataMapper.auto_upgrade!

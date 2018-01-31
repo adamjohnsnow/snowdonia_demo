@@ -12,7 +12,6 @@ class Project
   property :technical_requirements, Text
   property :terms, Text
   property :status, String, :default => 'New'
-  property :current_version, String, :default => '0.1'
 
   belongs_to :user
   has n, :users, through: Resource
