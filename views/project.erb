@@ -24,9 +24,9 @@
           Job Code <input type="text" name="job_code" value="<%= @project.job_code %>">
         </div>
         <div class="table-cell">
-          Factory Settings PM <select name="pm_id">
+          Factory Settings PM <select name="user_id">
           <% @dropdowns[:users].each do |pm| %>
-            <% if @project.pm_id && pm.id == @project.pm_id %>
+            <% if @project.user_id && pm.id == @project.user_id %>
               <option selected value="<%= pm.id %>"><%= pm.firstname + ' ' + pm.surname %></option>
             <% else %>
               <option value="<%= pm.id %>"><%= pm.firstname + ' ' + pm.surname %></option>

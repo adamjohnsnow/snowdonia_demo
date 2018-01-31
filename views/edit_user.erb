@@ -39,7 +39,7 @@
         <div class="table-cell"><%= project.on_site.strftime("%d/%m/%Y") %></div>
         <div class="table-cell"><%= project.client.name %></div>
         <div class="table-cell"><%= project.status %></div>
-        <div class="table-cell"><%= 'Yes' if project.pm_id == @user.id %></div>
+        <div class="table-cell"><%= 'Yes' if project.user_id == @user.id %></div>
       </div>
     <% end %>
   </div>

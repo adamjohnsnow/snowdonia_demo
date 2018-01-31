@@ -1,6 +1,6 @@
 <div class="new-user">
   <h3>Add New Project</h3>
-  <form action='/project'>
+  <form action='/new-project'>
     <input type="text" name="new" placeholder="New Project Title" size="50">
     <input class="btn" type="submit" value="Create New Project">
   </form>
@@ -19,12 +19,12 @@
     </div>
     <% @projects.each do |project| %>
       <div class="table-row">
-        <div class="table-cell"><a href="/project-summary?project_id=<%= project.id %>"><%= project.title %></a></div>
+        <div class="table-cell"><a href="/project-labour?project_id=<%= project.id %>"><%= project.title %></a></div>
         <div class="table-cell"><%= project.workshop_deadline.strftime("%d/%m/%Y") %></div>
         <div class="table-cell"><%= project.on_site.strftime("%d/%m/%Y") %></div>
         <div class="table-cell"><%= project.client.name %></div>
         <div class="table-cell"><%= project.status %></div>
-        <div class="table-cell"><%= User.get(project.pm_id).firstname + " " + User.get(project.pm_id).surname %></div>
+        <div class="table-cell"><%= User.get(project.user_id).firstname + " " + User.get(project.user_id).surname %></div>
       </div>
     <% end %>
   </div>

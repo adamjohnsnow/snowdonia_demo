@@ -96,11 +96,14 @@ input, select {
   padding: 5px 10px 5px 10px;
   vertical-align: top;
 }
+.table-row:nth-child(odd) {
+  background: #eeeeee;
+}
 .table-body {
   display: table-row-group;
 }
 .header-row {
-  background-color: #eeeeee;
+  background-color: grey;
   font-weight: bold;
 }
 

@@ -67,13 +67,9 @@ class FactorySettingsElemental < Sinatra::Base
     params[:password] == params[:verify_password] ? register_user(params) : bad_password
   end
 
-  get '/project' do
+  get '/new-project' do
     @user_id = session[:user_id]
-    if params[:new]
-      @project = new_project(params)
-    else
-      @project = Project.get(params[:id])
-    end
+    @project = new_project(params)
     @dropdowns = get_dropdowns
     erb :project
   end
@@ -82,18 +78,23 @@ class FactorySettingsElemental < Sinatra::Base
     @project = Project.get(params[:project_id])
     params.tap{ |keys| keys.delete(:project_id) && keys.delete(:captures) }
     @project.update(params)
-    @project.add_user(params[:pm_id])
+    @project.user_id = params[:user_id]
     @project.save!
-    redirect '/project-summary?project_id=' + @project.id.to_s
+    redirect '/project-labour?project_id=' + @project.id.to_s
   end
 
   get '/project-summary' do
     @project = Project.get(params[:project_id])
-    @pm = User.get(@project.pm_id)
-    @totals = Totals.new
-    @grand_total = Totals.new
-    @grand_total.summarise_project(@project)
+    @current_version = @project.project_versions.get(:current_version => true)
+    @pm = User.get(@project.user_id)
     erb :project_summary
+  end
+
+  get '/project-labour' do
+    @project = Project.get(params[:project_id])
+    @current_version = @project.project_versions.get(:current_version => true)
+    @pm = User.get(@project.user_id)
+    erb :project_labour
   end
 
   post '/new-element' do
@@ -200,8 +201,9 @@ class FactorySettingsElemental < Sinatra::Base
 
   def new_project(params)
     redirect '/home' if params[:new] == ""
-    project = Project.create(:title => params[:new], :site_id => 1, :client_id => 1, :pm_id => session[:user_id])
-    project.add_user(session[:user_id])
+    project = Project.create(:title => params[:new], :site_id => 1, :client_id => 1, :user_id => session[:user_id])
+    binding.pry
+    project.users << User.get(session[:user_id])
     project.save!
     return project
   end
