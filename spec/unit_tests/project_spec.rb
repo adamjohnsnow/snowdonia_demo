@@ -24,7 +24,5 @@ describe Project do
       Project.create(:title => '2nd Test Project', :user_id => 1, :site_id => 1, :client_id => 1)
       expect(Project.all.count).to eq 2
     end
-
   end
-
 end

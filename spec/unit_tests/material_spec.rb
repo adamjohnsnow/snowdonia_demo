@@ -1,7 +1,12 @@
 describe Material do
   before do
     DatabaseCleaner.clean
-    Material.create(:description => 'test material', :costcode_id => 1, :current_price => 2.5, :price_updated => (Date.today - 7))
+    Material.create(
+      :description   => 'test material',
+      :costcode_id   => 1,
+      :current_price => 2.5,
+      :price_updated => (Date.today - 7)
+    )
   end
 
   context 'material creation' do

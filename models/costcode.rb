@@ -7,6 +7,7 @@ class Costcode
   property :code, String, :unique => true
   property :description, String
 
+  belongs_to :user
   has n, :materials
 
 end

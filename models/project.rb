@@ -15,12 +15,9 @@ class Project
   property :current_version, String, :default => '0.1'
 
   belongs_to :user
+  has n, :users, through: Resource
   has n, :project_versions
   belongs_to :site
   belongs_to :client
-
-  def add_user(user_id)
-    self.users << User.get(user_id)
-  end
 
 end

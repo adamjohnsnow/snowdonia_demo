@@ -2,7 +2,11 @@ describe Element do
   context 'element creation' do
 
     it 'create element' do
-      Element.create(:title => 'Test Element', :project_version_id => 1, :reference => '3.1.2')
+      Element.create(
+        :title => 'Test Element',
+        :project_version_id => 1,
+        :reference => '3.1.2'
+      )
       expect(Element.all.count).to eq 1
     end
 
