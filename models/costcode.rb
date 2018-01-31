@@ -6,8 +6,8 @@ class Costcode
   property :id, Serial
   property :code, String, :unique => true
   property :description, String
+  property :owner, String
 
-  belongs_to :user
   has n, :materials
 
 end

@@ -3,15 +3,15 @@
   <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
 
-
-<div class="banner header">
-  <a href="/home"><strong><img src="https://q3f0ka.by3301.livefilestore.com/y4mdRhbTSTZboEUistsNEY_lO5_4Nx3fQHsRnxcQSFjQL2ZoFifsJ16dO7qu-wwiLdX_PDB1jCvLzJQioIah9Ik4zayJuxkwr-Ga-eLM_1Y_TJ7o2h3cFAslA4DUK9k4yyju5x96u2TLSW8IfcfdOiQLL6S6fbFxFykdSQ43D2dqtorM0BuFxyluiJApLB3wwhIfjd7sfcWXmPIIw5HpJBdNg?width=660&height=216&cropmode=none" width="266"  />
-    <span class="title"> elemental </span></a><br>
-</div>
-
 <div class="table content">
   <div class="table-body">
     <div class="table-cell menu">
+      <a href="/home">
+        <img class="main-logo" src="white_logo.png" width="100" />
+        <div class="main-title">
+          elemental
+        </div>
+      </a>
       <div class="menu-item"><a href="/projects">Projects</a></div>
       <div class="menu-item"><a href="/users">Users</a></div>
       <div class="menu-item"><a href="/clients">Clients</a></div>
@@ -19,6 +19,6 @@
       <div class="menu-item"><a href="/suppliers">Suppliers</a></div><br>
       <div class="menu-item"><a href="/logout">Log Out</a></div>
     </div>
-    <div class="table-cell"><%= yield %></div>
+    <div class="table-cell fade-quick"><%= yield %></div>
   </div>
 </div>

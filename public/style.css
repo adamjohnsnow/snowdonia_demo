@@ -1,37 +1,55 @@
+
+body {
+  font-family: 'Avenir', sans-serif;
+  margin: auto;
+  text-align: center;
+  font-size: 100%;
+}
+.fade-in {
+  animation: fadein 4s;
+}
+
+.fade-quick {
+  animation: fadein 1s;
+}
+
+@keyframes fadein {
+  0%{opacity:0}
+  100%{opacity:1}
+}
 a {
   text-decoration: none;
-  }
+}
 .banner a{
   color: white;
-  }
+}
 input, select {
   font-size: 100%;
   margin: 2px;
 }
 
 .title{
-  font-family: 'Montserrat', sans-serif;
   letter-spacing: 4px;
-  font-size: 25px;
+  font-size: 35px;
   text-align: center;
 }
 
 .logo{
-  padding-top: 20px;
+  padding-top: 20vh;
 }
 
 .banner {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Avenir', sans-serif;
   color: white;
   padding: 20px;
   background: #000000;
-  }
+}
 
 .header {
   font-size: 40px;
   text-align: left;
   letter-spacing: 4px;
-  }
+}
 
 .footer {
   height: 20px;
@@ -41,21 +59,9 @@ input, select {
   width: 100%;
 }
 
-body{
-  font-family: 'Montserrat', sans-serif;
-  margin: auto;
-  text-align: center;
-  font-size: 100%;
-}
-
 .btn {
   background: #000000;
-  -webkit-border-radius: 5;
-  -moz-border-radius: 5;
-  border-radius: 5px;
-  border-width: 0.5px;
   color: #ffffff;
-  font-family: 'Montserrat', sans-serif;
   font-size: 14px;
   padding: 5px 8px 5px 8px;
   text-decoration: none;
@@ -74,27 +80,27 @@ body{
 }
 
 .table{
-   display: inline-table;
-   max-width: 90%;
-   font-size: 90%;
-   margin: 3px;
+  display: inline-table;
+  max-width: 90%;
+  font-size: 90%;
+  margin: 3px;
 }
 .summary{
   max-width: 500px;
 }
 .table-row {
-	display: table-row;
+  display: table-row;
 }
 .table-cell {
-	display: table-cell;
-	padding: 5px 10px 5px 10px;
+  display: table-cell;
+  padding: 5px 10px 5px 10px;
   vertical-align: top;
-  }
+}
 .table-body {
-	display: table-row-group;
+  display: table-row-group;
 }
 .header-row {
-  background-color: #ede1de;
+  background-color: #eeeeee;
   font-weight: bold;
 }
 
@@ -110,28 +116,35 @@ body{
 }
 .content{
   position:relative;	/* This fixes the IE7 overflow hidden bug */
-	clear:both;
-	float:left;
-	width:100%;			/* width of whole page */
-	overflow:hidden;
+  clear:both;
+  float:left;
+  width:100%;			/* width of whole page */
+  overflow:hidden;
   margin:0;
   min-height: 100%;
 }
 .menu {
-  background-color: grey;
-  color: white;
+  background: linear-gradient(to bottom, #7c7c7c 0%,#eeeeee 25%);
   width: 10%;
 }
 .menu-item {
   text-align: right;
   font-size: 18px;
-  margin: 2px;
+  margin: 5px;
 }
-.menu-item a{
+.menu a{
   text-decoration: none;
-  color: white;
+  color: grey;
+  font-weight: 500;
 }
-
+.main-logo {
+  margin: 12px;
+}
+.main-title {
+  color: white;
+  font-size: 150%;
+  padding-bottom: 45px;
+}
 .border {
   border: 1px solid #eff0f2;
 }

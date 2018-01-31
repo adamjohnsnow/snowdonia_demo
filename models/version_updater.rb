@@ -5,8 +5,6 @@ class VersionUpdater
     @old_version.current_version = false
     @new_version.current_version = true
     duplicate_elements
-    @old_version.save!
-    @new_version.save!
   end
 
   private
@@ -25,6 +23,8 @@ class VersionUpdater
       attributes = get_el_mat_attributes(el_mat)
       ElementMaterial.create(attributes)
     end
+    @old_version.save!
+    @new_version.save!
   end
 
   def get_element_attributes(item)
