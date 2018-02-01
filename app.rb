@@ -89,6 +89,7 @@ class FactorySettingsElemental < Sinatra::Base
     @dropdowns = get_dropdowns
     @project = Project.get(params[:project_id])
     @current_version = @project.project_versions.last(:current_version => true)
+    @current_version.elements.sort_by! { |el| el['el_order']}
     @pm = User.get(@project.user_id)
     erb :project_summary
   end

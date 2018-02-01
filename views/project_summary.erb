@@ -88,10 +88,11 @@
   <input type="text" name="title" placeholder="New Element Name">
   <input class="btn" type="submit" value="Add New Element">
 </form>
-<br>
+<form>
 <div class="table">
   <div class="table-body">
     <div class="table-row header-row">
+      <div class="table-cell">#</div>
       <div class="table-cell">Element</div>
       <div class="table-cell">Materials</div>
       <div class="table-cell">Labour</div>
@@ -106,17 +107,29 @@
     </div>
     <% @current_version.elements.each do |element| %>
       <div class="table-row">
+        <div class="table-cell">
+          <input class="single-digit" type="text" name="<%= element.id %> el_order" value="<%= element.el_order %>">
+        </div>
         <div class="table-cell"><%= element.title %></div>
         <div class="table-cell"></div>
         <div class="table-cell"></div>
         <div class="table-cell"></div>
         <div class="table-cell"></div>
         <div class="table-cell"></div>
+        <div class="table-cell">
+          <input class="single-digit" type="text" name="<%= element.id %> quantity" value="<%= element.quantity %>">
+        </div>
         <div class="table-cell"></div>
         <div class="table-cell"></div>
         <div class="table-cell"></div>
-        <div class="table-cell"></div>
-        <div class="table-cell"></div>
+        <div class="table-cell">
+          <select name="include">
+            <option value="true" <%= puts "Selected" if (element.quote_include)  %>>Yes</option>
+            <option value="false" <%= puts "Selected" if (!element.quote_include) %>>No</option>
+          </select>
+        </div>
       </div>
     <% end %>
 </div>
+<input class="btn" type="submit" value="Save Changes">
+</form>
