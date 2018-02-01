@@ -108,6 +108,7 @@ class FactorySettingsElemental < Sinatra::Base
     el = Element.create(
       :title => params[:title],
       :project_version_id => params[:project_v_id],
+      :reference => params[:reference],
       :el_order => next_order
     )
     ElementLabour.create(:element_id => el.id)

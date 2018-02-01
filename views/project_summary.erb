@@ -85,6 +85,7 @@
 <form action="/new-element" method="post">
   <input type="hidden" name="project_id" value="<%= @project.id %>">
   <input type="hidden" name="project_v_id" value="<%= @current_version.id %>">
+  <input type="text" name="reference" placeholder="Reference">
   <input type="text" name="title" placeholder="New Element Name">
   <input class="btn" type="submit" value="Add New Element">
 </form>
