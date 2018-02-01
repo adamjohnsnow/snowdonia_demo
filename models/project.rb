@@ -12,6 +12,7 @@ class Project
   property :technical_requirements, Text
   property :terms, Text
   property :status, String, :default => 'New'
+  property :last_update, String
 
   belongs_to :user
   has n, :users, through: Resource

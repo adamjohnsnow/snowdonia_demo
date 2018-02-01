@@ -7,6 +7,7 @@ class ProjectVersion
   property :version_name, String
   property :created_date, Date, :default => Date.today
   property :current_version, Boolean, :default => true
+  property :contracted, Boolean, :default => false
 
   belongs_to :project
   has n, :elements

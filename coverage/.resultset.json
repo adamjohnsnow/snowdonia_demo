@@ -169,6 +169,24 @@
         null,
         null
       ],
+      "/Users/adamsnow/OneDrive/MacBook/Coding/work_projects/factory_settings/spec/unit_tests/element_labour_spec.rb": [
+        1,
+        1,
+        null,
+        1,
+        1,
+        1,
+        null,
+        null,
+        2,
+        2,
+        2,
+        2,
+        null,
+        null,
+        null,
+        null
+      ],
       "/Users/adamsnow/OneDrive/MacBook/Coding/work_projects/factory_settings/spec/unit_tests/element_material_spec.rb": [
         1,
         1,
@@ -177,6 +195,7 @@
         null,
         1,
         null,
+        1,
         1,
         1,
         1,
@@ -200,7 +219,6 @@
         1,
         null,
         null,
-        2,
         2,
         2,
         2,
@@ -349,7 +367,7 @@
         null
       ]
     },
-    "timestamp": 1517413171
+    "timestamp": 1517482433
   },
   "Unit Tests": {
     "coverage": {

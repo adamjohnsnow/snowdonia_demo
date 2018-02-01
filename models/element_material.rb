@@ -11,6 +11,7 @@ class ElementMaterial
   property :overhead, Float
   property :profit, Float
   property :units_after_drawing, Integer
+  property :subcontract, Boolean, :default => false
   property :last_update, String
 
   belongs_to :element
