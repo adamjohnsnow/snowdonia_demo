@@ -95,40 +95,117 @@ Add Material <form action="/material" method="get">
 </div>
 <br>
 <h3>Labour</h3>
-<div class="table" style="max-width: 65%;">
+<form>
+<div class="table">
   <div class="table-body">
     <div class="table-row header-row">
-      <div class="table-cell">Labour Breakdown</div>
-      <div class="table-cell">Rate</div>
-      <div class="table-cell">Workshop</div>
-      <div class="table-cell">Mark-up</div>
-      <div class="table-cell">Days</div>
-      <div class="table-cell">At Cost</div>
-      <div class="table-cell">With Mark-up</div>
-      <div class="table-cell">Mark-up</div>
+      <div class="table-cell"></div>
+      <div class="table-cell">Carpentry</div>
+      <div class="table-cell">Steelwork</div>
+      <div class="table-cell">Scenic</div>
+      <div class="table-cell">Onsite Paint</div>
+      <div class="table-cell">Onsite Days</div>
+      <div class="table-cell">Draughting</div>
+      <div class="table-cell">PM</div>
+      <div class="table-cell">Total</div>
     </div>
       <div class="table-row">
+        <% days = 0 %>
+        <div class="table-cell">Days</div>
+        <div class="table-cell">
+          <% days += @element.element_labour.carpentry %>
+          <input class="double-digit" type="text" name="carpentry" value="<%= @element.element_labour.carpentry %>">
+        </div>
+        <div class="table-cell">
+          <% days += @element.element_labour.steelwork %>
+          <input class="double-digit" type="text" name="steelwork" value="<%= @element.element_labour.steelwork %>">
+        </div>
+        <div class="table-cell">
+          <% days += @element.element_labour.scenic %>
+          <input class="double-digit" type="text" name="scenic" value="<%= @element.element_labour.scenic %>">
+        </div>
+        <div class="table-cell">
+          <% days += @element.element_labour.onsite_paint %>
+          <input class="double-digit" type="text" name="onsite_paint" value="<%= @element.element_labour.onsite_paint %>">
+        </div>
+        <div class="table-cell">
+          <% days += @element.element_labour.on_site_day %>
+          <input class="double-digit" type="text" name="on_site_day" value="<%= @element.element_labour.on_site_day %>">
+        </div>
+        <div class="table-cell">
+          <% days += @element.element_labour.draughting %>
+          <input class="double-digit" type="text" name="draughting" value="<%= @element.element_labour.draughting %>">
+        </div>
+        <div class="table-cell">
+        <% days += @element.element_labour.project_management %>
+          <input class="double-digit" type="text" name="project_management" value="<%= @element.element_labour.project_management %>">
+        </div>
+        <div class="table-cell"><%= days %></div>
       </div>
-
-  </div>
-</div><br>
-
-
-<br>
-<div class="table" style="max-width: 25%;">
-  <div class="table-body">
-    <div class="table-row header-row">
-      <div class="table-cell">Labour at Cost</div>
-      <div class="table-cell">With Markup</div>
-      <div class="table-cell">Markup</div>
-    </div>
-    <div class="table-row">
-      <div class="table-cell"> </div>
-      <div class="table-cell"> </div>
-      <div class="table-cell"></div>
-    </div>
+      <div class="table-row">
+        <% cost = 0 %>
+        <div class="table-cell">Rate</div>
+        <div class="table-cell">
+          <% cost += @element.element_labour.carpentry_cost * @element.element_labour.carpentry %>
+          <input class="double-digit" type="text" name="carpentry_cost" value="£<%= sprintf('%.2f', @element.element_labour.carpentry_cost) %>">
+        </div>
+        <div class="table-cell">
+          <% cost += @element.element_labour.steelwork_cost * @element.element_labour.steelwork %>
+          <input class="double-digit" type="text" name="steelwork_cost" value="£<%= sprintf('%.2f', @element.element_labour.steelwork_cost) %>">
+        </div>
+        <% cost += @element.element_labour.scenic_cost * @element.element_labour.scenic %>
+        <div class="table-cell">
+          <input class="double-digit" type="text" name="scenic_cost" value="£<%= sprintf('%.2f', @element.element_labour.scenic_cost) %>">
+        </div>
+        <div class="table-cell">
+          <% cost += @element.element_labour.onsite_paint_cost * @element.element_labour.onsite_paint %>
+          <input class="double-digit" type="text" name="onsite_paint_cost" value="£<%= sprintf('%.2f', @element.element_labour.onsite_paint_cost) %>">
+        </div>
+        <div class="table-cell">
+          <% cost += @element.element_labour.on_site_day_cost * @element.element_labour.on_site_day %>
+          <input class="double-digit" type="text" name="on_site_day_cost" value="£<%= sprintf('%.2f', @element.element_labour.on_site_day_cost) %>">
+        </div>
+        <div class="table-cell">
+          <% cost += @element.element_labour.draughting_cost * @element.element_labour.draughting %>
+          <input class="double-digit" type="text" name="draughting_cost" value="£<%= sprintf('%.2f', @element.element_labour.draughting_cost) %>">
+        </div>
+        <div class="table-cell">
+          <% cost += @element.element_labour.project_management_cost * @element.element_labour.project_management %>
+          <input class="double-digit" type="text" name="project_management_cost" value="£<%= sprintf('%.2f', @element.element_labour.project_management_cost) %>">
+        </div>
+        <div class="table-cell"></div>
+      </div>
+      <div class="table-row">
+        <div class="table-cell">Cost</div>
+        <div class="table-cell">
+          £<%= sprintf('%.2f', @element.element_labour.carpentry_cost * @element.element_labour.carpentry) %>
+        </div>
+        <div class="table-cell">
+          £<%= sprintf('%.2f', @element.element_labour.steelwork_cost * @element.element_labour.steelwork) %>
+        </div>
+        <div class="table-cell">
+          £<%= sprintf('%.2f', @element.element_labour.scenic_cost * @element.element_labour.scenic) %>
+        </div>
+        <div class="table-cell">
+          £<%= sprintf('%.2f', @element.element_labour.onsite_paint_cost * @element.element_labour.onsite_paint) %>
+        </div>
+        <div class="table-cell">
+          £<%= sprintf('%.2f', @element.element_labour.on_site_day_cost * @element.element_labour.on_site_day) %>
+        </div>
+        <div class="table-cell">
+          £<%= sprintf('%.2f', @element.element_labour.draughting_cost * @element.element_labour.draughting) %>
+        </div>
+        <div class="table-cell">
+          £<%= sprintf('%.2f', @element.element_labour.project_management_cost * @element.element_labour.project_management) %>
+        </div>
+        <div class="table-cell">£<%= sprintf('%.2f', cost ) %></div>
+      </div>
   </div>
 </div>
+</form>
+
+
+
 <br>
 <div class="table" style="max-width: 25%;">
   <div class="table-body">

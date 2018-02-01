@@ -47,6 +47,10 @@ input, select, textarea {
   width: 35px;
   text-align: center;
 }
+.double-digit {
+  width: 80px;
+  text-align: center;
+}
 .title{
   letter-spacing: 4px;
   font-size: 35px;

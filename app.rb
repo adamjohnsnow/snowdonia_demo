@@ -105,18 +105,19 @@ class FactorySettingsElemental < Sinatra::Base
   post '/new-element' do
     params[:title] = 'Unnamed Element' if params[:title] == ''
     next_order = get_next_order(params[:project_v_id])
-    Element.create(
+    el = Element.create(
       :title => params[:title],
       :project_version_id => params[:project_v_id],
       :el_order => next_order
     )
+    ElementLabour.create(:element_id => el.id)
     redirect '/project-summary?project_id=' + params[:project_id]
   end
 
   get '/element' do
     @element = Element.get(params[:id])
     @materials = @element.element_materials
-    # @totals = Totals.new
+    @totals = { days: 23, cost: 1798.0 }
     # @totals.summarise_element(@materials)
     erb :element
   end
