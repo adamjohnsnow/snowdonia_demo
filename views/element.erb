@@ -1,65 +1,83 @@
-<h3><a href="/project-summary?project_id=<%= @element.project_id %>">Back to <%= @element.project.title %></a>
+<h3><a href="/project-summary?project_id=<%= @element.project_version.project_id %>">Back to <%= @element.project_version.project.title %> Summary</a></h3>
 <form action="/update-element" method="post">
   <input type="hidden" name="element_id" value="<%= @element.id %>">
-  Element Name <input type="text" name="title" value="<%= @element.title %>"><br>
-  Quantity<input type="number" name="quantity" value="<%= @element.quantity %>" style="width: 50px;"><br>
-  Build Start <input type="date" name="build_start" value="<%= @element.build_start %>"><br>
-  Build End <input type="date" name="build_end" value="<%= @element.build_end %>"><br>
-  Include in Quote
-  <% if @element.quote_include == true %>
-    <input type="checkbox" name="quote_include" checked>
-  <% else %>
-    <input type="checkbox" name="quote_include">
-  <% end %><br>
-  Notes<br>
-  <textarea name="notes" cols="50" rows="4"><%= @element.notes %></textarea><br>
+  <div class="table">
+    <div class="table-body">
+      <div class="table-row">
+        <div class="table-cell">
+          Element Name <input type="text" name="title" value="<%= @element.title %>">
+        </div>
+      </div>
+      <div class="table-row">
+        <div class="table-cell">
+          Quantity<input type="number" name="quantity" value="<%= @element.quantity %>" style="width: 50px;">
+        </div>
+      </div>
+      <div class="table-row">
+        <div class="table-cell">
+          Build Start <input type="date" name="build_start" value="<%= @element.build_start %>">
+        </div>
+      </div>
+      <div class="table-row">
+        <div class="table-cell">
+          Build End <input type="date" name="build_end" value="<%= @element.build_end %>">
+        </div>
+      </div>
+      <div class="table-row">
+        <div class="table-cell">
+          Include in Quote
+          <% if @element.quote_include == true %>
+            <input type="checkbox" name="quote_include" checked>
+          <% else %>
+            <input type="checkbox" name="quote_include">
+          <% end %>
+        </div>
+      </div>
+        <div class="table-row">
+          <div class="table-cell">
+            Notes<br>
+            <textarea name="notes" cols="50" rows="4"><%= @element.notes %></textarea><br>
+          </div>
 
+      </div>
+    </div>
+</div>
+  <br>
   <input class="btn" type="submit" value="Update Element">
 </form>
 <h3>Materials</h3>
 <div class="table">
   <div class="table-body">
     <div class="table-row header-row">
-      <div class="table-cell border">Type</div>
-      <div class="table-cell border">Description</div>
-      <div class="table-cell border">Supplier</div>
-      <div class="table-cell border">Unit Cost</div>
-      <div class="table-cell border">Mark-up</div>
-      <div class="table-cell border">Units</div>
-      <div class="table-cell border">At Cost</div>
-      <div class="table-cell border">With Mark-up</div>
-      <div class="table-cell border">Notes</div>
-      <div class="table-cell border">Units After Drawing</div>
+      <div class="table-cell">Type</div>
+      <div class="table-cell">Description</div>
+      <div class="table-cell">Supplier</div>
+      <div class="table-cell">Unit Cost</div>
+      <div class="table-cell">Mark-up</div>
+      <div class="table-cell">Units</div>
+      <div class="table-cell">At Cost</div>
+      <div class="table-cell">With Mark-up</div>
+      <div class="table-cell">Notes</div>
+      <div class="table-cell">Units After Drawing</div>
     </div>
     <% @materials.each do |unit| %>
-      <% if unit.material.category.type != "Labour" %>
       <div class="table-row">
-        <div class="table-cell border"><%= unit.material.category.type %></div>
-        <div class="table-cell border"><%= unit.material.description %></div>
-        <div class="table-cell border"><%= unit.material.supplier.company %></div>
-        <div class="table-cell border">£<%= sprintf('%.2f', unit.material.unit_cost) %></div>
-        <div class="table-cell border"><%= unit.markup * 100 %>%</div>
-        <div class="table-cell border"><%= unit.units %></div>
-        <div class="table-cell border">£<%= sprintf('%.2f', unit.units * unit.material.unit_cost) %></div>
-        <div class="table-cell border">£<%= sprintf('%.2f', unit.units * unit.material.unit_cost * (1 + unit.markup) ) %></div>
-        <div class="table-cell border"><%= unit.notes %></div>
-        <div class="table-cell border"><%= unit.units_after_drawing %></div>
+        <div class="table-cell"><%= unit.material.category.type %></div>
+        <div class="table-cell"><%= unit.material.description %></div>
+        <div class="table-cell"><%= unit.material.supplier.company %></div>
+        <div class="table-cell">£<%= sprintf('%.2f', unit.material.unit_cost) %></div>
+        <div class="table-cell"><%= unit.markup * 100 %>%</div>
+        <div class="table-cell"><%= unit.units %></div>
+        <div class="table-cell">£<%= sprintf('%.2f', unit.units * unit.material.unit_cost) %></div>
+        <div class="table-cell">£<%= sprintf('%.2f', unit.units * unit.material.unit_cost * (1 + unit.markup) ) %></div>
+        <div class="table-cell"><%= unit.notes %></div>
+        <div class="table-cell"><%= unit.units_after_drawing %></div>
         <a href="/material?id=<%= unit.id %>">edit</a>
       </div>
-      <% end %>
     <% end %>
   </div>
 </div><br>
 Add Material <form action="/material" method="get">
-  <input type="hidden" name="element" value="<%= @element.id %>">
-  <select name="category">
-    <option value="0" selected>All</option>
-    <% @categories.each do |category| %>
-      <% if category.type != 'Labour' %>
-        <option value="<%= category.id %>"><%= category.type %></option>
-      <% end %>
-    <% end %>
-  </select>
   <input class="btn" type="submit" value="Add Material">
 </form>
 
@@ -67,14 +85,11 @@ Add Material <form action="/material" method="get">
 <div class="table" style="max-width: 25%;">
   <div class="table-body">
     <div class="table-row header-row">
-      <div class="table-cell border">Materials at Cost</div>
-      <div class="table-cell border">With Markup</div>
-      <div class="table-cell border">Markup</div>
+      <div class="table-cell">Materials at Cost</div>
+      <div class="table-cell">With Markup</div>
+      <div class="table-cell">Markup</div>
     </div>
     <div class="table-row">
-      <div class="table-cell border">£<%= sprintf('%.2f', @totals.materials[:at_cost]) %> </div>
-      <div class="table-cell border">£<%= sprintf('%.2f', @totals.materials[:with_markup]) %> </div>
-      <div class="table-cell border">£<%= sprintf('%.2f', @totals.materials[:markup]) %> </div>
     </div>
   </div>
 </div>
@@ -83,56 +98,34 @@ Add Material <form action="/material" method="get">
 <div class="table" style="max-width: 65%;">
   <div class="table-body">
     <div class="table-row header-row">
-      <div class="table-cell border">Labour Breakdown</div>
-      <div class="table-cell border">Rate</div>
-      <div class="table-cell border">Workshop</div>
-      <div class="table-cell border">Mark-up</div>
-      <div class="table-cell border">Days</div>
-      <div class="table-cell border">At Cost</div>
-      <div class="table-cell border">With Mark-up</div>
-      <div class="table-cell border">Mark-up</div>
+      <div class="table-cell">Labour Breakdown</div>
+      <div class="table-cell">Rate</div>
+      <div class="table-cell">Workshop</div>
+      <div class="table-cell">Mark-up</div>
+      <div class="table-cell">Days</div>
+      <div class="table-cell">At Cost</div>
+      <div class="table-cell">With Mark-up</div>
+      <div class="table-cell">Mark-up</div>
     </div>
-    <% @materials.each do |unit| %>
-      <% if unit.material.category.type == "Labour" %>
       <div class="table-row">
-        <div class="table-cell border"><%= unit.material.description %></div>
-        <div class="table-cell border">£<%= sprintf('%.2f', unit.material.unit_cost) %></div>
-        <div class="table-cell border">£<%= sprintf('%.2f', unit.material.workshop) %></div>
-        <div class="table-cell border"><%= unit.markup * 100 %>%</div>
-        <div class="table-cell border"><%= unit.units %></div>
-        <div class="table-cell border">£<%= sprintf('%.2f', unit.units * (unit.material.unit_cost + unit.material.workshop)) %></div>
-        <div class="table-cell border">£<%= sprintf('%.2f', unit.units * (unit.material.unit_cost + unit.material.workshop) * (1 + unit.markup) ) %></div>
-        <div class="table-cell border">£<%= sprintf('%.2f', unit.units * (unit.material.unit_cost + unit.material.workshop) * unit.markup) %></div>
-        <a href="/material?id=<%= unit.id %>">edit</a>
       </div>
-      <% end %>
-    <% end %>
+
   </div>
 </div><br>
-Add Labour <form action="/material" method="post">
-  <input type="hidden" name="element_id" value="<%= @element.id %>">
-  <select name="material_id">
-    <% @labour_types.each do |type| %>
-      <option value="<%= type.id %>"><%= type.description %></option>
-    <% end %>
-  </select>
-  <input type="number" name="units" min="1" max="100" value="1" >
-  <input type="number" name="markup" min="1" max="100" value="30">%
-  <input class="btn" type="submit" value="Add Labour">
-</form>
+
 
 <br>
 <div class="table" style="max-width: 25%;">
   <div class="table-body">
     <div class="table-row header-row">
-      <div class="table-cell border">Labour at Cost</div>
-      <div class="table-cell border">With Markup</div>
-      <div class="table-cell border">Markup</div>
+      <div class="table-cell">Labour at Cost</div>
+      <div class="table-cell">With Markup</div>
+      <div class="table-cell">Markup</div>
     </div>
     <div class="table-row">
-      <div class="table-cell border">£<%= sprintf('%.2f', @totals.labour[:at_cost]) %> </div>
-      <div class="table-cell border">£<%= sprintf('%.2f', @totals.labour[:with_markup]) %> </div>
-      <div class="table-cell border">£<%= sprintf('%.2f', @totals.labour[:markup]) %> </div>
+      <div class="table-cell"> </div>
+      <div class="table-cell"> </div>
+      <div class="table-cell"></div>
     </div>
   </div>
 </div>
@@ -140,14 +133,14 @@ Add Labour <form action="/material" method="post">
 <div class="table" style="max-width: 25%;">
   <div class="table-body">
     <div class="table-row header-row">
-      <div class="table-cell border">Element at Cost</div>
-      <div class="table-cell border">With Markup</div>
-      <div class="table-cell border">Markup</div>
+      <div class="table-cell">Element at Cost</div>
+      <div class="table-cell">With Markup</div>
+      <div class="table-cell">Markup</div>
     </div>
     <div class="table-row">
-      <div class="table-cell border">£<%= sprintf('%.2f', @totals.labour[:at_cost] + @totals.materials[:at_cost]) %> </div>
-      <div class="table-cell border">£<%= sprintf('%.2f', @totals.labour[:with_markup] + @totals.materials[:with_markup]) %> </div>
-      <div class="table-cell border">£<%= sprintf('%.2f', @totals.labour[:markup] + @totals.materials[:markup]) %> </div>
+      <div class="table-cell"></div>
+      <div class="table-cell"></div>
+      <div class="table-cell"></div>
     </div>
   </div>
 </div>

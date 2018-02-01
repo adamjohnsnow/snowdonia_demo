@@ -104,17 +104,20 @@ class FactorySettingsElemental < Sinatra::Base
 
   post '/new-element' do
     params[:title] = 'Unnamed Element' if params[:title] == ''
-    Element.create(:title => params[:title], :project_version_id => params[:project_v_id])
+    next_order = get_next_order(params[:project_v_id])
+    Element.create(
+      :title => params[:title],
+      :project_version_id => params[:project_v_id],
+      :el_order => next_order
+    )
     redirect '/project-summary?project_id=' + params[:project_id]
   end
 
   get '/element' do
     @element = Element.get(params[:id])
     @materials = @element.element_materials
-    @totals = Totals.new
-    @totals.summarise_element(@materials)
-    @categories = Category.all
-    @labour_types = Material.all(:category_id => 3)
+    # @totals = Totals.new
+    # @totals.summarise_element(@materials)
     erb :element
   end
 
@@ -211,5 +214,14 @@ class FactorySettingsElemental < Sinatra::Base
     project.users << User.get(session[:user_id])
     project.save!
     return project
+  end
+
+  def get_next_order(id)
+    elements = Element.all(:project_version_id => id)
+    if elements == []
+      return 1
+    else
+      return elements.max_by{ |el| el[:el_order]}[:el_order] + 1
+    end
   end
 end
