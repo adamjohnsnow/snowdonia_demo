@@ -220,9 +220,9 @@ class FactorySettingsElemental < Sinatra::Base
   def get_next_order(id)
     elements = Element.all(:project_version_id => id)
     if elements == []
-      return 1
+      1
     else
-      return elements.max_by{ |el| el[:el_order]}[:el_order] + 1
+      elements.max_by{ |el| el[:el_order]}[:el_order] + 1
     end
   end
 end
