@@ -102,10 +102,12 @@ describe 'feature test' do
         :project_version_id => project_version.id,
         :title => 'Test Element'
       )
-      Element.create(
+      element2 = Element.create(
         :project_version_id => project_version.id,
         :title => '2nd Element'
       )
+      ElementLabour.create(:element_id => element.id)
+      ElementLabour.create(:element_id => element2.id)
       ElementMaterial.create(
         :element_id => element.id,
         :material_id => 1,
@@ -122,6 +124,7 @@ describe 'feature test' do
       expect(@project.project_versions[1].elements.count).to eq 2
       expect(@project.project_versions[0].current_version).to eq false
       expect(@project.project_versions[1].current_version).to eq true
+      expect(@project.project_versions[1].elements.element_labour.count).to eq 2
       expect(Element.all.count).to eq 4
       expect(ElementMaterial.all.count).to eq 2
     end

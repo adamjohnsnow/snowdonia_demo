@@ -1,4 +1,5 @@
 <h2><%= @project.title %> Summary</h2>
+<h3>Version: <%= @current_version.version_name %></h3>
 <form class="" action="/project" method="post">
   <input type="hidden" name="project_id" value="<%= @project.id %>">
   <div class="table">
@@ -70,6 +71,16 @@
       </div>
       <div class="table-row">
         <div class="table-cell">
+          Current Version:
+          <%= @current_version.current_version ? 'Yes' : 'No' %>
+        </div>
+        <div class="table-cell">
+          <a href='/versions?id=<%= @project.id %>'>Total Versions:
+          <%= @project.project_versions.all.count %></a>
+        </div>
+      </div>
+      <div class="table-row">
+        <div class="table-cell">
           Project Summary<br>
           <textarea cols="50" rows="4" name="summary"><%= @project.summary %></textarea>
         </div>
@@ -80,8 +91,11 @@
       </div>
     </div>
   </div><br>
+  <% if @current_version.current_version %>
   <input class="btn" type="submit" value="Save Project">
+  <% end %>
 </form>
+<% if @current_version.current_version %>
 <form action="/new-element" method="post">
   <input type="hidden" name="project_id" value="<%= @project.id %>">
   <input type="hidden" name="project_v_id" value="<%= @current_version.id %>">
@@ -89,6 +103,7 @@
   <input type="text" name="title" placeholder="New Element Name">
   <input class="btn" type="submit" value="Add New Element">
 </form>
+<% end %>
 <form>
 <div class="table">
   <div class="table-body">
@@ -134,5 +149,7 @@
       </div>
     <% end %>
 </div>
+<% if @current_version.current_version %>
 <input class="btn" type="submit" value="Save Changes">
+<% end %>
 </form>

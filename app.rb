@@ -45,7 +45,7 @@ class FactorySettingsElemental < Sinatra::Base
   post '/sign-in' do
     @user = User.login(params)
     bad_sign_in if @user.nil?
-    session[:user] = @user.firstname
+    session[:user] = @user.firstname + ' ' + @user.surname
     session[:user_id] = @user.id
     session[:user_auth] = @user.level
     redirect '/home'
@@ -62,33 +62,19 @@ class FactorySettingsElemental < Sinatra::Base
     params[:password] == params[:verify_password] ? register_user(params) : bad_password
   end
 
-  get '/new-project' do
-    @user_id = session[:user_id]
-    @project = new_project(params)
-    @dropdowns = get_dropdowns
-    erb :project
-  end
-
-  get '/project' do
-    @user_id = session[:user_id]
-    @project = Project.get(params[:id])
-    @dropdowns = get_dropdowns
-    erb :project
-  end
-
-  post '/project' do
-    @project = Project.get(params[:project_id])
-    params.tap{ |keys| keys.delete(:project_id) && keys.delete(:captures) }
-    @project.update(params)
-    @project.user_id = params[:user_id]
-    @project.save!
-    redirect '/project-labour?project_id=' + @project.id.to_s
+  post '/new-project' do
+    project = new_project(params)
+    redirect '/project-summary?project_id=' + project.id.to_s
   end
 
   get '/project-summary' do
     @dropdowns = get_dropdowns
     @project = Project.get(params[:project_id])
-    @current_version = @project.project_versions.last(:current_version => true)
+    if params[:version_id]
+      @current_version = ProjectVersion.get(params[:version_id])
+    else
+      @current_version = @project.project_versions.last(:current_version => true)
+    end
     @current_version.elements.sort_by! { |el| el['el_order']}
     @pm = User.get(@project.user_id)
     erb :project_summary
@@ -112,7 +98,7 @@ class FactorySettingsElemental < Sinatra::Base
       :el_order => next_order
     )
     ElementLabour.create(:element_id => el.id)
-    redirect '/project-summary?project_id=' + params[:project_id]
+    redirect '/project-summary?project_id=' + params[:project_id] + '&version_id=' + params[:project_v_id]
   end
 
   get '/element' do
@@ -121,6 +107,23 @@ class FactorySettingsElemental < Sinatra::Base
     @totals = { days: 23, cost: 1798.0 }
     # @totals.summarise_element(@materials)
     erb :element
+  end
+
+  get '/versions' do
+    @project = Project.get(params[:id])
+    erb :versions
+  end
+
+  post '/new-version' do
+    @project = Project.get(params[:project_id])
+    @current_version = @project.project_versions.last(:current_version => true)
+    @new_version = ProjectVersion.create(
+                    :project_id => params[:project_id],
+                    :created_by => session[:user],
+                    :version_name => params[:title]
+                  )
+    VersionUpdater.new(@current_version, @new_version)
+    redirect '/project-summary?project_id=' + params[:project_id]
   end
 
   get '/material' do
@@ -212,7 +215,7 @@ class FactorySettingsElemental < Sinatra::Base
   def new_project(params)
     redirect '/home' if params[:new] == ""
     project = Project.create(:title => params[:new], :site_id => 1, :client_id => 1, :user_id => session[:user_id])
-    ProjectVersion.create(:project_id => project.id)
+    ProjectVersion.create(:project_id => project.id, :version_name => 'v0.1', :created_by => session[:user])
     project.users << User.get(session[:user_id])
     project.save!
     return project
