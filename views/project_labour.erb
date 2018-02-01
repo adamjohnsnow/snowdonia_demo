@@ -1,46 +1,89 @@
-<h2><%= @project.title %> Summary</h2>
-<div class="table summary">
-  <div class="table-body">
-    <div class="table-row">
-      <div class="table-cell header-row">Job Code</div>
-      <div class="table-cell"><%= @project.job_code %></div>
+<h2><%= @project.title %></h2>
+<form class="" action="/project" method="post">
+  <input type="hidden" name="project_id" value="<%= @project.id %>">
+  <div class="table">
+    <div class="table-body">
+      <div class="table-row">
+        <div class="table-cell">
+          Project Title <input type="text" name="title" value="<%= @project.title %>">
+        </div>
+        <div class="table-cell">
+          Status <select name="status">
+            <% @dropdowns[:status].each do |status| %>
+            <% if status == @project.status %>
+            <option selected value="<%= status %>"><%= status %></option>
+            <% else %>
+            <option value="<%= status %>"><%= status %></option>
+            <% end %>
+            <% end %>
+          </select>
+        </div>
+      </div>
+      <div class="table-row">
+        <div class="table-cell">
+          Job Code <input type="text" name="job_code" value="<%= @project.job_code %>">
+        </div>
+        <div class="table-cell">
+          Factory Settings PM <select name="user_id">
+            <% @dropdowns[:users].each do |pm| %>
+              <% if @project.user_id && pm.id == @project.user_id %>
+                <option selected value="<%= pm.id %>"><%= pm.firstname + ' ' + pm.surname %></option>
+              <% else %>
+                <option value="<%= pm.id %>"><%= pm.firstname + ' ' + pm.surname %></option>
+              <% end %>
+            <% end %>
+          </select>
+        </div>
+      </div>
+      <div class="table-row">
+        <div class="table-cell">
+          Workshop Deadline <input type="date" name="workshop_deadline" value="<%= @project.workshop_deadline %>">
+        </div>
+        <div class="table-cell">
+          Client
+          <select name="client_id">
+            <% @dropdowns[:clients].each do |client| %>
+              <% if @project.client && client.id == @project.client.id %>
+                <option selected value="<%= client.id %>"><%= client.name %></option>
+              <% else %>
+                <option value="<%= client.id %>"><%= client.name %></option>
+              <% end %>
+            <% end %>
+          </select>
+        </div>
+      </div>
+      <div class="table-row">
+        <div class="table-cell">
+          On Site Deadline <input type="date" name="on_site" value="<%= @project.on_site %>">
+        </div>
+        <div class="table-cell">
+          Site <select name="site_id">
+            <% @dropdowns[:sites].each do |site| %>
+            <% if @project.site && site.id == @project.site.id %>
+            <option selected value="<%= site.id %>"><%= site.name %></option>
+            <% else %>
+            <option value="<%= site.id %>"><%= site.name %></option>
+            <% end %>
+            <% end %>
+          </select>
+        </div>
+      </div>
+      <div class="table-row">
+        <div class="table-cell">
+          Project Summary<br>
+          <textarea cols="50" rows="4" name="summary"><%= @project.summary %></textarea>
+        </div>
+        <div class="table-cell">
+          Technical Site Requirements<br>
+          <textarea cols="50" rows="4" name="technical_requirements"><%= @project.technical_requirements %></textarea>
+        </div>
+      </div>
     </div>
-    <div class="table-row">
-      <div class="table-cell header-row">Client</div>
-      <div class="table-cell"><%= @project.client.name %></div>
-    </div>
-    <div class="table-row">
-      <div class="table-cell header-row">Factory Settings PM</div>
-      <div class="table-cell"><%= @pm.firstname %> <%= @pm.surname %></div>
-    </div>
-    <div class="table-row">
-      <div class="table-cell header-row">Client Manager</div>
-      <div class="table-cell"><%= @project.client.manager %></div>
-    </div>
-    <div class="table-row">
-      <div class="table-cell header-row">Workshop Deadline</div>
-      <div class="table-cell"><%= @project.workshop_deadline.strftime("%d/%m/%Y") %></div>
-    </div>
-    <div class="table-row">
-      <div class="table-cell header-row">On Site Deadline</div>
-      <div class="table-cell"><%= @project.on_site.strftime("%d/%m/%Y") %></div>
-    </div>
-  </div>
-</div>
-<a href="/project?id=<%= @project.id %>">Edit Project Details</a>
-<div class="table">
-  <div class="table-body">
-    <div class="table-row header-row">
-      <div class="table-cell">Project Labour Summary</div>
-      <div class="table-cell">Technical Site Requirements</div>
-    </div>
-    <div class="table-row">
-      <div class="table-cell"><%= @project.summary %></div>
-      <div class="table-cell"><%= @project.technical_requirements %></div>
-    </div>
-  </div>
-</div>
+  </div><br>
+  <input class="btn" type="submit" value="Save Project">
+</form>
 <br>
+<h3>Labour Summary</h3>
 <div class="table">
   <div class="table-body">
     <div class="table-row header-row">
@@ -57,8 +100,3 @@
     </div>
   </div>
 </div>
-<form action="/new-element" method="post">
-  <input type="hidden" name="project_id" value="<%= @project.id %>">
-  <input type="text" name="title" placeholder="New Element Name">
-  <input class="btn" type="submit" value="Add New Element">
-</form>

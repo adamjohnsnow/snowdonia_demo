@@ -14,12 +14,13 @@
         </div>
       </a>
       <div class="menu-item"><a href="/projects">Projects</a></div>
-      <div class="menu-item"><a href="/users">Users</a></div>
       <div class="menu-item"><a href="/clients">Clients</a></div>
       <div class="menu-item"><a href="/materials">Materials</a></div>
-      <div class="menu-item"><a href="/suppliers">Suppliers</a></div><br>
+      <% if session[:user_auth] > 2 %>
+        <div class="menu-item"><a href="/users">Users</a></div>
+      <% end %>
       <div class="menu-item"><a href="/logout">Log Out</a></div>
     </div>
-    <div class="table-cell fade-quick"><%= yield %></div>
+    <div class="main table-cell fade-quick"><%= yield %></div>
   </div>
 </div>

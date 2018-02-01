@@ -32,13 +32,8 @@ class FactorySettingsElemental < Sinatra::Base
     erb :projects
   end
 
-  get '/suppliers' do
-    @suppliers = Supplier.all
-    erb :suppliers
-  end
-
   get '/materials' do
-    @materials = Material.all(:order => [ :category_id.asc ])
+    @materials = Material.all(:order => [ :costcode_id.asc ])
     erb :materials
   end
 
@@ -74,6 +69,13 @@ class FactorySettingsElemental < Sinatra::Base
     erb :project
   end
 
+  get '/project' do
+    @user_id = session[:user_id]
+    @project = Project.get(params[:id])
+    @dropdowns = get_dropdowns
+    erb :project
+  end
+
   post '/project' do
     @project = Project.get(params[:project_id])
     params.tap{ |keys| keys.delete(:project_id) && keys.delete(:captures) }
@@ -84,22 +86,24 @@ class FactorySettingsElemental < Sinatra::Base
   end
 
   get '/project-summary' do
+    @dropdowns = get_dropdowns
     @project = Project.get(params[:project_id])
-    @current_version = @project.project_versions.get(:current_version => true)
+    @current_version = @project.project_versions.last(:current_version => true)
     @pm = User.get(@project.user_id)
     erb :project_summary
   end
 
   get '/project-labour' do
+    @dropdowns = get_dropdowns
     @project = Project.get(params[:project_id])
-    @current_version = @project.project_versions.get(:current_version => true)
+    @current_version = @project.project_versions.last(:current_version => true)
     @pm = User.get(@project.user_id)
     erb :project_labour
   end
 
   post '/new-element' do
     params[:title] = 'Unnamed Element' if params[:title] == ''
-    Element.create(:title => params[:title], :project_id => params[:project_id])
+    Element.create(:title => params[:title], :project_version_id => params[:project_v_id])
     redirect '/project-summary?project_id=' + params[:project_id]
   end
 
@@ -202,7 +206,7 @@ class FactorySettingsElemental < Sinatra::Base
   def new_project(params)
     redirect '/home' if params[:new] == ""
     project = Project.create(:title => params[:new], :site_id => 1, :client_id => 1, :user_id => session[:user_id])
-    binding.pry
+    ProjectVersion.create(:project_id => project.id)
     project.users << User.get(session[:user_id])
     project.save!
     return project

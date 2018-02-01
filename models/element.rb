@@ -15,8 +15,10 @@ class Element
   property :profit, Float, :default => 0.1
   property :quote_include, Boolean, :default => true
   property :component, Boolean, :default => false
+  property :order, Integer
 
   belongs_to :project_version
   has n, :element_materials
+  has 1, :element_labour
 
 end

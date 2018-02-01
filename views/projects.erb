@@ -19,7 +19,7 @@
     </div>
     <% @projects.each do |project| %>
       <div class="table-row">
-        <div class="table-cell"><a href="/project-labour?project_id=<%= project.id %>"><%= project.title %></a></div>
+        <div class="table-cell"><a href="/project-summary?project_id=<%= project.id %>"><%= project.title %></a></div>
         <div class="table-cell"><%= project.workshop_deadline.strftime("%d/%m/%Y") %></div>
         <div class="table-cell"><%= project.on_site.strftime("%d/%m/%Y") %></div>
         <div class="table-cell"><%= project.client.name %></div>

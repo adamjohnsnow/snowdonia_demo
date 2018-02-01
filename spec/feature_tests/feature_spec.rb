@@ -31,13 +31,15 @@ describe 'feature test' do
         :version_name => 'v1',
         :project_id => @project.id
       )
-      Element.create(
+      element = Element.create(
         :project_version_id => project_version.id,
         :title => 'Test Element'
       )
+      ElementLabour.create(:element_id => element.id)
       expect(project_version.elements.count).to eq 1
       expect(@project.project_versions.first
             .elements.first.title).to eq 'Test Element'
+      expect(element.element_labour.carpentry).to eq 0.0
     end
 
     it 'can add materials to element' do

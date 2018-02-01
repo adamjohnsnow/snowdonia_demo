@@ -6,7 +6,7 @@ body {
   font-size: 100%;
 }
 .fade-in {
-  animation: fadein 4s;
+  animation: fadein 3s;
 }
 
 .fade-quick {
@@ -14,18 +14,32 @@ body {
 }
 
 @keyframes fadein {
-  0%{opacity:0}
-  100%{opacity:1}
+  0% { opacity: 0 }
+  100% { opacity: 1 }
 }
+
+.bg {
+  color: white;
+  width: 100%;
+  height: 100%;
+  background-image: url('bg_grey.jpg');
+  background-size:cover;
+}
+.main {
+  padding-top: 40px !important;
+}
+
 a {
   text-decoration: none;
 }
 .banner a{
   color: white;
 }
-input, select {
+input, select, textarea {
   font-size: 100%;
   margin: 2px;
+  padding: 5px;
+  border: 0.1px solid #eeeeee;
 }
 
 .title{
@@ -60,7 +74,7 @@ input, select {
 }
 
 .btn {
-  background: #000000;
+  background: #9e9e9e;
   color: #ffffff;
   font-size: 14px;
   padding: 5px 8px 5px 8px;
@@ -68,10 +82,9 @@ input, select {
 }
 
 .btn:hover {
-  background: #ffffff;
-  color: #000000;
+  background: #000000;
+  color: #ffffff;
   text-decoration: none;
-  border: 0.5px solid black;
 }
 
 .flash {
@@ -81,7 +94,7 @@ input, select {
 
 .table{
   display: inline-table;
-  max-width: 90%;
+  width: 90%;
   font-size: 90%;
   margin: 3px;
 }
@@ -103,17 +116,17 @@ input, select {
   display: table-row-group;
 }
 .header-row {
-  background-color: grey;
+  background-color: #9e9e9e !important;
   font-weight: bold;
+  color: white;
 }
 
 .project-link{
-  font-weight: bold;
   font-size: 120%;
 }
 
 .new-user {
-  border: 1px solid #eff0f2;
+  background: #eeeeee;
   padding: 10px;
   margin: 5px;
 }

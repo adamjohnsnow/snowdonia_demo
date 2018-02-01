@@ -1,18 +1,20 @@
 <head>
-  <link href="https://fonts.googleapis.com/css?family=Archivo+Narrow|Montserrat" rel="stylesheet">
   <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
-
-<div class="fade-in">
-  <img class="logo" src="fs_logo_title.jpg" width="500" />
+<% if flash[:notice] %>
+  <div class="bg">
+<% else %>
+  <div class="bg fade-in">
+<% end %>
+  <img class="logo" src="white_logo.png" width="300" />
   <h2 class="title">elemental</h2>
   <div class="sign-in">
     Existing Users - Sign In
-    <div class="flash"><%= flash[:notice] %></div>
     <form class="sign-in-form" action="/sign-in" method="post">
       <input type="text" name="email" placeholder="email address" size="50"><br>
       <input type="password" name="password" placeholder="password" size="50"><br>
       <input class="btn" type="submit" name="Submit" value="submit">
     </form>
+    <div class="flash"><%= flash[:notice] %></div>
 </div>
 </div>
