@@ -80,6 +80,11 @@ class FactorySettingsElemental < Sinatra::Base
     erb :project_summary
   end
 
+  post '/save-project' do
+    project_id = update_project(params)
+    redirect '/project-summary?project_id=' + project_id
+  end
+
   get '/project-labour' do
     @dropdowns = get_dropdowns
     @project = Project.get(params[:project_id])
@@ -104,8 +109,9 @@ class FactorySettingsElemental < Sinatra::Base
   get '/element' do
     @element = Element.get(params[:id])
     @materials = @element.element_materials
+    @matlist = Material.all(:project_id => @element.project_version.project.id) + Material.all(:global => true)
+    p @matlist
     @totals = { days: 23, cost: 1798.0 }
-    # @totals.summarise_element(@materials)
     erb :element
   end
 
@@ -180,7 +186,9 @@ class FactorySettingsElemental < Sinatra::Base
     session.clear
     redirect '/'
   end
+
   private
+
   def get_dropdowns
     return { status: STATUS,
       clients: Client.all,
@@ -219,6 +227,29 @@ class FactorySettingsElemental < Sinatra::Base
     project.users << User.get(session[:user_id])
     project.save!
     return project
+  end
+
+  def update_project(params)
+    update_version(params)
+    params.tap{ |keys| keys.delete(:captures) &&
+      keys.delete(:project_id) &&
+      keys.delete(:status) &&
+      keys.delete(:contracted)
+    }
+    @project.update(params)
+    @project.id.to_s
+  end
+
+  def update_version(params)
+    @project = Project.get(params[:project_id])
+    current_version = @project.project_versions.last(:current_version => true)
+    current_version.update(:status => params[:status], :last_update => Date.today.strftime("%d/%m/%Y") + ' by ' + session[:user])
+    if params[:contracted] == 'on'
+      @project.project_versions.all.update(:contracted => false)
+      current_version.update(:contracted => true)
+    else
+      current_version.update(:contracted => false)
+    end
   end
 
   def get_next_order(id)

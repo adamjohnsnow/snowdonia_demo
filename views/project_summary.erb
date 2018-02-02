@@ -1,6 +1,6 @@
 <h2><%= @project.title %> Summary</h2>
 <h3>Version: <%= @current_version.version_name %></h3>
-<form class="" action="/project" method="post">
+<form class="" action="/save-project" method="post">
   <input type="hidden" name="project_id" value="<%= @project.id %>">
   <div class="table">
     <div class="table-body">
@@ -11,7 +11,7 @@
         <div class="table-cell">
           Status <select name="status">
             <% @dropdowns[:status].each do |status| %>
-              <% if status == @project.status %>
+              <% if status == @current_version.status %>
                 <option selected value="<%= status %>"><%= status %></option>
               <% else %>
                 <option value="<%= status %>"><%= status %></option>
@@ -77,6 +77,19 @@
         <div class="table-cell">
           <a href='/versions?id=<%= @project.id %>'>Total Versions:
           <%= @project.project_versions.all.count %></a>
+        </div>
+      </div>
+      <div class="table-row">
+        <div class="table-cell">
+          Contracted Version
+          <% if @current_version.contracted %>
+          <input type="checkbox" name="contracted" checked="checked">
+          <% else %>
+          <input type="checkbox" name="contracted">
+          <% end %>
+        </div>
+        <div class="table-cell">
+          Last Update: <%= @current_version.last_update %>
         </div>
       </div>
       <div class="table-row">

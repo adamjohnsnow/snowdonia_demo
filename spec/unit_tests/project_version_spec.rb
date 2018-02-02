@@ -7,6 +7,7 @@ describe ProjectVersion do
     end
 
     it { expect(ProjectVersion.first.project_id).to eq 1 }
+    it { expect(ProjectVersion.first.status).to eq 'New' }
     it { expect(ProjectVersion.first.current_version).to eq true }
     it { expect(ProjectVersion.first.version_name).to eq '0.1' }
   end

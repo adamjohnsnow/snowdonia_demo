@@ -11,7 +11,6 @@ class Project
   property :summary, Text
   property :technical_requirements, Text
   property :terms, Text
-  property :status, String, :default => 'New'
   property :last_update, String
 
   belongs_to :user

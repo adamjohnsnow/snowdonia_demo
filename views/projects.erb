@@ -23,7 +23,7 @@
         <div class="table-cell"><%= project.workshop_deadline.strftime("%d/%m/%Y") %></div>
         <div class="table-cell"><%= project.on_site.strftime("%d/%m/%Y") %></div>
         <div class="table-cell"><%= project.client.name %></div>
-        <div class="table-cell"><%= project.status %></div>
+        <div class="table-cell"><%= project.project_versions.last(:current_version => true).status %></div>
         <div class="table-cell"><%= User.get(project.user_id).firstname + " " + User.get(project.user_id).surname %></div>
       </div>
     <% end %>
