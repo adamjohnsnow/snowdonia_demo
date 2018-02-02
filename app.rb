@@ -85,6 +85,22 @@ class FactorySettingsElemental < Sinatra::Base
     redirect '/project-summary?project_id=' + project_id
   end
 
+  post '/update-project' do
+    params.each do |param|
+      if param[0].include? 'el_order'
+        el_id = param[0].chomp(' el_order').to_i
+        Element.get(el_id).update(:el_order => param[1].to_i)
+      elsif param[0].include? 'quantity'
+        el_id = param[0].chomp(' quantity').to_i
+        Element.get(el_id).update(:quantity => param[1].to_i)
+      elsif param[0].include? 'include'
+        el_id = param[0].chomp(' include').to_i
+        Element.get(el_id).update(:quote_include => param[1])
+      end
+    end
+    redirect '/project-summary?project_id=' + params[:project_id]
+  end
+
   get '/project-labour' do
     @dropdowns = get_dropdowns
     @project = Project.get(params[:project_id])
@@ -114,6 +130,40 @@ class FactorySettingsElemental < Sinatra::Base
     @costcodes = Costcode.all
     @totals = { days: 23, cost: 1798.0 }
     erb :element
+  end
+
+  post '/update-element' do
+    element_id = params[:element_id]
+    params.tap{ |keys| keys.delete(:captures) && keys.delete(:element_id) }
+    params.each do |param|
+      Element.get(element_id).update(param[0] => param[1])
+    end
+    redirect '/element?id=' + element_id
+  end
+
+  post '/update-materials' do
+    params.each do |param|
+      if param[0].include? 'units'
+        mat_id = param[0].chomp(' units').to_i
+        ElementMaterial.get(mat_id).update(:units => param[1].to_i)
+      elsif param[0].include? 'notes'
+        mat_id = param[0].chomp(' notes').to_i
+        ElementMaterial.get(mat_id).update(:notes => param[1])
+      elsif (param[0].include? 'after') && (param[1] != "")
+        mat_id = param[0].chomp(' after').to_i
+        ElementMaterial.get(mat_id).update(:units_after_drawing => param[1].to_i)
+      end
+    end
+    redirect '/element?id=' + params[:element_id]
+  end
+
+  post '/update-labour' do
+    element_id = params[:element_labour_id]
+    params.tap{ |keys| keys.delete(:captures) && keys.delete(:element_labour_id) }
+    params.each do |param|
+      ElementLabour.get(element_id).update(param[0] => param[1].to_f)
+    end
+    redirect '/element?id=' + params[:element_id] + '#labour'
   end
 
   get '/versions' do
@@ -264,8 +314,7 @@ class FactorySettingsElemental < Sinatra::Base
   end
 
   def import_materials(id)
-    old_el = Element.get(id)
-    old_el.element_materials.each do |material|
+    Element.get(id).element_materials.each do |material|
       add_material(material.material_id)
     end
   end

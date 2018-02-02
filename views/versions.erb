@@ -5,6 +5,7 @@
       <div class="table-cell">Version</div>
       <div class="table-cell">Created Date</div>
       <div class="table-cell">By</div>
+      <div class="table-cell">Status</div>
       <div class="table-cell">Current</div>
       <div class="table-cell">Contracted</div>
     </div>
@@ -13,6 +14,7 @@
         <div class="table-cell"><a href="/project-summary?project_id=<%= @project.id %>&version_id=<%= version.id %>"><%= version.version_name %></a></div>
         <div class="table-cell"><%= version.created_date.strftime("%d/%m/%Y") %></div>
         <div class="table-cell"><%= version.created_by %></div>
+        <div class="table-cell"><%= version.status %></div>
         <div class="table-cell"><%=  '*' if version.current_version %></div>
         <div class="table-cell"><%=  '*' if version.contracted %></div>
       </div>

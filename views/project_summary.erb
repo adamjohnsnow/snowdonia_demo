@@ -117,12 +117,12 @@
   <input class="btn" type="submit" value="Add New Element">
 </form>
 <% end %>
-<form>
+<form action="/update-project?project_id=<%= @project.id %>" method="post">
 <div class="table">
   <div class="table-body">
     <div class="table-row header-row">
       <div class="table-cell" style="width: 10px">#</div>
-      <div class="table-cell" style="width: 130">Element</div>
+      <div class="table-cell" style="min-width: 130px">Element</div>
       <div class="table-cell">Ref</div>
       <div class="table-cell">Materials</div>
       <div class="table-cell">Labour</div>
@@ -154,7 +154,7 @@
         <div class="table-cell"></div>
         <div class="table-cell"></div>
         <div class="table-cell">
-          <select name="include">
+          <select name="<%= element.id %> include">
             <option value="true" <%= "Selected" if (element.quote_include)  %>>Yes</option>
             <option value="false" <%= "Selected" if (!element.quote_include) %>>No</option>
           </select>
