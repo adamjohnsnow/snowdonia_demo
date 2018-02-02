@@ -116,6 +116,7 @@ class FactorySettingsElemental < Sinatra::Base
       :title => params[:title],
       :project_version_id => params[:project_v_id],
       :reference => params[:reference],
+      :client_ref => params[:client_ref],
       :el_order => next_order
     )
     ElementLabour.create(:element_id => el.id)
@@ -191,14 +192,7 @@ class FactorySettingsElemental < Sinatra::Base
   post '/add-material' do
     @el_id = params[:element_id]
     params.tap{ |keys| keys.delete(:element_id) && keys.delete(:captures) }
-    p params
-    if params[:materials] != ""
-      add_material(params[:materials].to_i)
-    elsif params[:import] != ""
-      import_materials(params[:import])
-    else
-      make_new_material(params)
-    end
+    process_material(params)
     redirect '/element?id=' + @el_id + '#new-material'
   end
 
@@ -208,6 +202,11 @@ class FactorySettingsElemental < Sinatra::Base
     params.tap{ |keys| keys.delete(:element_id) && keys.delete(:captures) }
     @element.update(params)
     redirect '/element?id=' + @element.id.to_s
+  end
+
+  get '/element-material' do
+    @el_mat = ElementMaterial.get(params[:elmat_id])
+    erb :element_material
   end
 
   get '/edit-user' do
@@ -307,6 +306,16 @@ class FactorySettingsElemental < Sinatra::Base
       1
     else
       materials.max_by{ |mat| mat[:mat_order]}[:mat_order] + 1
+    end
+  end
+
+  def process_material(params)
+    if params[:materials] != ""
+      add_material(params[:materials].to_i)
+    elsif params[:import] != ""
+      import_materials(params[:import])
+    else
+      make_new_material(params)
     end
   end
 

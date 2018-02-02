@@ -53,6 +53,21 @@
     <input class="btn" type="submit" value="Update Element">
   <% end %>
 </form>
+<form action='/element' method="get">
+  Jump to elements
+  <select name="id" class="mat-dropdown">
+    <option value="" selected>--</option>
+    <% @elements.each do |element| %>
+      <% if element.id != @element.id %>
+        <option value="<%= element.id %>">
+          <%= element.title %>
+        </option>
+      <% end %>
+    <% end %>
+  </select>
+  <input class="btn" type="submit" value="Jump">
+</form>
+
 </div>
 <% if @element.project_version.current_version %>
 <div class="new-user" id="new-material">

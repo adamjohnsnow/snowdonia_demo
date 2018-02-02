@@ -112,7 +112,8 @@
 <form action="/new-element" method="post">
   <input type="hidden" name="project_id" value="<%= @project.id %>">
   <input type="hidden" name="project_v_id" value="<%= @current_version.id %>">
-  <input type="text" name="reference" placeholder="Reference">
+  <input class="double-digit" type="text" name="reference" placeholder="Reference">
+  <input class="double-digit" type="text" name="client_ref" placeholder="Client Ref">
   <input type="text" name="title" placeholder="New Element Name">
   <input class="btn" type="submit" value="Add New Element">
 </form>
@@ -123,7 +124,8 @@
     <div class="table-row header-row">
       <div class="table-cell" style="width: 10px">#</div>
       <div class="table-cell" style="min-width: 130px">Element</div>
-      <div class="table-cell">Ref</div>
+      <div class="table-cell">Our Ref</div>
+      <div class="table-cell">Client Ref</div>
       <div class="table-cell">Materials</div>
       <div class="table-cell">Labour</div>
       <div class="table-cell">Prime</div>
@@ -142,6 +144,7 @@
         </div>
         <div class="table-cell"><a href="/element?id=<%= element.id %>"><%= element.title %></a></div>
         <div class="table-cell"><%= element.reference %></div>
+        <div class="table-cell"><%= element.client_ref %></div>
         <div class="table-cell"></div>
         <div class="table-cell"></div>
         <div class="table-cell"></div>

@@ -1,0 +1,17 @@
+<h3><a href="/element?id=<%= @el_mat.element.id %>">Back to <%= @el_mat.element.project_version.project.title %> : <%= @el_mat.element.title %></a></h3>
+<div class="element-summary">
+<form action="/update-element-material?id<%= @el_mat.element.id %>" method="post">
+  <div class="table">
+    <div class="table-body">
+      <div class="table-row">
+        <div class="table-cell">
+        </div>
+      </div>
+    </div>
+</div>
+  <br>
+  <% if @el_mat.element.project_version.current_version %>
+    <input class="btn" type="submit" value="Update Element">
+  <% end %>
+</form>
+</div>
