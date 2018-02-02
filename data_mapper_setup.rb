@@ -24,3 +24,11 @@ DataMapper.setup(:default, ENV['DATABASE_URL'] || @database)
 DataMapper::Property::String.length(255)
 DataMapper.finalize
 DataMapper.auto_upgrade!
+
+def destroy_all
+  ElementMaterial.all.destroy!
+  Material.all.destroy!
+  Element.all.destroy!
+  ProjectVersion.all.destroy!
+  User.first.projects.all.destroy!
+end

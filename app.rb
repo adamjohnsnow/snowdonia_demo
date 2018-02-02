@@ -108,6 +108,7 @@ class FactorySettingsElemental < Sinatra::Base
 
   get '/element' do
     @element = Element.get(params[:id])
+    @elements = @element.project_version.elements.all
     @materials = @element.element_materials
     @matlist = Material.all(:project_id => @element.project_version.project.id) + Material.all(:global => true)
     @costcodes = Costcode.all
@@ -121,12 +122,13 @@ class FactorySettingsElemental < Sinatra::Base
   end
 
   post '/new-version' do
+    params[:title] == "" ? title = "Unnamed Version" : title = params[:title]
     @project = Project.get(params[:project_id])
     @current_version = @project.project_versions.last(:current_version => true)
     @new_version = ProjectVersion.create(
                     :project_id => params[:project_id],
                     :created_by => session[:user],
-                    :version_name => params[:title]
+                    :version_name => title
                   )
     VersionUpdater.new(@current_version, @new_version)
     redirect '/project-summary?project_id=' + params[:project_id]
@@ -135,10 +137,13 @@ class FactorySettingsElemental < Sinatra::Base
   post '/add-material' do
     @el_id = params[:element_id]
     params.tap{ |keys| keys.delete(:element_id) && keys.delete(:captures) }
-    if params[:materials] == ""
-      make_new_material(params)
-    else
+    p params
+    if params[:materials] != ""
       add_material(params[:materials].to_i)
+    elsif params[:import] != ""
+      import_materials(params[:import])
+    else
+      make_new_material(params)
     end
     redirect '/element?id=' + @el_id
   end
@@ -252,9 +257,16 @@ class FactorySettingsElemental < Sinatra::Base
   end
 
   def make_new_material(params)
-    params.tap{ |keys| keys.delete(:materials) }
+    params.tap{ |keys| keys.delete(:materials) && keys.delete(:import) }
     project_id = Element.get(@el_id).project_version.project_id
     new_material = Material.create(params)
     add_material(new_material.id)
+  end
+
+  def import_materials(id)
+    old_el = Element.get(id)
+    old_el.element_materials.each do |material|
+      add_material(material.material_id)
+    end
   end
 end

@@ -2,13 +2,14 @@
   <link rel="stylesheet" href="style.css" type="text/css" />
   <title>FACTORY SETTINGS elemental</title>
 </head>
+<% bg_img = ['bg_dome.jpg', 'bg_dark.jpg', 'bg_grey.jpg', 'bg_red.jpg', 'bg_wood.jpg', 'bg_polar.jpg'] %>
 <% if flash[:notice] %>
-  <div class="bg">
+  <div class="bg" style="background-image: url(<%= bg_img.sample %>);">
 <% else %>
-  <div class="bg fade-in">
+  <div class="bg fade-in"  style="background-image: url(<%= bg_img.sample %>);">
 <% end %>
   <img class="logo" src="white_logo.png" width="300" />
-  <h2 class="title">elemental</h2>
+  <h2 class="title" style="color: white;">elemental</h2>
   <div class="sign-in">
     Existing Users - Sign In
     <form class="sign-in-form" action="/sign-in" method="post">
