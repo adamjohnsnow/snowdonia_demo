@@ -55,7 +55,7 @@
 </form>
 </div>
 <% if @element.project_version.current_version %>
-<div class="new-user">
+<div class="new-user" id="new-material">
   <h3>Add Material</h3>
   <form action="/add-material?element_id=<%= @element.id %>" method="post">
     Add New Material
@@ -102,10 +102,11 @@
 </div>
 <% end %>
 <h3>Materials</h3>
-<form action="/update-materials?element_id=<%= @element.id %>" method="post">
+<form id='materials' action="/update-materials?element_id=<%= @element.id %>" method="post">
   <div class="table">
     <div class="table-body">
       <div class="table-row header-row">
+        <div class="table-cell">#</div>
         <div class="table-cell">Costcode</div>
         <div class="table-cell description">Description</div>
         <div class="table-cell">Supplier</div>
@@ -118,8 +119,13 @@
       </div>
       <% @materials.each do |unit| %>
         <div class="table-row">
+          <div class="table-cell">
+            <input name="<%= unit.id %> order" type="number" class="single-digit" value="<%= unit.mat_order %>">
+          </div>
           <div class="table-cell"><%= unit.material.costcode.code %></div>
-          <div class="table-cell description"><%= unit.material.description %></div>
+          <div class="table-cell description">
+            <a href="/element-material?elmat_id=<%= unit.id %>"><%= unit.material.description %></a>
+            </div>
           <div class="table-cell"><%= unit.material.supplier %></div>
           <div class="table-cell">£<%= sprintf('%.2f', unit.price) %></div>
           <div class="table-cell">
@@ -129,13 +135,14 @@
           <div class="table-cell">£<%= sprintf('%.2f', unit.units * unit.price * (1) ) %></div>
           <div class="table-cell">
             <textarea name="<%= unit.id %> notes" cols="15" rows="1"><%= unit.notes %></textarea>
-            </div>
+          </div>
           <div class="table-cell">
             <input name="<%= unit.id %> after" type="number" class="single-digit" value="<%= unit.units_after_drawing %>">
           </div>
         </div>
       <% end %>
       <div class="table-row header-row">
+        <div class="table-cell"></div>
         <div class="table-cell"></div>
         <div class="table-cell"></div>
         <div class="table-cell"></div>

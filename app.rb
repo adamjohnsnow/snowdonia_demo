@@ -125,7 +125,8 @@ class FactorySettingsElemental < Sinatra::Base
   get '/element' do
     @element = Element.get(params[:id])
     @elements = @element.project_version.elements.all
-    @materials = @element.element_materials
+    @materials = @element.element_materials.sort_by! { |mat| mat['mat_order']}
+    p @materials
     @matlist = Material.all(:project_id => @element.project_version.project.id) + Material.all(:global => true)
     @costcodes = Costcode.all
     @totals = { days: 23, cost: 1798.0 }
@@ -143,7 +144,10 @@ class FactorySettingsElemental < Sinatra::Base
 
   post '/update-materials' do
     params.each do |param|
-      if param[0].include? 'units'
+      if param[0].include? 'order'
+        mat_id = param[0].chomp(' order').to_i
+        ElementMaterial.get(mat_id).update(:mat_order => param[1].to_i)
+      elsif param[0].include? 'units'
         mat_id = param[0].chomp(' units').to_i
         ElementMaterial.get(mat_id).update(:units => param[1].to_i)
       elsif param[0].include? 'notes'
@@ -154,7 +158,7 @@ class FactorySettingsElemental < Sinatra::Base
         ElementMaterial.get(mat_id).update(:units_after_drawing => param[1].to_i)
       end
     end
-    redirect '/element?id=' + params[:element_id]
+    redirect '/element?id=' + params[:element_id] + '#materials'
   end
 
   post '/update-labour' do
@@ -195,7 +199,7 @@ class FactorySettingsElemental < Sinatra::Base
     else
       make_new_material(params)
     end
-    redirect '/element?id=' + @el_id
+    redirect '/element?id=' + @el_id + '#new-material'
   end
 
   post '/update-element' do
@@ -297,12 +301,22 @@ class FactorySettingsElemental < Sinatra::Base
     end
   end
 
+  def get_next_mat_order
+    materials = ElementMaterial.all(:element_id => @el_id)
+    if materials == []
+      1
+    else
+      materials.max_by{ |mat| mat[:mat_order]}[:mat_order] + 1
+    end
+  end
+
   def add_material(id)
     ElementMaterial.create(
       :element_id => @el_id,
       :material_id => id,
       :last_update => Date.today,
-      :price => Material.get(id).current_price
+      :price => Material.get(id).current_price,
+      :mat_order => get_next_mat_order
     )
   end
 
