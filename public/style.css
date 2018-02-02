@@ -4,6 +4,7 @@ body {
   margin: auto;
   text-align: center;
   font-size: 100%;
+  max-width: 100vw;
 }
 .fade-in {
   animation: fadein 3s;
@@ -44,12 +45,19 @@ input, select, textarea {
   border: 0.1px solid #eeeeee;
 }
 .single-digit {
-  width: 35px;
+  width: 55px;
   text-align: center;
 }
 .double-digit {
   width: 80px;
   text-align: center;
+}
+.description {
+  max-width: 30vw;
+}
+
+#mat-dropdown {
+  max-width: 450px;
 }
 .title{
   letter-spacing: 4px;

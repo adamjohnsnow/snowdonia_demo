@@ -110,7 +110,7 @@ class FactorySettingsElemental < Sinatra::Base
     @element = Element.get(params[:id])
     @materials = @element.element_materials
     @matlist = Material.all(:project_id => @element.project_version.project.id) + Material.all(:global => true)
-    p @matlist
+    @costcodes = Costcode.all
     @totals = { days: 23, cost: 1798.0 }
     erb :element
   end
@@ -132,34 +132,15 @@ class FactorySettingsElemental < Sinatra::Base
     redirect '/project-summary?project_id=' + params[:project_id]
   end
 
-  get '/material' do
-    if params[:id]
-      @element_material = ElementMaterial.get(params[:id])
-      @element_id = @element_material.element_id
-      @materials = Material.all(:category_id => @element_material.material.category_id)
+  post '/add-material' do
+    @el_id = params[:element_id]
+    params.tap{ |keys| keys.delete(:element_id) && keys.delete(:captures) }
+    if params[:materials] == ""
+      make_new_material(params)
     else
-      @element_id = params[:element]
-      if params[:category] == "0"
-        @materials = Material.all
-      else
-        @materials = Material.all(:category_id => params[:category])
-      end
+      add_material(params[:materials].to_i)
     end
-    erb :add_material
-  end
-
-  post '/material' do
-    params[:markup] = (params[:markup].to_f / 100)
-    params.tap{ |keys| keys.delete(:captures) }
-    if params[:element_material_id]
-      element_material = ElementMaterial.get(params[:element_material_id])
-      params.tap{ |keys| keys.delete(:element_material_id) }
-      element_material.update(params)
-      element_material.save!
-    else
-      element_material = ElementMaterial.create(params)
-    end
-    redirect '/element?id=' + params[:element_id]
+    redirect '/element?id=' + @el_id
   end
 
   post '/update-element' do
@@ -259,5 +240,21 @@ class FactorySettingsElemental < Sinatra::Base
     else
       elements.max_by{ |el| el[:el_order]}[:el_order] + 1
     end
+  end
+
+  def add_material(id)
+    ElementMaterial.create(
+      :element_id => @el_id,
+      :material_id => id,
+      :last_update => Date.today,
+      :price => Material.get(id).current_price
+    )
+  end
+
+  def make_new_material(params)
+    params.tap{ |keys| keys.delete(:materials) }
+    project_id = Element.get(@el_id).project_version.project_id
+    new_material = Material.create(params)
+    add_material(new_material.id)
   end
 end

@@ -7,11 +7,11 @@ class Material
   property :description, Text
   property :supplier, Text
   property :current_price, Float
-  property :project_id, Integer
   property :unit, Text
   property :price_updated, Date, :default => Date.today
   property :global, Boolean, :default => false
 
+  belongs_to :project
   belongs_to :costcode
   has n, :element_materials
 

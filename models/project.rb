@@ -13,10 +13,11 @@ class Project
   property :terms, Text
   property :last_update, String
 
-  belongs_to :user
-  has n, :users, through: Resource
-  has n, :project_versions
   belongs_to :site
   belongs_to :client
+  belongs_to :user
+  has n, :materials
+  has n, :users, through: Resource
+  has n, :project_versions
 
 end

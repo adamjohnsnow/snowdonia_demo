@@ -1,4 +1,4 @@
-<h3><a href="/project-summary?project_id=<%= @element.project_version.project_id %>">Back to <%= @element.project_version.project.title %> Summary</a></h3>
+<h3><a href="/project-summary?project_id=<%= @element.project_version.project_id %>&version_id=<%= @element.project_version.id %>">Back to <%= @element.project_version.project.title %> Summary</a></h3>
 <form action="/update-element" method="post">
   <input type="hidden" name="element_id" value="<%= @element.id %>">
   <div class="table">
@@ -43,65 +43,103 @@
             Notes<br>
             <textarea name="notes" cols="50" rows="4"><%= @element.notes %></textarea><br>
           </div>
-
       </div>
     </div>
 </div>
   <br>
-  <input class="btn" type="submit" value="Update Element">
+  <% if @element.project_version.current_version %>
+    <input class="btn" type="submit" value="Update Element">
+  <% end %>
 </form>
-Add Material <form action="/material" method="get">
-  <input class="btn" type="submit" value="Add Material">
-</form>
-
-<h3>Materials</h3>
-<div class="table">
-  <div class="table-body">
-    <div class="table-row header-row">
-      <div class="table-cell">Type</div>
-      <div class="table-cell">Description</div>
-      <div class="table-cell">Supplier</div>
-      <div class="table-cell">Unit Cost</div>
-      <div class="table-cell">Mark-up</div>
-      <div class="table-cell">Units</div>
-      <div class="table-cell">At Cost</div>
-      <div class="table-cell">With Mark-up</div>
-      <div class="table-cell">Notes</div>
-      <div class="table-cell">Units After Drawing</div>
-    </div>
-    <% @materials.each do |unit| %>
-      <div class="table-row">
-        <div class="table-cell"><%= unit.material.category.type %></div>
-        <div class="table-cell"><%= unit.material.description %></div>
-        <div class="table-cell"><%= unit.material.supplier.company %></div>
-        <div class="table-cell">£<%= sprintf('%.2f', unit.material.unit_cost) %></div>
-        <div class="table-cell"><%= unit.markup * 100 %>%</div>
-        <div class="table-cell"><%= unit.units %></div>
-        <div class="table-cell">£<%= sprintf('%.2f', unit.units * unit.material.unit_cost) %></div>
-        <div class="table-cell">£<%= sprintf('%.2f', unit.units * unit.material.unit_cost * (1 + unit.markup) ) %></div>
-        <div class="table-cell"><%= unit.notes %></div>
-        <div class="table-cell"><%= unit.units_after_drawing %></div>
-        <a href="/material?id=<%= unit.id %>">edit</a>
-      </div>
-    <% end %>
-  </div>
-</div><br>
-
-<br>
-<div class="table" style="max-width: 25%;">
-  <div class="table-body">
-    <div class="table-row header-row">
-      <div class="table-cell">Materials at Cost</div>
-      <div class="table-cell">With Markup</div>
-      <div class="table-cell">Markup</div>
-    </div>
-    <div class="table-row">
-    </div>
-  </div>
+<% if @element.project_version.current_version %>
+<div class="new-user">
+  <h3>Add Material</h3>
+  <form action="/add-material?element_id=<%= @element.id %>" method="post">
+    Add New
+    <select name="costcode_id">
+      <option value="" selected>--</option>
+      <% @costcodes.each do |code| %>
+        <option value="<%= code.id %>">
+          <%= code.code %>
+        </option>
+      <% end %>
+    </select>
+    <input type="hidden" name="project_id" value="<%= @element.project_version.project_id %>">
+    <input type="text" name="description" placeholder="Description">
+    <input type="text" name="supplier" placeholder="Supplier">
+    <input type="text" name="unit" placeholder="Unit" class="double-digit">
+    £<input type="number" name="current_price"class="double-digit" step="0.01">per unit
+    <br>
+    <i>- or -</i>
+    <br>
+    Select Existing
+    <select name="materials" id="mat-dropdown">
+      <option value="" selected>--</option>
+      <% @matlist.each do |material| %>
+        <option value="<%= material.id %>">
+          <%= material.costcode.code + ' - ' + material.description %> (£<%= sprintf('%.2f',material.current_price) %> per <%= material.unit %>)
+        </option>
+      <% end %>
+    </select>
+    <br>
+    <input class="btn" type="submit" value="Add Material">
+  </form>
 </div>
+<% end %>
+<h3>Materials</h3>
+<form action="/update-element?element_id=<%= @element.id %>" method="post">
+  <div class="table">
+    <div class="table-body">
+      <div class="table-row header-row">
+        <div class="table-cell">Costcode</div>
+        <div class="table-cell description">Description</div>
+        <div class="table-cell">Supplier</div>
+        <div class="table-cell">Unit Cost</div>
+        <div class="table-cell">Units</div>
+        <div class="table-cell">At Cost</div>
+        <div class="table-cell">With Mark-up</div>
+        <div class="table-cell">Notes</div>
+        <div class="table-cell">Units After Drawing</div>
+      </div>
+      <% @materials.each do |unit| %>
+        <div class="table-row">
+          <div class="table-cell"><%= unit.material.costcode.code %></div>
+          <div class="table-cell description"><%= unit.material.description %></div>
+          <div class="table-cell"><%= unit.material.supplier %></div>
+          <div class="table-cell">£<%= sprintf('%.2f', unit.price) %></div>
+          <div class="table-cell">
+            <input type="number" class="single-digit" value="<%= unit.units %>">
+          </div>
+          <div class="table-cell">£<%= sprintf('%.2f', unit.units * unit.price) %></div>
+          <div class="table-cell">£<%= sprintf('%.2f', unit.units * unit.price * (1) ) %></div>
+          <div class="table-cell">
+            <textarea name="notes" cols="15" rows="1"><%= unit.notes %></textarea>
+            </div>
+          <div class="table-cell">
+            <input type="number" class="single-digit" value="<%= unit.units_after_drawing %>">
+          </div>
+        </div>
+      <% end %>
+      <div class="table-row header-row">
+        <div class="table-cell"></div>
+        <div class="table-cell"></div>
+        <div class="table-cell"></div>
+        <div class="table-cell"></div>
+        <div class="table-cell">Totals:</div>
+        <div class="table-cell">£1000.00</div>
+        <div class="table-cell">£1200.00</div>
+        <div class="table-cell"></div>
+        <div class="table-cell"></div>
+      </div>
+    </div>
+  </div>
+  <% if @element.project_version.current_version %>
+    <input class="btn" type="submit" value="Update Materials">
+  <% end %>
+</form>
 <br>
 <h3>Labour</h3>
-<form>
+<form action="/update-labour?element_labour_id=<%= @element.element_labour.id %>">
 <div class="table">
   <div class="table-body">
     <div class="table-row header-row">
@@ -181,7 +219,7 @@ Add Material <form action="/material" method="get">
         </div>
         <div class="table-cell"></div>
       </div>
-      <div class="table-row">
+      <div class="table-row header-row">
         <div class="table-cell">Cost</div>
         <div class="table-cell">
           £<%= sprintf('%.2f', @element.element_labour.carpentry_cost * @element.element_labour.carpentry) %>
@@ -208,22 +246,8 @@ Add Material <form action="/material" method="get">
       </div>
   </div>
 </div>
-</form>
-
-
-
 <br>
-<div class="table" style="max-width: 25%;">
-  <div class="table-body">
-    <div class="table-row header-row">
-      <div class="table-cell">Element at Cost</div>
-      <div class="table-cell">With Markup</div>
-      <div class="table-cell">Markup</div>
-    </div>
-    <div class="table-row">
-      <div class="table-cell"></div>
-      <div class="table-cell"></div>
-      <div class="table-cell"></div>
-    </div>
-  </div>
-</div>
+<% if @element.project_version.current_version %>
+  <input class="btn" type="submit" value="Update Labour">
+<% end %>
+</form>
