@@ -157,10 +157,11 @@
         <div class="table-cell"></div>
         <div class="table-cell"></div>
         <div class="table-cell">
-          <select name="<%= element.id %> include">
-            <option value="true" <%= "Selected" if (element.quote_include)  %>>Yes</option>
-            <option value="false" <%= "Selected" if (!element.quote_include) %>>No</option>
-          </select>
+          <% if element.quote_include == true %>
+            <input type="checkbox" name="<%= element.id %> include" checked>
+          <% else %>
+            <input type="checkbox" name="<%= element.id %> include">
+          <% end %>
         </div>
       </div>
     <% end %>

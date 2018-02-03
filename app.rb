@@ -86,18 +86,13 @@ class FactorySettingsElemental < Sinatra::Base
   end
 
   post '/update-project' do
-    params.each do |param|
-      if param[0].include? 'el_order'
-        el_id = param[0].chomp(' el_order').to_i
-        Element.get(el_id).update(:el_order => param[1].to_i)
-      elsif param[0].include? 'quantity'
-        el_id = param[0].chomp(' quantity').to_i
-        Element.get(el_id).update(:quantity => param[1].to_i)
-      elsif param[0].include? 'include'
-        el_id = param[0].chomp(' include').to_i
-        Element.get(el_id).update(:quote_include => param[1])
-      end
-    end
+    project = Project.get(params[:project_id])
+    current_version = project.project_versions.last(:current_version => true)
+    current_version.update(
+      :status => params[:status],
+      :last_update => Date.today.strftime("%d/%m/%Y") + ' by ' + session[:user]
+    )
+    loop_through_elements(params)
     redirect '/project-summary?project_id=' + params[:project_id]
   end
 
@@ -119,6 +114,7 @@ class FactorySettingsElemental < Sinatra::Base
       :client_ref => params[:client_ref],
       :el_order => next_order
     )
+    el.project_version.update(:last_update => Date.today.strftime("%d/%m/%Y") + ' by ' + session[:user])
     ElementLabour.create(:element_id => el.id)
     redirect '/project-summary?project_id=' + params[:project_id] + '&version_id=' + params[:project_v_id]
   end
@@ -127,7 +123,6 @@ class FactorySettingsElemental < Sinatra::Base
     @element = Element.get(params[:id])
     @elements = @element.project_version.elements.all
     @materials = @element.element_materials.sort_by! { |mat| mat['mat_order']}
-    p @materials
     @matlist = Material.all(:project_id => @element.project_version.project.id) + Material.all(:global => true)
     @costcodes = Costcode.all
     @totals = { days: 23, cost: 1798.0 }
@@ -135,11 +130,15 @@ class FactorySettingsElemental < Sinatra::Base
   end
 
   post '/update-element' do
+    params[:quote_include] ? params[:quote_include] = true : params[:quote_include] = false
     element_id = params[:element_id]
     params.tap{ |keys| keys.delete(:captures) && keys.delete(:element_id) }
     params.each do |param|
       Element.get(element_id).update(param[0] => param[1])
     end
+    Element.get(element_id).project_version.update(
+      :last_update => Date.today.strftime("%d/%m/%Y") + ' by ' + session[:user]
+    )
     redirect '/element?id=' + element_id
   end
 
@@ -159,6 +158,9 @@ class FactorySettingsElemental < Sinatra::Base
         ElementMaterial.get(mat_id).update(:units_after_drawing => param[1].to_i)
       end
     end
+    Element.get(params[:element_id]).project_version.update(
+      :last_update => Date.today.strftime("%d/%m/%Y") + ' by ' + session[:user]
+    )
     redirect '/element?id=' + params[:element_id] + '#materials'
   end
 
@@ -168,6 +170,9 @@ class FactorySettingsElemental < Sinatra::Base
     params.each do |param|
       ElementLabour.get(element_id).update(param[0] => param[1].to_f)
     end
+    Element.get(params[:element_id]).project_version.update(
+      :last_update => Date.today.strftime("%d/%m/%Y") + ' by ' + session[:user]
+    )
     redirect '/element?id=' + params[:element_id] + '#labour'
   end
 
@@ -193,15 +198,10 @@ class FactorySettingsElemental < Sinatra::Base
     @el_id = params[:element_id]
     params.tap{ |keys| keys.delete(:element_id) && keys.delete(:captures) }
     process_material(params)
+    Element.get(@el_id).project_version.update(
+      :last_update => Date.today.strftime("%d/%m/%Y") + ' by ' + session[:user]
+    )
     redirect '/element?id=' + @el_id + '#new-material'
-  end
-
-  post '/update-element' do
-    params[:quote_include] ? params[:quote_include] = 't' : params[:quote_include] = 'f'
-    @element = Element.get(params[:element_id])
-    params.tap{ |keys| keys.delete(:element_id) && keys.delete(:captures) }
-    @element.update(params)
-    redirect '/element?id=' + @element.id.to_s
   end
 
   get '/element-material' do
@@ -262,7 +262,12 @@ class FactorySettingsElemental < Sinatra::Base
   def new_project(params)
     redirect '/home' if params[:new] == ""
     project = Project.create(:title => params[:new], :site_id => 1, :client_id => 1, :user_id => session[:user_id])
-    ProjectVersion.create(:project_id => project.id, :version_name => 'v0.1', :created_by => session[:user])
+    ProjectVersion.create(
+      :project_id => project.id,
+      :version_name => 'v0.1',
+      :created_by => session[:user],
+      :last_update => Date.today.strftime("%d/%m/%Y") + ' by ' + session[:user]
+    )
     project.users << User.get(session[:user_id])
     project.save!
     return project
@@ -276,6 +281,8 @@ class FactorySettingsElemental < Sinatra::Base
       keys.delete(:contracted)
     }
     @project.update(params)
+    current_version = @project.project_versions.last(:current_version => true)
+    current_version.update(:status => params[:status], :last_update => Date.today.strftime("%d/%m/%Y") + ' by ' + session[:user])
     @project.id.to_s
   end
 
@@ -340,5 +347,22 @@ class FactorySettingsElemental < Sinatra::Base
     Element.get(id).element_materials.each do |material|
       add_material(material.material_id)
     end
+  end
+
+  def loop_through_elements(params)
+    params.each do |param|
+      if param[0].include? 'el_order'
+        @el_id = param[0].chomp(' el_order').to_i
+        Element.get(@el_id).update(:el_order => param[1].to_i)
+      elsif param[0].include? 'quantity'
+        @el_id = param[0].chomp(' quantity').to_i
+        Element.get(@el_id).update(:quantity => param[1].to_i)
+      elsif param[0].include? 'include'
+        @el_id = param[0].chomp(' include').to_i
+        Element.get(@el_id).update(:quote_include => true)
+      end
+    end
+    inc_param = "#{@el_id} include"
+    Element.get(@el_id.to_i).update(:quote_include => false) if !params[inc_param]
   end
 end
