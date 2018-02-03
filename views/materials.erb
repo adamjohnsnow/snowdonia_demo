@@ -1,24 +1,48 @@
 
 <h3>Materials</h3>
+<form action="/update-materials" method="post">
 <div class="table border">
   <div class="table-body">
     <div class="table-row header-row">
-      <div class="table-cell">Description</div>
-      <div class="table-cell">Costcode</div>
-      <div class="table-cell">Supplier</div>
+      <div class="table-cell">
+        <a href='/materials?sort_by=description&direction=<%= @order %>'>Description <i class="fas fa-sort"></i></a>
+      </div>
+      <div class="table-cell">
+        <a href='/materials?sort_by=costcode_id&direction=<%= @order %>'>Costcode <i class="fas fa-sort"></i></a>
+      </div>
+      <div class="table-cell">
+        <a href='/materials?sort_by=supplier&direction=<%= @order %>'>Supplier <i class="fas fa-sort"></i></a>
+      </div>
       <div class="table-cell">Unit</div>
       <div class="table-cell">Current Unit Price</div>
-      <div class="table-cell">Last Updated</div>
+      <div class="table-cell">
+        <a href='/materials?sort_by=price_updated&direction=<%= @order %>'>Last Updated <i class="fas fa-sort"></i></a>
+      </div>
+      <div class="table-cell">Origin Project</div>
+      <div class="table-cell">Global</div>
     </div>
     <% @materials.each do |material| %>
       <div class="table-row">
         <div class="table-cell"><%= material.description %></div>
-        <div class="table-cell"><%= material.costcode.code %></div>
+        <div class="table-cell"><%= material.costcode_id %></div>
         <div class="table-cell"><%= material.supplier %></div>
         <div class="table-cell"><%= material.unit %></div>
-        <div class="table-cell">£<%= sprintf('%.2f', material.current_price) %></div>
+        <div class="table-cell">£
+          <input class="double-digit" type="number" value="<%= sprintf('%.2f',material.current_price) %>">
+        </div>
         <div class="table-cell"><%= material.price_updated.strftime("%d/%m/%Y") %></div>
+        <div class="table-cell"><%= material.project.title %></div>
+        <div class="table-cell">
+          <% if material.global %>
+            <input type="checkbox" name="global" checked>
+          <% else %>
+            <input type="checkbox" name="global">
+          <% end %>
+        </div>
       </div>
     <% end %>
   </div>
 </div>
+<br>
+<input class="btn" type="submit" value="Save Changes">
+</form>

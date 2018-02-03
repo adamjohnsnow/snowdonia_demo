@@ -59,12 +59,17 @@ input, select, textarea {
 .mat-dropdown {
   max-width: 250px;
 }
+.cc-dropdown {
+  max-width: 75px;
+}
 .title{
   letter-spacing: 4px;
   font-size: 35px;
   text-align: center;
 }
-
+.header-row a {
+  color: white;
+}
 .logo{
   padding-top: 20vh;
 }

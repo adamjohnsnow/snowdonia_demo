@@ -57,7 +57,7 @@
   Jump to elements
   <select name="id" class="mat-dropdown">
     <option value="" selected>--</option>
-    <% @elements.each do |element| %>
+    <% @element.project_version.elements.all(:order => [ :title.asc ]).each do |element| %>
       <% if element.id != @element.id %>
         <option value="<%= element.id %>">
           <%= element.title %>
@@ -73,12 +73,12 @@
 <div class="new-user" id="new-material">
   <h3>Add Material</h3>
   <form action="/add-material?element_id=<%= @element.id %>" method="post">
-    Add New Material
-    <select name="costcode_id">
+    Add New Material<br>
+    <select name="costcode_id" class="cc-dropdown">
       <option value="" selected>--</option>
       <% @costcodes.each do |code| %>
         <option value="<%= code.id %>">
-          <%= code.code %>
+          (<%= code.code %>) <%= code.description %>
         </option>
       <% end %>
     </select>
@@ -93,17 +93,20 @@
     Select Existing Material
     <select name="materials" class="mat-dropdown">
       <option value="" selected>--</option>
+      <% @matlist.sort_by! { |mat| mat['description'] } %>
       <% @matlist.each do |material| %>
         <option value="<%= material.id %>">
           <%= material.costcode.code + ' - ' + material.description %> (£<%= sprintf('%.2f',material.current_price) %> per <%= material.unit %>)
         </option>
       <% end %>
     </select>
+    <br>
     <i> - or - </i>
+    <br>
     Import from Element
     <select name="import" class="mat-dropdown">
       <option value="" selected>--</option>
-      <% @elements.each do |element| %>
+      <% @element.project_version.elements.all(:order => [ :title.asc ]).each do |element| %>
         <% if element.id != @element.id %>
           <option value="<%= element.id %>">
             <%= element.title %>
@@ -132,7 +135,7 @@
         <div class="table-cell">Notes</div>
         <div class="table-cell">Units After Drawing</div>
       </div>
-      <% @materials.each do |unit| %>
+      <% @element.element_materials.all(:order => [ :mat_order.asc ]).each do |unit| %>
         <div class="table-row">
           <div class="table-cell">
             <input name="<%= unit.id %> order" type="number" class="single-digit" value="<%= unit.mat_order %>">

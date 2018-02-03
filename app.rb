@@ -28,12 +28,19 @@ class FactorySettingsElemental < Sinatra::Base
   end
 
   get '/projects' do
-    @projects = Project.all
+    @projects = Project.all(:order => [ :title.asc ])
     erb :projects
   end
 
   get '/materials' do
-    @materials = Material.all(:order => [ :costcode_id.asc ])
+    sort = params[:sort_by].to_sym
+    if params[:direction] == 'asc'
+      @materials = Material.all(:order => [ sort.asc ])
+      @order = 'desc'
+    else
+      @materials = Material.all(:order => [ sort.desc ])
+      @order = 'asc'
+    end
     erb :materials
   end
 
@@ -121,8 +128,6 @@ class FactorySettingsElemental < Sinatra::Base
 
   get '/element' do
     @element = Element.get(params[:id])
-    @elements = @element.project_version.elements.all
-    @materials = @element.element_materials.sort_by! { |mat| mat['mat_order']}
     @matlist = Material.all(:project_id => @element.project_version.project.id) + Material.all(:global => true)
     @costcodes = Costcode.all
     @totals = { days: 23, cost: 1798.0 }

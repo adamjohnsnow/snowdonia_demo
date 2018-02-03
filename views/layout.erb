@@ -1,8 +1,6 @@
 <head>
-  <link href="https://fonts.googleapis.com/css?family=Archivo+Narrow|Montserrat" rel="stylesheet">
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
   <link rel="stylesheet" href="style.css" type="text/css" />
-
+<script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
   <title>FACTORY SETTINGS elemental</title>
 </head>
 
@@ -18,9 +16,10 @@
       <div class="menu-item"><a href="/home">myElemental</a></div>
       <div class="menu-item"><a href="/projects">Projects</a></div>
       <div class="menu-item"><a href="/clients">Clients</a></div>
-      <div class="menu-item"><a href="/materials">Materials</a></div>
+      <div class="menu-item"><a href="/materials?sort_by=description&direction=asc">Materials</a></div>
       <% if session[:user_auth] > 2 %>
-        <div class="menu-item"><a href="/users">Users</a></div>
+      <div class="menu-item"><a href="/users">Users</a></div>
+      <div class="menu-item"><a href="/costcodes">Costcodes</a></div>
       <% end %>
       <div class="menu-item"><a href="/logout">Log Out</a></div>
     </div>
