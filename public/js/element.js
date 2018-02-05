@@ -54,7 +54,6 @@ var updateLabourTotal = function() {
 
 var reorderUp = function(id) {
   if ( document.getElementById(id + ' order').value > 1 ) {
-    var list = document.getElementById('materials-list')
     var moveRow = document.getElementById(id + '-row');
     var rowOrder = moveRow.childNodes[1].childNodes[7];
     rowOrder.value = parseInt(rowOrder.value) - 1;
@@ -70,10 +69,9 @@ var moveUp = function(moveRow) {
 }
 
 var reorderDown = function(id) {
-  var list = document.getElementById('materials-list');
+  var moveRow = document.getElementById(id + '-row');
   var index = Array.prototype.indexOf.call(list.children, moveRow);
-  if ((index * 2) + 7 < list.childNodes.length) {
-    var moveRow = document.getElementById(id + '-row');
+  if (((index * 2) + 10) < list.childNodes.length) {
     var rowOrder = moveRow.childNodes[1].childNodes[7];
     rowOrder.value = parseInt(rowOrder.value) + 1;
     moveDown(moveRow, index);
@@ -85,5 +83,4 @@ var moveDown = function(moveRow, index) {
   rowOrder = list.childNodes[(index * 2) + 5].childNodes[1].childNodes[7];
   rowOrder.value = parseInt(rowOrder.value) - 1;
   list.insertBefore(list.childNodes[(index * 2) + 5], list.childNodes[(index * 2) + 1])
-  console.log(list.childNodes)
 }
