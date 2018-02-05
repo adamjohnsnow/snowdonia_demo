@@ -1,5 +1,8 @@
-<h2><%= @project.title %></h2>
-<form class="" action="/project" method="post">
+<script src="js/labour.js"></script>
+
+<h2><%= @project.title %> Summary</h2>
+<h3>Version: <%= @current_version.version_name %></h3>
+<form class="top-box" action="/save-project" method="post">
   <input type="hidden" name="project_id" value="<%= @project.id %>">
   <div class="table">
     <div class="table-body">
@@ -10,11 +13,11 @@
         <div class="table-cell">
           Status <select name="status">
             <% @dropdowns[:status].each do |status| %>
-            <% if status == @project.status %>
-            <option selected value="<%= status %>"><%= status %></option>
-            <% else %>
-            <option value="<%= status %>"><%= status %></option>
-            <% end %>
+              <% if status == @current_version.status %>
+                <option selected value="<%= status %>"><%= status %></option>
+              <% else %>
+                <option value="<%= status %>"><%= status %></option>
+              <% end %>
             <% end %>
           </select>
         </div>
@@ -25,13 +28,13 @@
         </div>
         <div class="table-cell">
           Factory Settings PM <select name="user_id">
-            <% @dropdowns[:users].each do |pm| %>
-              <% if @project.user_id && pm.id == @project.user_id %>
-                <option selected value="<%= pm.id %>"><%= pm.firstname + ' ' + pm.surname %></option>
-              <% else %>
-                <option value="<%= pm.id %>"><%= pm.firstname + ' ' + pm.surname %></option>
+          <% @dropdowns[:users].each do |pm| %>
+            <% if @project.user_id && pm.id == @project.user_id %>
+              <option selected value="<%= pm.id %>"><%= pm.firstname + ' ' + pm.surname %></option>
+            <% else %>
+              <option value="<%= pm.id %>"><%= pm.firstname + ' ' + pm.surname %></option>
               <% end %>
-            <% end %>
+          <% end %>
           </select>
         </div>
       </div>
@@ -47,7 +50,7 @@
                 <option selected value="<%= client.id %>"><%= client.name %></option>
               <% else %>
                 <option value="<%= client.id %>"><%= client.name %></option>
-              <% end %>
+                <% end %>
             <% end %>
           </select>
         </div>
@@ -59,13 +62,36 @@
         <div class="table-cell">
           Site <select name="site_id">
             <% @dropdowns[:sites].each do |site| %>
-            <% if @project.site && site.id == @project.site.id %>
-            <option selected value="<%= site.id %>"><%= site.name %></option>
-            <% else %>
-            <option value="<%= site.id %>"><%= site.name %></option>
-            <% end %>
+              <% if @project.site && site.id == @project.site.id %>
+                <option selected value="<%= site.id %>"><%= site.name %></option>
+              <% else %>
+                <option value="<%= site.id %>"><%= site.name %></option>
+                <% end %>
             <% end %>
           </select>
+        </div>
+      </div>
+      <div class="table-row">
+        <div class="table-cell">
+          Current Version:
+          <%= @current_version.current_version ? 'Yes' : 'No' %>
+        </div>
+        <div class="table-cell">
+          <a href='/versions?id=<%= @project.id %>'>Total Versions:
+          <%= @project.project_versions.all.count %></a>
+        </div>
+      </div>
+      <div class="table-row">
+        <div class="table-cell">
+          Contracted Version
+          <% if @current_version.contracted %>
+          <input type="checkbox" name="contracted" checked="checked">
+          <% else %>
+          <input type="checkbox" name="contracted">
+          <% end %>
+        </div>
+        <div class="table-cell">
+          Last Update: <%= @current_version.last_update %>
         </div>
       </div>
       <div class="table-row">
@@ -80,23 +106,92 @@
       </div>
     </div>
   </div><br>
+  <% if @current_version.current_version %>
   <input class="btn" type="submit" value="Save Project">
+  <% end %>
 </form>
-<br>
-<h3>Labour Summary</h3>
-<div class="table">
-  <div class="table-body">
+<br><br>
+<div class="top-box">
+  <a href="/project-summary?project_id=<%= @project.id %>&version_id=<%= @current_version.id %>">Go back to Cost Summary</a>
+  <h3>Element Labour</h3>
+<form action="/update-project-labour?project_id=<%= @project.id %>" method="post">
+  <div class="table" id="labour-list">
+    <div class="table-body">
+      <div class="table-row header-row">
+        <div class="table-cell">Element</div>
+        <div class="table-cell">Our Ref</div>
+        <div class="table-cell">Client Ref</div>
+        <div class="table-cell">Carpentry</div>
+        <div class="table-cell">Steelwork</div>
+        <div class="table-cell">Scenic</div>
+        <div class="table-cell">Onsite Paint</div>
+        <div class="table-cell">Onsite Days</div>
+        <div class="table-cell">Draughting</div>
+        <div class="table-cell">PM</div>
+        <div class="table-cell">Days</div>
+        <div class="table-cell">Total Cost</div>
+      </div>
+    <% @current_version.elements.each do |element| %>
+      <div class="table-row fade-fast" id="<%= element.id %>-row">
+        <div class="table-cell grey-cell"><a href="/element?id=<%= element.id %>"><%= element.title %></a></div>
+        <div class="table-cell grey-cell"><%= element.reference %></div>
+        <div class="table-cell grey-cell"><%= element.client_ref %></div>
+          <div class="table-cell grey-cell">
+            <input class="single-digit <%=element.element_labour.id %> days" type="number" name="<%= element.element_labour.id %> carpentry" id="<%= element.id %> quantity" value="<%= element.element_labour.carpentry %>" onchange="updateLabour(<%= element.element_labour.id %>)">
+            <input type="hidden" class="<%= element.element_labour.id %> rate" id="<%= element.element_labour.id %> carpentry-cost" value="<%= element.element_labour.carpentry_cost %>">
+          </div>
+          <div class="table-cell grey-cell">
+            <input class="single-digit <%=element.element_labour.id %> days" type="number" name="<%= element.element_labour.id %> steelwork" id="<%= element.id %> quantity" value="<%= element.element_labour.steelwork %>" onchange="updateLabour(<%= element.element_labour.id %>)">
+            <input type="hidden" class="<%= element.element_labour.id %> rate" id="<%= element.element_labour.id %> steelwork-cost" value="<%= element.element_labour.steelwork_cost %>">
+          </div>
+          <div class="table-cell grey-cell">
+            <input class="single-digit <%=element.element_labour.id %> days" type="number" name="<%= element.element_labour.id %> scenic" id="<%= element.id %> quantity" value="<%= element.element_labour.scenic %>" onchange="updateLabour(<%= element.element_labour.id %>)">
+            <input type="hidden" class="<%= element.element_labour.id %> rate" id="<%= element.element_labour.id %> scenic-cost" value="<%= element.element_labour.scenic_cost %>">
+          </div>
+          <div class="table-cell grey-cell">
+            <input class="single-digit <%=element.element_labour.id %> days" type="number" name="<%= element.element_labour.id %> onsite_paint" id="<%= element.id %> quantity" value="<%= element.element_labour.onsite_paint %>" onchange="updateLabour(<%= element.element_labour.id %>)">
+            <input type="hidden" class="<%= element.element_labour.id %> rate" id="<%= element.element_labour.id %> onsite_paint-cost" value="<%= element.element_labour.onsite_paint_cost %>">
+          </div>
+          <div class="table-cell grey-cell">
+            <input class="single-digit <%= element.element_labour.id %> days" type="number" name="<%= element.element_labour.id %> on_site_day" id="<%= element.id %> quantity" value="<%= element.element_labour.on_site_day %>" onchange="updateLabour(<%= element.element_labour.id %>)">
+            <input type="hidden" class="<%= element.element_labour.id %> rate" id="<%= element.element_labour.id %> on_site_day-cost" value="<%= element.element_labour.on_site_day_cost %>">
+          </div>
+          <div class="table-cell grey-cell">
+            <input class="single-digit <%=element.element_labour.id %> days" type="number" name="<%= element.element_labour.id %> draughting" id="<%= element.id %> quantity" value="<%= element.element_labour.draughting %>" onchange="updateLabour(<%= element.element_labour.id %>)">
+            <input type="hidden" class="<%= element.element_labour.id %> rate" id="<%= element.element_labour.id %> draughting-cost" value="<%= element.element_labour.draughting_cost %>">
+          </div>
+          <div class="table-cell grey-cell">
+            <input class="single-digit <%=element.element_labour.id %> days" type="number" name="<%= element.element_labour.id %> project_management" id="<%= element.id %> quantity" value="<%= element.element_labour.project_management %>" onchange="updateLabour(<%= element.element_labour.id %>)">
+            <input type="hidden" class="<%= element.element_labour.id %> rate" id="<%= element.element_labour.id %> project_management-cost" value="<%= element.element_labour.project_management_cost %>">
+          </div>
+          <div class="table-cell grey-cell days-total" id="<%= element.element_labour.id %> days">jsfail</div>
+          <div class="table-cell grey-cell cost-total" id="<%= element.element_labour.id %> total">jsfail</div>
+      </div>
+      <script>updateDays(<%= element.element_labour.id %>)</script>
+    <% end %>
     <div class="table-row header-row">
-      <div class="table-cell">Element</div>
-      <div class="table-cell">Materials</div>
-      <div class="table-cell">Draughting</div>
-      <div class="table-cell">Carpentry</div>
-      <div class="table-cell">Steelwork</div>
-      <div class="table-cell">Scenic</div>
-      <div class="table-cell">Onsite Paint</div>
-      <div class="table-cell">Onsite Days</div>
-      <div class="table-cell">PM</div>
+      <div class="table-cell"></div>
+      <div class="table-cell"></div>
+      <div class="table-cell"></div>
+      <div class="table-cell"></div>
+      <div class="table-cell"></div>
+      <div class="table-cell"></div>
+      <div class="table-cell"></div>
+      <div class="table-cell"></div>
+      <div class="table-cell"></div>
       <div class="table-cell">Total</div>
+      <div class="table-cell days-total" id="days-total">jsfail</div>
+      <div class="table-cell cost-total" id="cost-total">jsfail</div>
     </div>
   </div>
 </div>
+<br>
+<% if @current_version.current_version %>
+<input class="btn" type="submit" value="Save Changes">
+<% end %>
+</form>
+</div>
+<script type="text/javascript">
+updateLabourTotal();
+var list = document.getElementById('elements-list');
+</script>

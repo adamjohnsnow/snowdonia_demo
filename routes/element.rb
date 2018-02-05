@@ -35,6 +35,18 @@ class FactorySettingsElemental < Sinatra::Base
     )
     redirect '/element?id=' + element_id
   end
+  
+  post '/update-labour' do
+    element_id = params[:element_labour_id]
+    params.tap{ |keys| keys.delete(:captures) && keys.delete(:element_labour_id) }
+    params.each do |param|
+      ElementLabour.get(element_id).update(param[0] => param[1].to_f)
+    end
+    Element.get(params[:element_id]).project_version.update(
+      :last_update => Date.today.strftime("%d/%m/%Y") + ' by ' + session[:user]
+    )
+    redirect '/element?id=' + params[:element_id] + '#labour'
+  end
 
   private
 
@@ -46,5 +58,5 @@ class FactorySettingsElemental < Sinatra::Base
       elements.max_by{ |el| el[:el_order]}[:el_order] + 1
     end
   end
-  
+
 end

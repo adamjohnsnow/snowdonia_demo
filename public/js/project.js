@@ -4,13 +4,16 @@ var formatter = new Intl.NumberFormat('en-UK', {
   minimumFractionDigits: 2,
 });
 
+var updateElement = function(id){
+  updateCost(id);
+  updateTotal();
+}
 var updateCost = function(id) {
   var qty = document.getElementById(id + " quantity").value;
   var price = document.getElementById(id + " cost").innerHTML;
-  var num = parseFloat(price.replace('£', '')).toFixed(0);
+  var num = parseFloat(price.replace('£', ''));
   var element = document.getElementById(id + " total");
-  element.innerHTML = formatter.format(qty * num);
-  if (document.getElementById("cost-total")) { updateTotal(); }
+  element.innerHTML = formatter.format(qty * Math.ceil(num));
 }
 
 var updateTotal = function(){
@@ -19,14 +22,14 @@ var updateTotal = function(){
   for (i = 0; i < costs.length; i++) {
     var price = costs[i].innerHTML;
     var num = price.replace(',', '')
-    num = parseFloat(num.replace('£', '')).toFixed(0);
-    total = total + parseInt(num);
+    num = parseFloat(num.replace('£', ''));
+    total = total + Math.ceil(num);
   }
   var totalCell = document.getElementById("cost-total");
   totalCell.innerHTML = formatter.format(total);
 }
 
-var updateLabour = function(type) {
+var updateLabour = function(id) {
   var days = document.getElementsByName(type);
   var cost = document.getElementsByName(type + '_cost');
   var total = document.getElementsByClassName("table-cell " + type + "-total");

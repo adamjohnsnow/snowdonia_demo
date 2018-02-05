@@ -112,7 +112,8 @@
 </form>
 <br><br>
 <div class="top-box">
-  <h3>Element Costs</h3>
+<h3>Element Costs</h3>
+<a href="/project-labour?project_id=<%= @project.id %>&version_id=<%= @current_version.id %>">Go to Labour Summary</a>
 <% if @current_version.current_version %>
 <form action="/new-element" method="post">
   <input type="hidden" name="project_id" value="<%= @project.id %>">
@@ -157,7 +158,7 @@
         <div class="table-cell grey-cell">£<%= sprintf('%.2f', element_totals[0][:markup]) %></div>
         <div class="table-cell grey-cell" id="<%= element.id %> cost">£<%= sprintf('%.2f', element_totals[0][:materials] + element_totals[0][:labour] + element_totals[0][:markup]) %></div>
         <div class="table-cell grey-cell">
-          <input class="single-digit" type="number" name="<%= element.id %> quantity" id="<%= element.id %> quantity" value="<%= element.quantity %>" onchange="updateCost(<%= element.id %>)">
+          <input class="single-digit" type="number" name="<%= element.id %> quantity" id="<%= element.id %> quantity" value="<%= element.quantity %>" onchange="updateElement(<%= element.id %>)">
         </div>
         <div class="table-cell grey-cell cost" id="<%= element.id %> total">jsfail</div>
         <div class="table-cell grey-cell">
@@ -184,7 +185,6 @@
       <div class="table-cell" id="cost-total">jsfail</div>
       <div class="table-cell"></div>
     </div>
-    <script>updateTotal()</script>
   </div>
 </div>
 <br>
@@ -193,6 +193,8 @@
 <% end %>
 </form>
 </div>
+<br><br>
 <script type="text/javascript">
+updateTotal()
 var list = document.getElementById('elements-list')
 </script>
