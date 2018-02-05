@@ -4,6 +4,7 @@ describe Material do
     Material.create(
       :description   => 'test material',
       :costcode_id   => 1,
+      :project_id => 1,
       :current_price => 2.5,
       :price_updated => (Date.today - 7)
     )

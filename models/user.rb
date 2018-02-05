@@ -19,19 +19,20 @@ class User
     self.password_digest = BCrypt::Password.create(pass)
   end
 
-  def self.create(firstname, surname, email, password, role)
+  def self.create(firstname, surname, email, password, role, level)
     @email = email
     return if duplicate_email?
-    new_user(firstname, surname, email, password, role)
+    new_user(firstname, surname, email, password, role, level)
     return @user
   end
 
-  def self.new_user(firstname, surname, email, password, role)
+  def self.new_user(firstname, surname, email, password, role, level)
     @user = User.new(
             firstname: firstname,
             surname: surname,
             email: email,
-            role: role
+            role: role,
+            level: level
             )
     @user.password = password
     @user.save!

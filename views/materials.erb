@@ -1,6 +1,6 @@
 
 <h3>Materials</h3>
-<form action="/update-materials" method="post">
+<form action="/update-all-materials" method="post">
 <div class="table border">
   <div class="table-body">
     <div class="table-row header-row">
@@ -24,7 +24,7 @@
     <% @materials.each do |material| %>
       <div class="table-row">
         <div class="table-cell"><%= material.description %></div>
-        <div class="table-cell"><%= material.costcode_id %></div>
+        <div class="table-cell"><%= material.costcode.code %></div>
         <div class="table-cell"><%= material.supplier %></div>
         <div class="table-cell"><%= material.unit %></div>
         <div class="table-cell">£

@@ -19,6 +19,7 @@ else
   @database = "postgres://localhost/factory_setting_dev"
 end
 
+
 p "Running on #{@database}"
 DataMapper.setup(:default, ENV['DATABASE_URL'] || @database)
 DataMapper::Property::String.length(255)

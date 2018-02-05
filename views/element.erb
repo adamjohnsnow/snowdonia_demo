@@ -1,76 +1,64 @@
-<h3><a href="/project-summary?project_id=<%= @element.project_version.project_id %>&version_id=<%= @element.project_version.id %>">Back to <%= @element.project_version.project.title %> Summary</a></h3>
-<div class="element-summary">
-<form action="/update-element" method="post">
-  <input type="hidden" name="element_id" value="<%= @element.id %>">
-  <div class="table">
-    <div class="table-body">
-      <div class="table-row">
-        <div class="table-cell">
-          Element Name <input type="text" name="title" value="<%= @element.title %>">
-        </div>
-      </div>
-      <div class="table-row">
-        <div class="table-cell">
-          Quantity<input type="number" name="quantity" value="<%= @element.quantity %>" style="width: 50px;">
-        </div>
-      </div>
-      <div class="table-row">
-        <div class="table-cell">
-          Build Start <input type="date" name="build_start" value="<%= @element.build_start %>">
-        </div>
-      </div>
-      <div class="table-row">
-        <div class="table-cell">
-          Build End <input type="date" name="build_end" value="<%= @element.build_end %>">
-        </div>
-      </div>
-      <div class="table-row">
-        <div class="table-cell">
-          Include in Quote
-          <% if @element.quote_include == true %>
-            <input type="checkbox" name="quote_include" checked>
-          <% else %>
-            <input type="checkbox" name="quote_include">
-          <% end %>
-        </div>
-      </div>
-      <div class="table-row">
-        <div class="table-cell">
-          Our Reference <input class="double-digit" type="text" name="reference" value="<%= @element.reference %>">
-          Client Reference <input class="double-digit" type="text" name="client_ref" value="<%= @element.client_ref %>">
-        </div>
-      </div>
+<script src="js/element.js"></script>
+
+<div class="top-box top-limit">
+  <h3><a href="/project-summary?project_id=<%= @element.project_version.project_id %>&version_id=<%= @element.project_version.id %>">Back to <%= @element.project_version.project.title %> Summary</a></h3>
+  <form action="/update-element" method="post">
+    <input type="hidden" name="element_id" value="<%= @element.id %>">
+    <div class="table">
+      <div class="table-body">
         <div class="table-row">
           <div class="table-cell">
-            Notes<br>
-            <textarea name="notes" cols="50" rows="4"><%= @element.notes %></textarea><br>
+            Element Name <input type="text" name="title" value="<%= @element.title %>">
           </div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">
+            Quantity<input type="number" name="quantity" value="<%= @element.quantity %>" style="width: 50px;">
+          </div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">
+            Build Start <input type="date" name="build_start" value="<%= @element.build_start %>">
+          </div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">
+            Build End <input type="date" name="build_end" value="<%= @element.build_end %>">
+          </div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">
+            Include in Quote
+            <% if @element.quote_include == true %>
+              <input type="checkbox" name="quote_include" checked>
+            <% else %>
+              <input type="checkbox" name="quote_include">
+            <% end %>
+          </div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">
+            Our Reference <input class="double-digit" type="text" name="reference" value="<%= @element.reference %>">
+            Client Reference <input class="double-digit" type="text" name="client_ref" value="<%= @element.client_ref %>">
+          </div>
+        </div>
+          <div class="table-row">
+            <div class="table-cell">
+              Notes<br>
+              <textarea name="notes" cols="50" rows="4"><%= @element.notes %></textarea><br>
+            </div>
+        </div>
       </div>
-    </div>
-</div>
-  <br>
-  <% if @element.project_version.current_version %>
-    <input class="btn" type="submit" value="Update Element">
-  <% end %>
-</form>
-<form action='/element' method="get">
-  Jump to elements
-  <select name="id" class="mat-dropdown">
-    <option value="" selected>--</option>
-    <% @element.project_version.elements.all(:order => [ :title.asc ]).each do |element| %>
-      <% if element.id != @element.id %>
-        <option value="<%= element.id %>">
-          <%= element.title %>
-        </option>
-      <% end %>
+  </div>
+    <br>
+    <% if @element.project_version.current_version %>
+      <input class="btn" type="submit" value="Update Element">
     <% end %>
-  </select>
-  <input class="btn" type="submit" value="Jump">
-</form>
-
+  </form>
 </div>
+
 <% if @element.project_version.current_version %>
-<div class="new-user" id="new-material">
+<div class="top-box top-limit" id="new-material">
   <h3>Add Material</h3>
   <form action="/add-material?element_id=<%= @element.id %>" method="post">
     Add New Material<br>
@@ -82,15 +70,17 @@
         </option>
       <% end %>
     </select>
-    <input type="hidden" name="project_id" value="<%= @element.project_version.project_id %>">
-    <input type="text" name="description" placeholder="Description">
+    <input type="hidden" name="project_id" value="<%= @element.project_version.project_id %>"><br>
+    <input type="text" name="description" placeholder="Description"><br>
     <input type="text" name="supplier" placeholder="Supplier">
-    <input type="text" name="unit" placeholder="Unit" class="double-digit">
-    £<input type="number" name="current_price"class="double-digit" step="0.01">per unit
     <br>
+    £<input type="number" name="current_price"class="double-digit" step="0.01">per
+    <input type="text" name="unit" placeholder="Unit" class="double-digit">
+    <br><br>
     <i>- or -</i>
     <br>
     Select Existing Material
+    <br>
     <select name="materials" class="mat-dropdown">
       <option value="" selected>--</option>
       <% @matlist.sort_by! { |mat| mat['description'] } %>
@@ -104,6 +94,7 @@
     <i> - or - </i>
     <br>
     Import from Element
+    <br>
     <select name="import" class="mat-dropdown">
       <option value="" selected>--</option>
       <% @element.project_version.elements.all(:order => [ :title.asc ]).each do |element| %>
@@ -119,45 +110,62 @@
   </form>
 </div>
 <% end %>
+
+<form action='/element' method="get">
+  Jump to elements
+  <select name="id" class="mat-dropdown">
+    <option value="" selected>--</option>
+    <% @element.project_version.elements.all(:order => [ :title.asc ]).each do |element| %>
+      <% if element.id != @element.id %>
+        <option value="<%= element.id %>">
+          <%= element.title %>
+        </option>
+      <% end %>
+    <% end %>
+  </select>
+  <input class="btn" type="submit" value="Jump">
+</form>
+<div class="top-box">
 <h3>Materials</h3>
 <form id='materials' action="/update-materials?element_id=<%= @element.id %>" method="post">
   <div class="table">
-    <div class="table-body">
+    <div class="table-body" id="materials-list">
       <div class="table-row header-row">
-        <div class="table-cell">#</div>
+        <div class="table-cell"></div>
         <div class="table-cell">Costcode</div>
         <div class="table-cell description">Description</div>
         <div class="table-cell">Supplier</div>
         <div class="table-cell">Unit Cost</div>
         <div class="table-cell">Units</div>
         <div class="table-cell">At Cost</div>
-        <div class="table-cell">With Mark-up</div>
         <div class="table-cell">Notes</div>
         <div class="table-cell">Units After Drawing</div>
       </div>
       <% @element.element_materials.all(:order => [ :mat_order.asc ]).each do |unit| %>
-        <div class="table-row">
-          <div class="table-cell">
-            <input name="<%= unit.id %> order" type="number" class="single-digit" value="<%= unit.mat_order %>">
+        <div class="table-row" id="<%= unit.id %>-row">
+          <div class="table-cell grey-cell">
+            <i class="fas fa-caret-up" onclick="reorderUp(<%= unit.id %>)"></i>
+            <i class="fas fa-caret-down" onclick="reorderDown(<%= unit.id %>)"></i>
+            <input name="<%= unit.id %> order" id="<%= unit.id %> order" type="hidden" value="<%= unit.mat_order %>">
           </div>
-          <div class="table-cell"><%= unit.material.costcode.code %></div>
-          <div class="table-cell description">
+          <div class="table-cell grey-cell"><%= unit.material.costcode.code %></div>
+          <div class="table-cell grey-cell description">
             <a href="/element-material?elmat_id=<%= unit.id %>"><%= unit.material.description %></a>
             </div>
-          <div class="table-cell"><%= unit.material.supplier %></div>
-          <div class="table-cell">£<%= sprintf('%.2f', unit.price) %></div>
-          <div class="table-cell">
-            <input name="<%= unit.id %> units" type="number" class="single-digit" value="<%= unit.units %>">
+          <div class="table-cell grey-cell"><%= unit.material.supplier %></div>
+          <div class="table-cell grey-cell" id="<%= unit.id %> price">£<%= sprintf('%.2f', unit.price) %></div>
+          <div class="table-cell grey-cell">
+            <input id="<%= unit.id %> units" name="<%= unit.id %> units" type="number" class="single-digit" value="<%= unit.units %>" onchange="updateCost(<%= unit.id %>)">
           </div>
-          <div class="table-cell">£<%= sprintf('%.2f', unit.units * unit.price) %></div>
-          <div class="table-cell">£<%= sprintf('%.2f', unit.units * unit.price * (1) ) %></div>
-          <div class="table-cell">
+          <div class="table-cell grey-cell cost" id="<%= unit.id %> cost">jsfail</div>
+          <div class="table-cell grey-cell">
             <textarea name="<%= unit.id %> notes" cols="15" rows="1"><%= unit.notes %></textarea>
           </div>
-          <div class="table-cell">
+          <div class="table-cell grey-cell">
             <input name="<%= unit.id %> after" type="number" class="single-digit" value="<%= unit.units_after_drawing %>">
           </div>
         </div>
+        <script>updateCost(<%=unit.id %>);</script>
       <% end %>
       <div class="table-row header-row">
         <div class="table-cell"></div>
@@ -166,8 +174,7 @@
         <div class="table-cell"></div>
         <div class="table-cell"></div>
         <div class="table-cell">Totals:</div>
-        <div class="table-cell">£1000.00</div>
-        <div class="table-cell">£1200.00</div>
+        <div class="table-cell" id="cost-total">jsfail</div>
         <div class="table-cell"></div>
         <div class="table-cell"></div>
       </div>
@@ -177,7 +184,11 @@
     <br><input class="btn" type="submit" value="Update Materials">
   <% end %>
 </form>
-<br>
+<script>updateTotal()</script>
+</div>
+
+<br><br>
+<div class="top-box">
 <h3>Labour</h3>
 <form action="/update-labour?element_labour_id=<%= @element.element_labour.id %>&element_id=<%= @element.id %>" method="post">
 <div class="table" id="labour">
@@ -194,95 +205,74 @@
       <div class="table-cell">Total</div>
     </div>
       <div class="table-row">
-        <% days = 0 %>
         <div class="table-cell">Days</div>
         <div class="table-cell">
-          <% days += @element.element_labour.carpentry %>
-          <input class="double-digit" type="number" name="carpentry" value="<%= @element.element_labour.carpentry %>">
+          <input class="double-digit lab-day" type="number" onclick="updateLabour('carpentry')" name="carpentry" value="<%= @element.element_labour.carpentry %>">
         </div>
         <div class="table-cell">
-          <% days += @element.element_labour.steelwork %>
-          <input class="double-digit" type="number" name="steelwork" value="<%= @element.element_labour.steelwork %>">
+          <input class="double-digit lab-day" type="number" onclick="updateLabour('steelwork')" name="steelwork" value="<%= @element.element_labour.steelwork %>">
         </div>
         <div class="table-cell">
-          <% days += @element.element_labour.scenic %>
-          <input class="double-digit" type="number" name="scenic" value="<%= @element.element_labour.scenic %>">
+          <input class="double-digit lab-day" type="number" onclick="updateLabour('scenic')" name="scenic" value="<%= @element.element_labour.scenic %>">
         </div>
         <div class="table-cell">
-          <% days += @element.element_labour.onsite_paint %>
-          <input class="double-digit" type="number" name="onsite_paint" value="<%= @element.element_labour.onsite_paint %>">
+          <input class="double-digit lab-day" type="number" onclick="updateLabour('onsite_paint')" name="onsite_paint" value="<%= @element.element_labour.onsite_paint %>">
         </div>
         <div class="table-cell">
-          <% days += @element.element_labour.on_site_day %>
-          <input class="double-digit" type="number" name="on_site_day" value="<%= @element.element_labour.on_site_day %>">
+          <input class="double-digit lab-day" type="number" onclick="updateLabour('on_site_day')" name="on_site_day" value="<%= @element.element_labour.on_site_day %>">
         </div>
         <div class="table-cell">
-          <% days += @element.element_labour.draughting %>
-          <input class="double-digit" type="number" name="draughting" value="<%= @element.element_labour.draughting %>">
+          <input class="double-digit lab-day" type="number" onclick="updateLabour('draughting')" name="draughting" value="<%= @element.element_labour.draughting %>">
         </div>
         <div class="table-cell">
-        <% days += @element.element_labour.project_management %>
-          <input class="double-digit" type="number" name="project_management" value="<%= @element.element_labour.project_management %>">
+          <input class="double-digit lab-day" type="number" onclick="updateLabour('project_management')" name="project_management" value="<%= @element.element_labour.project_management %>">
         </div>
-        <div class="table-cell"><%= days %></div>
+        <div class="table-cell" id="day-total">jsfail</div>
       </div>
       <div class="table-row">
         <% cost = 0 %>
         <div class="table-cell">Rate (£)</div>
         <div class="table-cell">
-          <% cost += @element.element_labour.carpentry_cost * @element.element_labour.carpentry %>
-          <input class="double-digit" type="text" name="carpentry_cost" value="<%= sprintf('%.2f', @element.element_labour.carpentry_cost) %>">
+          <input class="double-digit lab-cost" type="number" onclick="updateLabour('carpentry')" name="carpentry_cost" value="<%= @element.element_labour.carpentry_cost %>">
         </div>
         <div class="table-cell">
-          <% cost += @element.element_labour.steelwork_cost * @element.element_labour.steelwork %>
-          <input class="double-digit" type="text" name="steelwork_cost" value="<%= sprintf('%.2f', @element.element_labour.steelwork_cost) %>">
-        </div>
-        <% cost += @element.element_labour.scenic_cost * @element.element_labour.scenic %>
-        <div class="table-cell">
-          <input class="double-digit" type="text" name="scenic_cost" value="<%= sprintf('%.2f', @element.element_labour.scenic_cost) %>">
+          <input class="double-digit lab-cost" type="number" onclick="updateLabour('steelwork')" name="steelwork_cost" value="<%= @element.element_labour.steelwork_cost %>">
         </div>
         <div class="table-cell">
-          <% cost += @element.element_labour.onsite_paint_cost * @element.element_labour.onsite_paint %>
-          <input class="double-digit" type="text" name="onsite_paint_cost" value="<%= sprintf('%.2f', @element.element_labour.onsite_paint_cost) %>">
+          <input class="double-digit lab-cost" type="number" onclick="updateLabour('scenic')" name="scenic_cost" value="<%= @element.element_labour.scenic_cost %>">
         </div>
         <div class="table-cell">
-          <% cost += @element.element_labour.on_site_day_cost * @element.element_labour.on_site_day %>
-          <input class="double-digit" type="text" name="on_site_day_cost" value="<%= sprintf('%.2f', @element.element_labour.on_site_day_cost) %>">
+          <input class="double-digit lab-cost" type="number" onclick="updateLabour('onsite_paint')" name="onsite_paint_cost" value="<%= @element.element_labour.onsite_paint_cost %>">
         </div>
         <div class="table-cell">
-          <% cost += @element.element_labour.draughting_cost * @element.element_labour.draughting %>
-          <input class="double-digit" type="text" name="draughting_cost" value="<%= sprintf('%.2f', @element.element_labour.draughting_cost) %>">
+          <input class="double-digit lab-cost" type="number" onclick="updateLabour('on_site_day')" name="on_site_day_cost" value="<%= @element.element_labour.on_site_day_cost %>">
         </div>
         <div class="table-cell">
-          <% cost += @element.element_labour.project_management_cost * @element.element_labour.project_management %>
-          <input class="double-digit" type="text" name="project_management_cost" value="<%= sprintf('%.2f', @element.element_labour.project_management_cost) %>">
+          <input class="double-digit lab-cost" type="number" onclick="updateLabour('draughting')" name="draughting_cost" value="<%= @element.element_labour.draughting_cost %>">
+        </div>
+        <div class="table-cell">
+          <input class="double-digit lab-cost" type="number" onclick="updateLabour('project_management')" name="project_management_cost" value="<%= @element.element_labour.project_management_cost %>">
         </div>
         <div class="table-cell"></div>
       </div>
       <div class="table-row header-row">
         <div class="table-cell">Cost</div>
-        <div class="table-cell">
-          £<%= sprintf('%.2f', @element.element_labour.carpentry_cost * @element.element_labour.carpentry) %>
-        </div>
-        <div class="table-cell">
-          £<%= sprintf('%.2f', @element.element_labour.steelwork_cost * @element.element_labour.steelwork) %>
-        </div>
-        <div class="table-cell">
-          £<%= sprintf('%.2f', @element.element_labour.scenic_cost * @element.element_labour.scenic) %>
-        </div>
-        <div class="table-cell">
-          £<%= sprintf('%.2f', @element.element_labour.onsite_paint_cost * @element.element_labour.onsite_paint) %>
-        </div>
-        <div class="table-cell">
-          £<%= sprintf('%.2f', @element.element_labour.on_site_day_cost * @element.element_labour.on_site_day) %>
-        </div>
-        <div class="table-cell">
-          £<%= sprintf('%.2f', @element.element_labour.draughting_cost * @element.element_labour.draughting) %>
-        </div>
-        <div class="table-cell">
-          £<%= sprintf('%.2f', @element.element_labour.project_management_cost * @element.element_labour.project_management) %>
-        </div>
-        <div class="table-cell">£<%= sprintf('%.2f', cost ) %></div>
+        <div class="table-cell carpentry-total">jsfail</div>
+        <script>updateLabour('carpentry');</script>
+        <div class="table-cell steelwork-total">jsfail</div>
+        <script>updateLabour('steelwork');</script>
+        <div class="table-cell scenic-total">jsfail</div>
+        <script>updateLabour('scenic');</script>
+        <div class="table-cell onsite_paint-total">jsfail</div>
+        <script>updateLabour('onsite_paint');</script>
+        <div class="table-cell on_site_day-total">jsfail</div>
+        <script>updateLabour('on_site_day');</script>
+        <div class="table-cell draughting-total">jsfail</div>
+        <script>updateLabour('draughting');</script>
+        <div class="table-cell project_management-total">jsfail</div>
+        <script>updateLabour('project_management');</script>
+        <div class="table-cell" id="lab-total">jsfail</div>
+        <script>updateLabourTotal()</script>
       </div>
   </div>
 </div>
@@ -291,3 +281,9 @@
   <input class="btn" type="submit" value="Update Labour">
 <% end %>
 </form>
+</div>
+<script type="text/javascript">
+var list = document.getElementById('materials-list')
+console.log(list.childNodes);
+
+</script>

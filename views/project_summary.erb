@@ -1,6 +1,6 @@
 <h2><%= @project.title %> Summary</h2>
 <h3>Version: <%= @current_version.version_name %></h3>
-<form class="" action="/save-project" method="post">
+<form class="top-box" action="/save-project" method="post">
   <input type="hidden" name="project_id" value="<%= @project.id %>">
   <div class="table">
     <div class="table-body">
@@ -108,6 +108,8 @@
   <input class="btn" type="submit" value="Save Project">
   <% end %>
 </form>
+<div class="top-box">
+  <h3>Element Costs</h3>
 <% if @current_version.current_version %>
 <form action="/new-element" method="post">
   <input type="hidden" name="project_id" value="<%= @project.id %>">
@@ -139,24 +141,24 @@
     </div>
     <% @current_version.elements.each do |element| %>
       <div class="table-row">
-        <div class="table-cell" style="width: 10px">
+        <div class="table-cell grey-cell" style="width: 10px">
           <input class="single-digit" type="number" name="<%= element.id %> el_order" value="<%= element.el_order %>">
         </div>
-        <div class="table-cell"><a href="/element?id=<%= element.id %>"><%= element.title %></a></div>
-        <div class="table-cell"><%= element.reference %></div>
-        <div class="table-cell"><%= element.client_ref %></div>
-        <div class="table-cell"></div>
-        <div class="table-cell"></div>
-        <div class="table-cell"></div>
-        <div class="table-cell"></div>
-        <div class="table-cell"></div>
-        <div class="table-cell">
+        <div class="table-cell grey-cell"><a href="/element?id=<%= element.id %>"><%= element.title %></a></div>
+        <div class="table-cell grey-cell"><%= element.reference %></div>
+        <div class="table-cell grey-cell"><%= element.client_ref %></div>
+        <div class="table-cell grey-cell"></div>
+        <div class="table-cell grey-cell"></div>
+        <div class="table-cell grey-cell"></div>
+        <div class="table-cell grey-cell"></div>
+        <div class="table-cell grey-cell"></div>
+        <div class="table-cell grey-cell">
           <input class="single-digit" type="number" name="<%= element.id %> quantity" value="<%= element.quantity %>">
         </div>
-        <div class="table-cell"></div>
-        <div class="table-cell"></div>
-        <div class="table-cell"></div>
-        <div class="table-cell">
+        <div class="table-cell grey-cell"></div>
+        <div class="table-cell grey-cell"></div>
+        <div class="table-cell grey-cell"></div>
+        <div class="table-cell grey-cell">
           <% if element.quote_include == true %>
             <input type="checkbox" name="<%= element.id %> include" checked>
           <% else %>
@@ -165,8 +167,11 @@
         </div>
       </div>
     <% end %>
+  </div>
 </div>
+<br>
 <% if @current_version.current_version %>
 <input class="btn" type="submit" value="Save Changes">
 <% end %>
 </form>
+</div>

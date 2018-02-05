@@ -58,17 +58,6 @@ class FactorySettingsElemental < Sinatra::Base
     redirect '/home'
   end
 
-  get '/users' do
-    redirect '/home' if session[:user_auth] < 3
-    @users = User.all
-    erb :users
-  end
-
-  post '/new-user' do
-    redirect '/home' if session[:user_auth] < 3
-    params[:password] == params[:verify_password] ? register_user(params) : bad_password
-  end
-
   post '/new-project' do
     project = new_project(params)
     redirect '/project-summary?project_id=' + project.id.to_s
@@ -214,23 +203,6 @@ class FactorySettingsElemental < Sinatra::Base
     erb :element_material
   end
 
-  get '/edit-user' do
-    redirect '/home' if session[:user_auth] < 3
-    @user = User.get(params[:id])
-    erb :edit_user
-  end
-
-  post '/edit-user' do
-    redirect '/home' if session[:user_auth] < 3
-    update_user(params)
-    redirect '/users'
-  end
-
-  get '/logout' do
-    session.clear
-    redirect '/'
-  end
-
   private
 
   def get_dropdowns
@@ -239,29 +211,6 @@ class FactorySettingsElemental < Sinatra::Base
       sites: Site.all,
       users: User.all(:order => [ :firstname.asc ])
     }
-  end
-
-  def register_user(params)
-    @user = User.create(params[:firstname], params[:surname],
-    params[:email], params[:password], params[:role])
-    redirect '/users'
-  end
-
-  def bad_password
-    flash.next[:notice] = 'Passwords did not match, try again'
-    redirect '/users'
-  end
-
-  def bad_sign_in
-    flash.next[:notice] = 'you could not be signed in, try again'
-    redirect '/'
-  end
-
-  def update_user(params)
-    user = User.get(params[:user_id])
-    params.tap{ |keys| keys.delete(:captures) && keys.delete(:user_id) }
-    user.update(params)
-    user.save!
   end
 
   def new_project(params)
@@ -280,14 +229,14 @@ class FactorySettingsElemental < Sinatra::Base
 
   def update_project(params)
     update_version(params)
+    current_version = @project.project_versions.last(:current_version => true)
+    current_version.update(:status => params[:status], :last_update => Date.today.strftime("%d/%m/%Y") + ' by ' + session[:user])
     params.tap{ |keys| keys.delete(:captures) &&
       keys.delete(:project_id) &&
       keys.delete(:status) &&
       keys.delete(:contracted)
     }
     @project.update(params)
-    current_version = @project.project_versions.last(:current_version => true)
-    current_version.update(:status => params[:status], :last_update => Date.today.strftime("%d/%m/%Y") + ' by ' + session[:user])
     @project.id.to_s
   end
 
@@ -371,3 +320,5 @@ class FactorySettingsElemental < Sinatra::Base
     Element.get(@el_id.to_i).update(:quote_include => false) if !params[inc_param]
   end
 end
+
+require_relative 'routes/init'

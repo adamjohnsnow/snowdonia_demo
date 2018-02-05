@@ -5,9 +5,9 @@ def set_up_project
     'Snow',
     'adamjohnsnow@icloud.com',
     'password',
-    'Developer'
+    'Developer',
+    3
   )
-  user.update(:level => 3)
   client = Client.create(
     :name => "Made Up Client",
     :address => '1 Client Road, Clientville, CL1 1CL',
