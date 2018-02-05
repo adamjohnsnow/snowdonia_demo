@@ -7,9 +7,9 @@ class ElementMaterial
   property :units, Integer, :default => 1
   property :notes, String
   property :price, Float
-  property :contingency, Float
-  property :overhead, Float
-  property :profit, Float
+  property :contingency, Float, :default => 0.1
+  property :overhead, Float, :default => 0.385
+  property :profit, Float, :default => 0.1
   property :units_after_drawing, Integer
   property :subcontract, Boolean, :default => false
   property :last_update, String

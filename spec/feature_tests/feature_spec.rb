@@ -63,6 +63,31 @@ describe 'feature test' do
             .element_materials.first.
             material.description).to eq 'Test Material'
     end
+
+    it 'calculates totals' do
+      project_version = ProjectVersion.create(
+        :version_name => 'v1',
+        :project_id => @project.id
+      )
+      element = Element.create(
+        :project_version_id => project_version.id,
+        :title => 'Test Element'
+      )
+      ElementLabour.create(
+        :element_id => element.id,
+        :carpentry => 2.0
+      )
+      ElementMaterial.create(
+        :element_id => element.id,
+        :material_id => 1,
+        :price => @material.current_price,
+        :units => 3
+      )
+      total = Totals.new(project_version)
+      expect(total.project_summary[0][:markup]).to eq 254.46
+      expect(total.project_summary[0][:labour]).to eq 360.00
+      expect(total.project_summary[0][:materials]).to eq 16.5
+    end
   end
 
   context 'updating and itterating' do

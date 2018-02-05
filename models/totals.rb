@@ -1,51 +1,41 @@
 class Totals
-attr_reader :materials, :labour, :days
+attr_reader :project_summary
 
-  def initialize
-    @materials = { at_cost: 0, markup: 0, with_markup: 0}
-    @labour = { at_cost: 0, markup: 0, with_markup: 0}
-    @days = { draw: 0, build: 0, paint: 0, site: 0, pm: 0}
-  end
-
-  def summarise_project(project)
-    project.elements.each { |element| count_costs(element.element_materials, element.quantity) }
-    return self
-  end
-
-  def summarise_element(element)
-    @materials = { at_cost: 0, markup: 0, with_markup: 0}
-    @labour = { at_cost: 0, markup: 0, with_markup: 0}
-    @days = { draw: 0, build: 0, paint: 0, site: 0, pm: 0}
-    count_costs(element, 1)
-  end
-
-  def count_costs(element, quantity)
-    element.each do |unit|
-      if unit.material.category.type == 'Labour'
-        subtotal = @labour
-        count_days(unit, quantity)
-      else
-        subtotal = @materials
-      end
-      cost = unit.material.unit_cost * unit.units
-      subtotal[:at_cost] += (cost * quantity)
-      subtotal[:markup] += (cost * unit.markup * quantity)
-      subtotal[:with_markup] += (cost * (1 + unit.markup) * quantity)
+  def initialize(project)
+    @project_summary = []
+    project.elements.each do |element|
+      @element_summary = { id: element.id, materials: 0, labour: 0, markup: 0 }
+      count_costs(element)
+      @project_summary << @element_summary
     end
+    return @project_summary
   end
 
-  def count_days(unit, quantity)
-    case unit.material.description
-    when 'Project Management'
-      @days[:pm] += (unit.units * quantity)
-    when 'Draughting'
-      @days[:draw] += (unit.units * quantity)
-    when 'On Site days'
-      @days[:site] += (unit.units * quantity)
-    when /.Paint/
-      @days[:paint] += (unit.units * quantity)
-    else
-      @days[:build] += (unit.units * quantity)
+  def count_costs(element)
+    @element_summary[:labour] = calc_labour(element.element_labour)
+    element.element_materials.each do |material|
+      @element_summary[:materials] += material.price * material.units
+      @element_summary[:markup] += calc_markup(material.price, material, material.units)
     end
+    @element_summary[:markup] += calc_markup(@element_summary[:labour], element, 1)
+  end
+
+  def calc_markup(cost, material, qty)
+    contingency = cost * material.contingency
+    overhead = (cost + contingency) * material.overhead
+    profit = (cost + contingency + overhead) * material.profit
+    return ((profit + contingency + overhead) * qty).round(2)
+  end
+
+  def calc_labour(labour)
+    total = 0
+    total += (labour[:carpentry] * labour[:carpentry_cost])
+    total += (labour[:steelwork] * labour[:steelwork_cost])
+    total += (labour[:scenic] * labour[:scenic_cost])
+    total += (labour[:onsite_paint] * labour[:onsite_paint_cost])
+    total += (labour[:on_site_day] * labour[:on_site_day_cost])
+    total += (labour[:draughting] * labour[:draughting_cost])
+    total += (labour[:project_management] * labour[:project_management_cost])
+    return total
   end
 end

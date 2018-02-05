@@ -4,8 +4,8 @@
       "/Users/adamsnow/OneDrive/MacBook/Coding/work_projects/factory_settings/spec/feature_tests/feature_spec.rb": [
         1,
         1,
-        7,
-        7,
+        8,
+        8,
         null,
         null,
         null,
@@ -66,6 +66,32 @@
         null,
         null,
         null,
+        null,
+        null,
+        1,
+        1,
+        null,
+        null,
+        null,
+        1,
+        null,
+        null,
+        null,
+        1,
+        null,
+        null,
+        null,
+        1,
+        null,
+        null,
+        null,
+        null,
+        null,
+        1,
+        1,
+        1,
+        1,
+        1,
         null,
         null,
         null,
@@ -375,7 +401,7 @@
         null
       ]
     },
-    "timestamp": 1517831566
+    "timestamp": 1517848648
   },
   "Unit Tests": {
     "coverage": {

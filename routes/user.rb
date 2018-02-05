@@ -5,6 +5,15 @@ class FactorySettingsElemental < Sinatra::Base
     erb :users
   end
 
+  post '/sign-in' do
+    @user = User.login(params)
+    bad_sign_in if @user.nil?
+    session[:user] = @user.firstname + ' ' + @user.surname
+    session[:user_id] = @user.id
+    session[:user_auth] = @user.level
+    redirect '/home'
+  end
+
   post '/new-user' do
     redirect '/home' if session[:user_auth] < 3
     params[:password] == params[:verify_password] ? register_user(params) : bad_password

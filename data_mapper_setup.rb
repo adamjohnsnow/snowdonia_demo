@@ -12,6 +12,7 @@ require_relative './models/element_labour'
 require_relative './models/project_version'
 require_relative './models/version_updater'
 require_relative './models/price_updater'
+require_relative './models/totals'
 
 if ENV['RACK_ENV'] == 'test'
   @database = "postgres://localhost/factory_setting_test"

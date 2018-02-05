@@ -1,7 +1,8 @@
 <script src="js/element.js"></script>
 
 <div class="top-box top-limit">
-  <h3><a href="/project-summary?project_id=<%= @element.project_version.project_id %>&version_id=<%= @element.project_version.id %>">Back to <%= @element.project_version.project.title %> Summary</a></h3>
+  <h3>Element Summary</h3>
+  <a href="/project-summary?project_id=<%= @element.project_version.project_id %>&version_id=<%= @element.project_version.id %>"><i class="fas fa-caret-left"></i> Back to project summary</a>
   <form action="/update-element" method="post">
     <input type="hidden" name="element_id" value="<%= @element.id %>">
     <div class="table">
@@ -69,8 +70,8 @@
           (<%= code.code %>) <%= code.description %>
         </option>
       <% end %>
-    </select>
-    <input type="hidden" name="project_id" value="<%= @element.project_version.project_id %>"><br>
+    </select><br>
+    <input type="hidden" name="project_id" value="<%= @element.project_version.project_id %>">
     <input type="text" name="description" placeholder="Description"><br>
     <input type="text" name="supplier" placeholder="Supplier">
     <br>
