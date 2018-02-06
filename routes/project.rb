@@ -13,28 +13,14 @@ class FactorySettingsElemental < Sinatra::Base
     else
       @current_version = @project.project_versions.last(:current_version => true)
     end
-    @totals = Totals.new(@current_version).project_summary
+    @totals = Totals.new.summarise_project(@current_version)
     @current_version.elements.sort_by! { |el| el['el_order']}
     @pm = User.get(@project.user_id)
     erb :project_summary
   end
 
-  get '/project-labour' do
-    @dropdowns = get_dropdowns
-    @project = Project.get(params[:project_id])
-    if params[:version_id]
-      @current_version = ProjectVersion.get(params[:version_id])
-    else
-      @current_version = @project.project_versions.last(:current_version => true)
-    end
-    @totals = Totals.new(@current_version).project_summary
-    @current_version.elements.sort_by! { |el| el['el_order']}
-    @pm = User.get(@project.user_id)
-    erb :project_labour
-  end
-
   post '/save-project' do
-    project_id = update_project(params)
+    project_id = do_update_project(params)
     redirect '/project-summary?project_id=' + project_id
   end
 
@@ -71,6 +57,24 @@ class FactorySettingsElemental < Sinatra::Base
     redirect '/element?id=' + params[:element_id] + '#materials'
   end
 
+  get '/project-labour' do
+    @dropdowns = get_dropdowns
+    @project = Project.get(params[:project_id])
+    if params[:version_id]
+      @current_version = ProjectVersion.get(params[:version_id])
+    else
+      @current_version = @project.project_versions.last(:current_version => true)
+    end
+    @current_version.elements.sort_by! { |el| el['el_order']}
+    @pm = User.get(@project.user_id)
+    erb :project_labour
+  end
+
+  post '/update-labour' do
+    update_labour(params)
+    redirect '/project-labour?project_id=' + params[:project_id] + '&version_id=' + params[:version_id] + '#labour-list'
+  end
+
   get '/versions' do
     @project = Project.get(params[:id])
     erb :versions
@@ -89,16 +93,6 @@ class FactorySettingsElemental < Sinatra::Base
     redirect '/project-summary?project_id=' + params[:project_id]
   end
 
-  post '/add-material' do
-    @el_id = params[:element_id]
-    params.tap{ |keys| keys.delete(:element_id) && keys.delete(:captures) }
-    process_material(params)
-    Element.get(@el_id).project_version.update(
-      :last_update => Date.today.strftime("%d/%m/%Y") + ' by ' + session[:user]
-    )
-    redirect '/element?id=' + @el_id + '#new-material'
-  end
-
   private
 
   def new_project(params)
@@ -115,23 +109,23 @@ class FactorySettingsElemental < Sinatra::Base
     return project
   end
 
-  def update_project(params)
+  def do_update_project(params)
     update_version(params)
-    current_version = @project.project_versions.last(:current_version => true)
-    current_version.update(:status => params[:status], :last_update => Date.today.strftime("%d/%m/%Y") + ' by ' + session[:user])
-    params.tap{ |keys| keys.delete(:captures) &&
-      keys.delete(:project_id) &&
-      keys.delete(:status) &&
-      keys.delete(:contracted)
-    }
-    @project.update(params)
+    update_project(params)
     @project.id.to_s
   end
 
   def update_version(params)
     @project = Project.get(params[:project_id])
     current_version = @project.project_versions.last(:current_version => true)
-    current_version.update(:status => params[:status], :last_update => Date.today.strftime("%d/%m/%Y") + ' by ' + session[:user])
+    current_version.update(
+      :status => params[:status],
+      :last_update => Date.today.strftime("%d/%m/%Y") + ' by ' + session[:user],
+      :contingency => params[:contingency].to_f,
+      :overhead => params[:overhead].to_f,
+      :profit => params[:profit].to_f,
+      :subcontractor => params[:subcontractor].to_f
+    )
     if params[:contracted] == 'on'
       @project.project_versions.all.update(:contracted => false)
       current_version.update(:contracted => true)
@@ -140,45 +134,26 @@ class FactorySettingsElemental < Sinatra::Base
     end
   end
 
+  def update_project(params)
+    @project.update(
+      :title => params[:title],
+      :job_code => params[:job_code],
+      :user_id => params[:user_id],
+      :workshop_deadline => params[:workshop_deadline],
+      :on_site => params[:on_site],
+      :client_id => params[:client_id],
+      :site_id => params[:site_id],
+      :summary => params[:summary],
+      :technical_requirements => params[:technical_requirements]
+    )
+  end
+
   def get_next_mat_order
     materials = ElementMaterial.all(:element_id => @el_id)
     if materials == []
       1
     else
       materials.max_by{ |mat| mat[:mat_order]}[:mat_order] + 1
-    end
-  end
-
-  def process_material(params)
-    if params[:materials] != ""
-      add_material(params[:materials].to_i)
-    elsif params[:import] != ""
-      import_materials(params[:import])
-    else
-      make_new_material(params)
-    end
-  end
-
-  def add_material(id)
-    ElementMaterial.create(
-      :element_id => @el_id,
-      :material_id => id,
-      :last_update => Date.today,
-      :price => Material.get(id).current_price,
-      :mat_order => get_next_mat_order
-    )
-  end
-
-  def make_new_material(params)
-    params.tap{ |keys| keys.delete(:materials) && keys.delete(:import) }
-    project_id = Element.get(@el_id).project_version.project_id
-    new_material = Material.create(params)
-    add_material(new_material.id)
-  end
-
-  def import_materials(id)
-    Element.get(id).element_materials.each do |material|
-      add_material(material.material_id)
     end
   end
 
@@ -199,4 +174,14 @@ class FactorySettingsElemental < Sinatra::Base
     Element.get(@el_id.to_i).update(:quote_include => false) if !params[inc_param]
   end
 
+  def update_labour(params)
+    @current_version = ProjectVersion.get(params[:version_id])
+    params.each do |param|
+      id_sym = param[0].split
+      if id_sym.length == 2
+        labour = ElementLabour.get(id_sym[0].to_i)
+        labour.update(id_sym[1].to_sym => param[1])
+      end
+    end
+  end
 end

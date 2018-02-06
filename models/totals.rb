@@ -1,7 +1,7 @@
 class Totals
 attr_reader :project_summary
 
-  def initialize(project)
+  def summarise_project(project)
     @project_summary = []
     project.elements.each do |element|
       @element_summary = { id: element.id, materials: 0, labour: 0, markup: 0 }
@@ -21,9 +21,9 @@ attr_reader :project_summary
   end
 
   def calc_markup(cost, material, qty)
-    contingency = cost * material.contingency
-    overhead = (cost + contingency) * material.overhead
-    profit = (cost + contingency + overhead) * material.profit
+    contingency = cost * (material.contingency / 100)
+    overhead = (cost + contingency) * (material.overhead / 100)
+    profit = (cost + contingency + overhead) * (material.profit / 100)
     return ((profit + contingency + overhead) * qty).round(2)
   end
 

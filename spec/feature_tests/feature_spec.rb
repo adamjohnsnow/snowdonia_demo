@@ -83,10 +83,10 @@ describe 'feature test' do
         :price => @material.current_price,
         :units => 3
       )
-      total = Totals.new(project_version)
-      expect(total.project_summary[0][:markup]).to eq 254.46
-      expect(total.project_summary[0][:labour]).to eq 360.00
-      expect(total.project_summary[0][:materials]).to eq 16.5
+      total = Totals.new.summarise_project(project_version)
+      expect(total[0][:markup]).to eq 254.46
+      expect(total[0][:labour]).to eq 360.00
+      expect(total[0][:materials]).to eq 16.5
     end
   end
 

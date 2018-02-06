@@ -11,6 +11,10 @@ class ProjectVersion
   property :created_by, String
   property :status, String, :default => 'New'
   property :last_update, String
+  property :contingency, Float, :default => 10
+  property :overhead, Float, :default => 38.5
+  property :profit, Float, :default => 10
+  property :subcontractor, Float, :default => 20
 
   belongs_to :project
   has n, :elements

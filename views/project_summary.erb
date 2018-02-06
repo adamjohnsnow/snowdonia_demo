@@ -97,15 +97,38 @@
       <div class="table-row">
         <div class="table-cell">
           Project Summary<br>
-          <textarea cols="50" rows="4" name="summary"><%= @project.summary %></textarea>
+          <textarea cols="50" rows="3" name="summary"><%= @project.summary %></textarea>
         </div>
         <div class="table-cell">
           Technical Site Requirements<br>
-          <textarea cols="50" rows="4" name="technical_requirements"><%= @project.technical_requirements %></textarea>
+          <textarea cols="50" rows="3" name="technical_requirements"><%= @project.technical_requirements %></textarea>
         </div>
       </div>
     </div>
   </div><br>
+  Default Markups (%)
+  <br>
+  <div class="table">
+    <div class="table-row">
+      <div class="table-cell">
+        Contingency<br>
+        <input type="number" class="single-digit" step="0.5" name="contingency" value="<%= @current_version.contingency %>">
+      </div>
+      <div class="table-cell">
+        Overhead<br>
+        <input type="number" class="single-digit" step="0.5" name="overhead" value="<%= @current_version.overhead %>">
+      </div>
+      <div class="table-cell">
+        Profit<br>
+        <input type="number" class="single-digit" step="0.5" name="profit" value="<%= @current_version.profit %>">
+      </div>
+      <div class="table-cell">
+        Subcontractor<br>
+        <input type="number" class="single-digit" step="0.5" name="subcontractor" value="<%= @current_version.subcontractor %>">
+      </div>
+    </div>
+  </div>
+  <br>
   <% if @current_version.current_version %>
   <input class="btn" type="submit" value="Save Project">
   <% end %>
@@ -128,8 +151,8 @@
 <div class="table">
   <div class="table-body" id="elements-list">
     <div class="table-row header-row">
-      <div class="table-cell" style="width: 10px">#</div>
-      <div class="table-cell" style="min-width: 130px">Element</div>
+      <div class="table-cell" style="width: 10px"></div>
+      <div class="table-cell" style="min-width: 200px">Element</div>
       <div class="table-cell">Our Ref</div>
       <div class="table-cell">Client Ref</div>
       <div class="table-cell">Materials</div>
