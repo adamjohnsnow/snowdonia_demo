@@ -33,12 +33,13 @@
       <div class="table-cell">Lead PM</div>
     </div>
     <% @user.projects.each do |project| %>
+    <% current_version = project.project_versions.last(:current_version => true) %>
       <div class="table-row">
         <div class="table-cell"><a href="/project-summary?project_id=<%= project.id %>"><%= project.title %></a></div>
         <div class="table-cell"><%= project.workshop_deadline.strftime("%d/%m/%Y") %></div>
         <div class="table-cell"><%= project.on_site.strftime("%d/%m/%Y") %></div>
         <div class="table-cell"><%= project.client.name %></div>
-        <div class="table-cell"><%= project.status %></div>
+        <div class="table-cell"><%= current_version.status %></div>
         <div class="table-cell"><%= 'Yes' if project.user_id == @user.id %></div>
       </div>
     <% end %>
