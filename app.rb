@@ -2,7 +2,6 @@ require 'sinatra/base'
 require 'sinatra/flash'
 require 'pry'
 require_relative './data_mapper_setup'
-require_relative './models/totals'
 
 ENV['RACK_ENV'] ||= 'development'
 

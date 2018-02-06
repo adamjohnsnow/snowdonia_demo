@@ -32,6 +32,7 @@ class FactorySettingsElemental < Sinatra::Base
       :last_update => Date.today.strftime("%d/%m/%Y") + ' by ' + session[:user]
     )
     loop_through_elements(params)
+    MarkupUpdater.new.update_project(current_version)
     redirect '/project-summary?project_id=' + params[:project_id]
   end
 

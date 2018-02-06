@@ -51,7 +51,7 @@ class FactorySettingsElemental < Sinatra::Base
   def make_new_element(params)
     next_order = get_next_order(params[:project_v_id])
     current_version = ProjectVersion.get(params[:project_v_id])
-    Element.create(
+    el = Element.create(
       :title => params[:title],
       :project_version_id => params[:project_v_id],
       :reference => params[:reference],
@@ -76,6 +76,7 @@ class FactorySettingsElemental < Sinatra::Base
     Element.get(@element_id).update(
       :last_update => Date.today.strftime("%d/%m/%Y") + ' by ' + session[:user]
     )
+    MarkupUpdater.new.update_element(Element.get(@element_id))
   end
 
   def get_next_order(id)

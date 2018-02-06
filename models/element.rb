@@ -11,10 +11,10 @@ class Element
   property :notes, Text
   property :build_start, Date
   property :build_end, Date
-  property :contingency, Float, :default => 10
+  property :contingency, Float, :default => 10.0
   property :overhead, Float, :default => 38.5
-  property :profit, Float, :default => 10
-  property :subcontractor, Float, :default => 20
+  property :profit, Float, :default => 10.0
+  property :subcontractor, Float, :default => 20.0
   property :markup_defaults, Boolean, :default => true
   property :quote_include, Boolean, :default => true
   property :component, Boolean, :default => false
