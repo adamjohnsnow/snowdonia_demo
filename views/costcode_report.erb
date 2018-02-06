@@ -1,0 +1,78 @@
+<a href="/project-summary?project_id=<%= @project.project.id %>&version_id=<%= @project.id %>">Back to Project Summary</a>
+<h2>Costcode Breakdown</h2>
+<h3><%= @project.project.title %></h3>
+<div class="table">
+  <div class="table-row header-row">
+    <div class="table-cell" style="width: 15px;">
+    </div>
+    <div class="table-cell" style="width: 85px;">
+      Costcode
+    </div>
+    <div class="table-cell" style="width: 180px;">
+      Description
+    </div>
+    <div class="table-cell" style="width: 125px;">
+      Cost
+    </div>
+    <div class="table-cell" style="width: 125px;">
+    </div>
+  </div>
+<% @summary.each do |cc| %>
+<% if cc[:materials].length > 0 %>
+  <div class="table-row">
+    <div class="table-cell grey-cell">
+      <i class="far fa-plus-square" id="expand <%= cc[:code] %>" onclick="expand('<%= cc[:code] %>')"></i>
+      <i class="far fa-minus-square" id="collapse <%= cc[:code] %>" onclick="collapse('<%= cc[:code] %>')" style="display: none;"></i>
+    </div>
+    <div class="table-cell grey-cell">
+      <%= cc[:code] %>
+    </div>
+    <div class="table-cell grey-cell">
+      <%= cc[:description]%>
+    </div>
+    <div class="table-cell grey-cell">
+    </div>
+    <div class="table-cell grey-cell">
+    </div>
+  </div>
+    <% cc[:materials].each do |mat| %>
+        <div class="table-row <%= cc[:code] %>" style="display: none;">
+          <div class="table-cell"></div>
+          <div class="table-cell"></div>
+          <div class="table-cell">
+            <%= mat.description %>
+          </div>
+          <div class="table-cell">
+            £<%= sprintf('%.2f', mat.current_price) %> per <%= mat.unit %>
+          </div>
+          <div class="table-cell">
+            <%= mat.supplier %>
+          </div>
+        </div>
+    <% end %>
+  <% end %>
+<% end %>
+</div>
+<script>
+var expand = function(id) {
+  var plus = document.getElementById('expand ' + id);
+  var minus = document.getElementById('collapse ' + id);
+  var rows = document.getElementsByClassName('table-row ' + id);
+  plus.style.display = 'none';
+  minus.style.display = 'inline';
+  for (i = 0; i < rows.length; i++) {
+    rows[i].style.display = 'table-row'
+  }
+}
+var collapse = function(id) {
+  var plus = document.getElementById('expand ' + id);
+  var minus = document.getElementById('collapse ' + id);
+  var rows = document.getElementsByClassName('table-row ' + id);
+  console.log('table-row' + id);
+  plus.style.display = 'inline';
+  minus.style.display = 'none';
+  for (i = 0; i < rows.length; i++) {
+    rows[i].style.display = 'none'
+  }
+}
+</script>

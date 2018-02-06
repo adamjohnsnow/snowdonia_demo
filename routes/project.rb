@@ -150,15 +150,6 @@ class FactorySettingsElemental < Sinatra::Base
     )
   end
 
-  def get_next_mat_order
-    materials = ElementMaterial.all(:element_id => @el_id)
-    if materials == []
-      1
-    else
-      materials.max_by{ |mat| mat[:mat_order]}[:mat_order] + 1
-    end
-  end
-
   def loop_through_elements(params)
     params.each do |param|
       if param[0].include? 'el_order'

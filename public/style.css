@@ -151,7 +151,12 @@ h2 {
   border: 1px solid #eeeeee;
   border-radius: 15px;
   padding: 10px;
+  margin: 10px;
   background-color: white;
+}
+.project-header {
+  padding: 10px 50px 10px 50px;
+  min-height: 110px;
 }
 .top-limit {
   min-width: 200px;

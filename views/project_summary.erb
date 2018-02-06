@@ -1,7 +1,15 @@
 <script src="js/project.js"></script>
 
-<h2><%= @project.title %> Summary</h2>
-<h3>Version: <%= @current_version.version_name %></h3>
+<div class="top-box project-header">
+  <h2><%= @project.title %> Summary</h2>
+  <h3>Version: <%= @current_version.version_name %></h3>
+</div>
+<div class="top-box project-header">
+  <h3>Reports</h3>
+  <a href="/costcode-report?version_id=<%= @current_version.id %>">Costcode Breakdown</a><br>
+  <a href="/drafting-sheet?version_id=<%= @current_version.id %>">Drafting Sheet</a><br>
+  <a href="/ordersheet?version_id=<%= @current_version.id %>">Ordersheet</a>
+</div>
 <form class="top-box" action="/save-project" method="post">
   <input type="hidden" name="project_id" value="<%= @project.id %>">
   <div class="table">
@@ -104,30 +112,36 @@
           <textarea cols="50" rows="3" name="technical_requirements"><%= @project.technical_requirements %></textarea>
         </div>
       </div>
-    </div>
-  </div><br>
-  Default Markups (%)
-  <br>
-  <div class="table">
-    <div class="table-row">
-      <div class="table-cell">
-        Contingency<br>
-        <input type="number" class="single-digit" step="0.5" name="contingency" value="<%= @current_version.contingency %>">
-      </div>
-      <div class="table-cell">
-        Overhead<br>
-        <input type="number" class="single-digit" step="0.5" name="overhead" value="<%= @current_version.overhead %>">
-      </div>
-      <div class="table-cell">
-        Profit<br>
-        <input type="number" class="single-digit" step="0.5" name="profit" value="<%= @current_version.profit %>">
-      </div>
-      <div class="table-cell">
-        Subcontractor<br>
-        <input type="number" class="single-digit" step="0.5" name="subcontractor" value="<%= @current_version.subcontractor %>">
+      <div class="table-row">
+        <div class="table-cell">
+          Default Markups (%)<br>
+          <div class="table">
+            <div class="table-row">
+              <div class="table-cell">
+                Contingency<br>
+                <input type="number" class="single-digit" step="0.5" name="contingency" value="<%= @current_version.contingency %>">
+              </div>
+              <div class="table-cell">
+                Overhead<br>
+                <input type="number" class="single-digit" step="0.5" name="overhead" value="<%= @current_version.overhead %>">
+              </div>
+              <div class="table-cell">
+                Profit<br>
+                <input type="number" class="single-digit" step="0.5" name="profit" value="<%= @current_version.profit %>">
+              </div>
+              <div class="table-cell">
+                Subcontractor<br>
+                <input type="number" class="single-digit" step="0.5" name="subcontractor" value="<%= @current_version.subcontractor %>">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="table-cell top-box">
+        </div>
       </div>
     </div>
   </div>
+
   <br>
   <% if @current_version.current_version %>
   <input class="btn" type="submit" value="Save Project">
