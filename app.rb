@@ -48,6 +48,19 @@ class FactorySettingsElemental < Sinatra::Base
     erb :materials
   end
 
+  get '/costcodes' do
+    @costcodes = Costcode.all
+    erb :costcodes
+  end
+
+  post '/new-costcode' do
+    Costcode.create(
+      :code => params[:code],
+      :description => params[:description],
+      :owner => params[:owner]
+    )
+    redirect '/costcodes'
+  end
   private
 
   def get_dropdowns

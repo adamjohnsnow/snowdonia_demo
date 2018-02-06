@@ -1,0 +1,31 @@
+<div class="top-box">
+  <h3>Costcoes</h3>
+  <div class="table">
+    <div class="table-body">
+      <div class="table-row header-row">
+        <div class="table-cell">Code</div>
+        <div class="table-cell" style="min-width: 250px;">Description</div>
+        <div class="table-cell">Owner</div>
+      </div>
+      <% @costcodes.each do |costcode| %>
+        <div class="table-row">
+          <div class="table-cell"><%= costcode.code %></div>
+          <div class="table-cell"><%= costcode.description %></div>
+          <div class="table-cell"><%= costcode.owner%></div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+<% if session[:user_auth] > 2 %>
+<div class="top-box">
+  <h3>Add New Costcode</h3>
+  <div><%= flash[:notice] %></div>
+  <form class="register-form" action="/new-costcode" method="post">
+    <input type="text" name="code" placeholder="Code (ie C001)" size="15"><br>
+    <input type="text" name="description" placeholder="Description" size="43"><br>
+    <input type="text" name="owner" placeholder="Owner"><br>
+    <input class="btn" type="submit" name="Submit" value="submit">
+  </form>
+</div>
+<% end %>
