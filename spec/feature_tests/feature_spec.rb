@@ -153,5 +153,40 @@ describe 'feature test' do
       expect(Element.all.count).to eq 4
       expect(ElementMaterial.all.count).to eq 2
     end
+
+    it 'can update markup' do
+      project_version = ProjectVersion.create(
+        :version_name => 'v1',
+        :project_id => @project.id
+      )
+      element = Element.create(
+        :project_version_id => project_version.id,
+        :title => 'Test Element',
+        :markup_defaults => false
+      )
+      Element.create(
+        :project_version_id => project_version.id,
+        :title => 'Test Element'
+      )
+      ElementMaterial.create(
+        :element_id => element.id,
+        :material_id => 1,
+        :price => @material.current_price
+      )
+      ElementMaterial.create(
+        :element_id => element.id,
+        :material_id => 1,
+        :price => @material.current_price,
+        :markup_defaults => false
+      )
+      element.update(
+        :contingency => 80.0
+      )
+      project_version.update(:overhead => 30.0)
+      MarkupUpdater.new.update_project(project_version)
+      expect(ElementMaterial.first.contingency).to eq 80.0
+      expect(ElementMaterial.last.contingency).to eq 10.0
+      expect(Element.last.overhead).to eq 30.0
+    end
   end
 end

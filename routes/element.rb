@@ -10,7 +10,6 @@ class FactorySettingsElemental < Sinatra::Base
     @element = Element.get(params[:id])
     @matlist = Material.all(:project_id => @element.project_version.project.id) + Material.all(:global => true)
     @costcodes = Costcode.all
-    @totals = { days: 23, cost: 1798.0 }
     erb :element
   end
 
@@ -76,7 +75,7 @@ class FactorySettingsElemental < Sinatra::Base
     Element.get(@element_id).update(
       :last_update => Date.today.strftime("%d/%m/%Y") + ' by ' + session[:user]
     )
-    MarkupUpdater.new.update_element(Element.get(@element_id))
+    MarkupUpdater.new.update_element(Element.get(@element_id), Element.get(@element_id).project_version)
   end
 
   def get_next_order(id)

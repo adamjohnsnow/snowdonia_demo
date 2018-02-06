@@ -133,6 +133,7 @@ class FactorySettingsElemental < Sinatra::Base
     else
       current_version.update(:contracted => false)
     end
+    MarkupUpdater.new.update_project(current_version)
   end
 
   def update_project(params)
