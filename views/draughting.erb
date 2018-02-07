@@ -4,10 +4,6 @@
 </div>
 <div class="hide-print top-box project-header" style=>
   <h3>Actions</h3>
-  <a href="/download?type=cc&report=user_<%= session[:user_id ].to_s + '_' + @project.project.title %>_<%= @project.version_name %>_costcode_report.csv" style="color: #322B6A;">
-    <i class="fas fa-cloud-download-alt"></i> CSV
-  </a>
-  <br>
   <div onclick="printReport()" style="color: #322B6A; cursor: pointer;"><i class="fas fa-print"></i> PRINT</div>
   <a href="/project-summary?project_id=<%= @project.project.id %>&version_id=<%= @project.id %>">Back to Summary</a>
 </div>
