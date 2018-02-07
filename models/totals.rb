@@ -16,10 +16,21 @@ class Totals
       @element_summary[:materials] += material.price * material.units
       @element_summary[:markup] += calc_markup(material.price, material, material.units)
     end
-    @element_summary[:markup] += calc_markup(@element_summary[:labour], element, 1)
+    @element_summary[:markup] += calc_labour_markup(@element_summary[:labour], element, 1)
   end
 
   def calc_markup(cost, material, qty)
+    if material.subcontract
+      return ((cost * (material.subcontractor / 100)) * qty).round(2)
+    else
+      contingency = cost * (material.contingency / 100)
+      overhead = (cost + contingency) * (material.overhead / 100)
+      profit = (cost + contingency + overhead) * (material.profit / 100)
+      return ((profit + contingency + overhead) * qty).round(2)
+    end
+  end
+
+  def calc_labour_markup(cost, material, qty)
     contingency = cost * (material.contingency / 100)
     overhead = (cost + contingency) * (material.overhead / 100)
     profit = (cost + contingency + overhead) * (material.profit / 100)

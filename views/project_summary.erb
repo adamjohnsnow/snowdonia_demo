@@ -6,9 +6,9 @@
 </div>
 <div class="top-box project-header">
   <h3>Reports</h3>
-  <a href="/costcode-report?version_id=<%= @current_version.id %>">Costcode Breakdown</a><br>
+  <a href="/report?type=costcode_report&version_id=<%= @current_version.id %>">Costcode Breakdown</a><br>
   <a href="/drafting-sheet?version_id=<%= @current_version.id %>">Drafting Sheet</a><br>
-  <a href="/ordersheet?version_id=<%= @current_version.id %>">Ordersheet</a>
+  <a href="/report?type=ordersheet&version_id=<%= @current_version.id %>">Ordersheet</a>
 </div>
 <form class="top-box" action="/save-project" method="post">
   <input type="hidden" name="project_id" value="<%= @project.id %>">
@@ -21,11 +21,11 @@
         <div class="table-cell">
           Status <select name="status">
             <% @dropdowns[:status].each do |status| %>
-              <% if status == @current_version.status %>
-                <option selected value="<%= status %>"><%= status %></option>
-              <% else %>
-                <option value="<%= status %>"><%= status %></option>
-              <% end %>
+            <% if status == @current_version.status %>
+            <option selected value="<%= status %>"><%= status %></option>
+            <% else %>
+            <option value="<%= status %>"><%= status %></option>
+            <% end %>
             <% end %>
           </select>
         </div>
@@ -36,13 +36,13 @@
         </div>
         <div class="table-cell">
           Factory Settings PM <select name="user_id">
-          <% @dropdowns[:users].each do |pm| %>
+            <% @dropdowns[:users].each do |pm| %>
             <% if @project.user_id && pm.id == @project.user_id %>
-              <option selected value="<%= pm.id %>"><%= pm.firstname + ' ' + pm.surname %></option>
+            <option selected value="<%= pm.id %>"><%= pm.firstname + ' ' + pm.surname %></option>
             <% else %>
-              <option value="<%= pm.id %>"><%= pm.firstname + ' ' + pm.surname %></option>
-              <% end %>
-          <% end %>
+            <option value="<%= pm.id %>"><%= pm.firstname + ' ' + pm.surname %></option>
+            <% end %>
+            <% end %>
           </select>
         </div>
       </div>
@@ -54,11 +54,11 @@
           Client
           <select name="client_id">
             <% @dropdowns[:clients].each do |client| %>
-              <% if @project.client && client.id == @project.client.id %>
-                <option selected value="<%= client.id %>"><%= client.name %></option>
-              <% else %>
-                <option value="<%= client.id %>"><%= client.name %></option>
-                <% end %>
+            <% if @project.client && client.id == @project.client.id %>
+            <option selected value="<%= client.id %>"><%= client.name %></option>
+            <% else %>
+            <option value="<%= client.id %>"><%= client.name %></option>
+            <% end %>
             <% end %>
           </select>
         </div>
@@ -70,11 +70,11 @@
         <div class="table-cell">
           Site <select name="site_id">
             <% @dropdowns[:sites].each do |site| %>
-              <% if @project.site && site.id == @project.site.id %>
-                <option selected value="<%= site.id %>"><%= site.name %></option>
-              <% else %>
-                <option value="<%= site.id %>"><%= site.name %></option>
-                <% end %>
+            <% if @project.site && site.id == @project.site.id %>
+            <option selected value="<%= site.id %>"><%= site.name %></option>
+            <% else %>
+            <option value="<%= site.id %>"><%= site.name %></option>
+            <% end %>
             <% end %>
           </select>
         </div>
@@ -86,61 +86,55 @@
         </div>
         <div class="table-cell">
           <a href='/versions?id=<%= @project.id %>'>Total Versions:
-          <%= @project.project_versions.all.count %></a>
-        </div>
-      </div>
-      <div class="table-row">
-        <div class="table-cell">
-          Contracted Version
-          <% if @current_version.contracted %>
-          <input type="checkbox" name="contracted" checked="checked">
-          <% else %>
-          <input type="checkbox" name="contracted">
-          <% end %>
-        </div>
-        <div class="table-cell">
-          Last Update: <%= @current_version.last_update %>
-        </div>
-      </div>
-      <div class="table-row">
-        <div class="table-cell">
-          Project Summary<br>
-          <textarea cols="50" rows="3" name="summary"><%= @project.summary %></textarea>
-        </div>
-        <div class="table-cell">
-          Technical Site Requirements<br>
-          <textarea cols="50" rows="3" name="technical_requirements"><%= @project.technical_requirements %></textarea>
-        </div>
-      </div>
-      <div class="table-row">
-        <div class="table-cell">
-          Default Markups (%)<br>
-          <div class="table">
-            <div class="table-row">
-              <div class="table-cell">
-                Contingency<br>
-                <input type="number" class="single-digit" step="0.5" name="contingency" value="<%= @current_version.contingency %>">
-              </div>
-              <div class="table-cell">
-                Overhead<br>
-                <input type="number" class="single-digit" step="0.5" name="overhead" value="<%= @current_version.overhead %>">
-              </div>
-              <div class="table-cell">
-                Profit<br>
-                <input type="number" class="single-digit" step="0.5" name="profit" value="<%= @current_version.profit %>">
-              </div>
-              <div class="table-cell">
-                Subcontractor<br>
-                <input type="number" class="single-digit" step="0.5" name="subcontractor" value="<%= @current_version.subcontractor %>">
-              </div>
-            </div>
+            <%= @project.project_versions.all.count %></a>
           </div>
         </div>
-        <div class="table-cell top-box">
+        <div class="table-row">
+          <div class="table-cell">
+            Contracted Version
+            <% if @current_version.contracted %>
+            <input type="checkbox" name="contracted" checked="checked">
+            <% else %>
+            <input type="checkbox" name="contracted">
+            <% end %>
+          </div>
+          <div class="table-cell">
+            Last Update: <%= @current_version.last_update %>
+          </div>
+        </div>
+        <div class="table-row">
+          <div class="table-cell">
+            Project Summary<br>
+            <textarea cols="50" rows="3" name="summary"><%= @project.summary %></textarea>
+          </div>
+          <div class="table-cell">
+            Technical Site Requirements<br>
+            <textarea cols="50" rows="3" name="technical_requirements"><%= @project.technical_requirements %></textarea>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+    Default Markups (%)<br>
+    <div class="table">
+      <div class="table-row">
+        <div class="table-cell">
+          Contingency<br>
+          <input type="number" class="single-digit" step="0.5" name="contingency" value="<%= @current_version.contingency %>">
+        </div>
+        <div class="table-cell">
+          Overhead<br>
+          <input type="number" class="single-digit" step="0.5" name="overhead" value="<%= @current_version.overhead %>">
+        </div>
+        <div class="table-cell">
+          Profit<br>
+          <input type="number" class="single-digit" step="0.5" name="profit" value="<%= @current_version.profit %>">
+        </div>
+        <div class="table-cell">
+          Subcontractor<br>
+          <input type="number" class="single-digit" step="0.5" name="subcontractor" value="<%= @current_version.subcontractor %>">
+        </div>
+      </div>
+    </div>
 
   <br>
   <% if @current_version.current_version %>

@@ -12,13 +12,18 @@ class FactorySettingsElemental < Sinatra::Base
   ]
 
   get '/costcode-report' do
+    erb :costcode_report
+  end
+
+  get '/report' do
+    @type = params[:type].to_sym
     @project = ProjectVersion.get(params[:version_id])
     @materials = @project.elements.element_materials.all
     if @project.current_version
       PriceUpdater.new(@materials, @materials.materials.all)
     end
     write_csvs
-    erb :costcode_report
+    erb @type
   end
 
   get '/download' do
@@ -28,11 +33,15 @@ class FactorySettingsElemental < Sinatra::Base
   def sum_markup(element_materials)
     markup = 0
     element_materials.each do |el_mat|
-    markup += (
-      (
-        el_mat.price * el_mat.units * (1 + el_mat.contingency / 100)
-        ) * (1 + el_mat.overhead / 100)
-      ) * (1 + el_mat.profit / 100)
+      if el_mat.subcontract
+        markup += el_mat.price * el_mat.units * (1 + el_mat.subcontractor / 100)
+      else
+        markup += (
+          (
+            el_mat.price * el_mat.units * (1 + el_mat.contingency / 100)
+            ) * (1 + el_mat.overhead / 100)
+          ) * (1 + el_mat.profit / 100)
+      end
     end
     markup
   end
@@ -96,13 +105,21 @@ class FactorySettingsElemental < Sinatra::Base
   end
 
   def write_csvs
-    write_cc_report
+    filename = "./report_outputs/user_#{session[:user_id]}_#{@project.project.title}_#{@project.version_name}_#{@type.to_s}.csv"
+    make_costcode_rows if @type == :costcode_report
+    make_ordersheet_rows if @type == :ordersheet
+    IO.write(filename, @rows.map(&:to_csv).join)
   end
 
-  def write_cc_report
-    filename = "./report_outputs/user_#{session[:user_id]}_#{@project.project.title}_#{@project.version_name}_costcode_report.csv"
-    make_costcode_rows
-    IO.write(filename, @rows.map(&:to_csv).join)
+  def make_ordersheet_rows
+    @rows = [['Costcode', 'Description', 'Supplier', 'Unit Cost', 'Qty', 'Total Cost']]
+    @materials.materials.all(:order => [ :costcode_id.asc ]).each do |material|
+      cost = @materials.first(:material_id => material.id).price
+      qty = @materials.all(:material_id => material.id).sum(:units)
+      if qty > 0
+        @rows << [material.costcode.code, material.description, material.supplier, cost, qty, (cost * qty).round(2)]
+      end
+    end
   end
 
   def make_costcode_rows
