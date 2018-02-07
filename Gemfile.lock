@@ -121,6 +121,8 @@ GEM
     selenium-webdriver (3.8.0)
       childprocess (~> 0.5)
       rubyzip (~> 1.0)
+    shrimp (0.0.6)
+      json
     simplecov (0.15.1)
       docile (~> 1.1.0)
       json (>= 1.8, < 3)
@@ -158,6 +160,7 @@ DEPENDENCIES
   rspec
   rubocop
   selenium-webdriver
+  shrimp
   simplecov
   simplecov-console
   sinatra

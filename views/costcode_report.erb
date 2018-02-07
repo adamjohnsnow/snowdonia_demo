@@ -1,7 +1,9 @@
 <a href="/project-summary?project_id=<%= @project.project.id %>&version_id=<%= @project.id %>">Back to Project Summary</a>
 <h2>Costcode Breakdown</h2>
-<h3><%= @project.project.title %></h3>
-<a href="/download?report=user_<%= session[:user_id ].to_s + '_' + @project.project.title %>_costcode_report.csv">Download Costcode level report as CSV</a>
+<h3><%= @project.project.title %> (<%= @project.version_name %>)
+<a href="/download?report=user_<%= session[:user_id ].to_s + '_' + @project.project.title %>_<%= @project.version_name %>_costcode_report.csv" style="color: #322B6A;"><i class="fas fa-cloud-download-alt"></i></a>
+</h3>
+<a href="http://pdf-ace.com/pdfme?print_media=1" target="_blank">Save as PDF</a>
 <div class="table">
   <div class="table-row header-row">
     <div class="table-cell" style="width: 15px;">

@@ -100,13 +100,13 @@ class FactorySettingsElemental < Sinatra::Base
   end
 
   def write_cc_report
-    filename = "./report_outputs/user_#{session[:user_id]}_#{@project.project.title}_costcode_report.csv"
+    filename = "./report_outputs/user_#{session[:user_id]}_#{@project.project.title}_#{@project.version_name}_costcode_report.csv"
     make_costcode_rows
     IO.write(filename, @rows.map(&:to_csv).join)
   end
 
   def make_costcode_rows
-    @rows = [['Costcode', 'Material', 'Qty', 'Total Cost', 'With Markup']]
+    @rows = [['Costcode', 'Description', 'Qty', 'Total Cost', 'With Markup']]
     @materials.materials.costcodes.all.each do |cc|
       total = 0
       markup = 0
