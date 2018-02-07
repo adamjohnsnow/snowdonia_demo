@@ -45,7 +45,8 @@ def set_up_test
   )
   element_1 = Element.create(
     :project_version_id => new_project.project_versions.last.id,
-    :title => 'First Element'
+    :title => 'First Element',
+    :el_order => 1
   )
   ElementLabour.create(
     :element_id => element_1.id,
@@ -53,7 +54,8 @@ def set_up_test
 
   element_2 = Element.create(
     :project_version_id => new_project.project_versions.last.id,
-    :title => 'Second Element'
+    :title => 'Second Element',
+    :el_order => 2
   )
   ElementLabour.create(
     :element_id => element_2.id,
@@ -76,13 +78,15 @@ def set_up_test
     :element_id => element_1.id,
     :material_id => mat1.id,
     :price => mat1.current_price,
-    :units => 3
+    :units => 3,
+    :mat_order => 1
   )
   ElementMaterial.create(
       :element_id => element_1.id,
       :material_id => mat2.id,
       :price => mat2.current_price,
-      :units => 3
+      :units => 3,
+      :mat_order => 2
     )
 end
 def destroy_all
