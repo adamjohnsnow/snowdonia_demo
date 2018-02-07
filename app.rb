@@ -62,11 +62,6 @@ class FactorySettingsElemental < Sinatra::Base
     redirect '/costcodes'
   end
 
-  get '/pdf' do
-    url     = 'http://localhost:9292'
-    options = { :margin => "1cm"}
-    Shrimp::Phantom.new(url, options).to_pdf("output.pdf")
-  end
   private
 
   def get_dropdowns

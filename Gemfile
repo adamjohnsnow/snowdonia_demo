@@ -7,7 +7,6 @@ gem 'dm-postgres-adapter'
 gem 'pry'
 gem 'rake'
 gem 'selenium-webdriver'
-gem 'shrimp'
 gem 'sinatra'
 gem 'sinatra-flash'
 
