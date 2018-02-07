@@ -223,7 +223,7 @@
 <br><br>
 <div class="top-box">
 <h3>Labour</h3>
-<form action="/update-labour?element_labour_id=<%= @element.element_labour.id %>&element_id=<%= @element.id %>" method="post">
+<form action="/update-element-labour?element_labour_id=<%= @element.element_labour.id %>&element_id=<%= @element.id %>" method="post">
 <div class="table" id="labour">
   <div class="table-body">
     <div class="table-row header-row">
@@ -252,7 +252,7 @@
           <input class="double-digit lab-day" type="number" onclick="updateLabour('onsite_paint')" name="onsite_paint" value="<%= @element.element_labour.onsite_paint %>">
         </div>
         <div class="table-cell">
-          <input class="double-digit lab-day" type="number" onclick="updateLabour('on_site_day')" name="on_site_day" value="<%= @element.element_labour.on_site_day %>">
+          <input class="double-digit lab-day" type="number" onclick="updateLabour('onsite_day')" name="onsite_day" value="<%= @element.element_labour.onsite_day %>">
         </div>
         <div class="table-cell">
           <input class="double-digit lab-day" type="number" onclick="updateLabour('draughting')" name="draughting" value="<%= @element.element_labour.draughting %>">
@@ -278,7 +278,7 @@
           <input class="double-digit lab-cost" type="number" onclick="updateLabour('onsite_paint')" name="onsite_paint_cost" value="<%= @element.element_labour.onsite_paint_cost %>">
         </div>
         <div class="table-cell">
-          <input class="double-digit lab-cost" type="number" onclick="updateLabour('on_site_day')" name="on_site_day_cost" value="<%= @element.element_labour.on_site_day_cost %>">
+          <input class="double-digit lab-cost" type="number" onclick="updateLabour('onsite_day')" name="onsite_day_cost" value="<%= @element.element_labour.onsite_day_cost %>">
         </div>
         <div class="table-cell">
           <input class="double-digit lab-cost" type="number" onclick="updateLabour('draughting')" name="draughting_cost" value="<%= @element.element_labour.draughting_cost %>">
@@ -298,8 +298,8 @@
         <script>updateLabour('scenic');</script>
         <div class="table-cell onsite_paint-total">jsfail</div>
         <script>updateLabour('onsite_paint');</script>
-        <div class="table-cell on_site_day-total">jsfail</div>
-        <script>updateLabour('on_site_day');</script>
+        <div class="table-cell onsite_day-total">jsfail</div>
+        <script>updateLabour('onsite_day');</script>
         <div class="table-cell draughting-total">jsfail</div>
         <script>updateLabour('draughting');</script>
         <div class="table-cell project_management-total">jsfail</div>

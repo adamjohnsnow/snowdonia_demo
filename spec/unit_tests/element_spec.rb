@@ -15,7 +15,7 @@ describe Element do
     it { expect(Element.first.quantity).to eq 1 }
     it { expect(Element.first.quote_include).to eq true }
     it { expect(Element.first.element_materials.count).to eq 0 }
-    it { expect(Element.first.overhead).to eq 0.385 }
+    it { expect(Element.first.overhead).to eq 38.5 }
 
   end
 

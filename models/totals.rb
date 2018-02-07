@@ -1,5 +1,4 @@
 class Totals
-attr_reader :project_summary
 
   def summarise_project(project)
     @project_summary = []
@@ -33,9 +32,10 @@ attr_reader :project_summary
     total += (labour[:steelwork] * labour[:steelwork_cost])
     total += (labour[:scenic] * labour[:scenic_cost])
     total += (labour[:onsite_paint] * labour[:onsite_paint_cost])
-    total += (labour[:on_site_day] * labour[:on_site_day_cost])
+    total += (labour[:onsite_day] * labour[:onsite_day_cost])
     total += (labour[:draughting] * labour[:draughting_cost])
     total += (labour[:project_management] * labour[:project_management_cost])
     return total
   end
+
 end

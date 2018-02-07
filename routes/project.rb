@@ -13,6 +13,7 @@ class FactorySettingsElemental < Sinatra::Base
     else
       @current_version = @project.project_versions.last(:current_version => true)
     end
+    update_prices if @current_version.current_version
     @totals = Totals.new.summarise_project(@current_version)
     @current_version.elements.sort_by! { |el| el['el_order']}
     @pm = User.get(@project.user_id)
@@ -176,5 +177,12 @@ class FactorySettingsElemental < Sinatra::Base
         labour.update(id_sym[1].to_sym => param[1])
       end
     end
+  end
+
+  def update_prices
+    PriceUpdater.new(
+      @current_version.elements.element_materials.all,
+      @current_version.elements.element_materials.materials.all
+    )
   end
 end

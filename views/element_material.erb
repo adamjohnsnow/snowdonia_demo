@@ -10,7 +10,7 @@
         </div>
         <div class="table-row">
           <div class="table-cell">
-            Current Price: <strong>£<%= sprintf('%.2f',@el_mat.material.current_price) %> per <%= @el_mat.material.unit %></strong>
+            Current Price: <strong>£<%= sprintf('%.2f',@el_mat.price) %> per <%= @el_mat.material.unit %></strong>
           </div>
         </div>
         <div class="table-row">
@@ -62,7 +62,7 @@
             <% else %>
               <div class="table">
                 <% end %>
-                
+
 
                 <div class="table-row">
                   <div class="table-cell">
