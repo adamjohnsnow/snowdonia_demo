@@ -1,12 +1,15 @@
 <div class="top-box project-header">
-  <h2><%= @project.project.title %> (<%= @project.version_name %>)</h2>
-  <h3>Draughting Sheet</h3>
+  <img src="fs_logo_title.jpg" width="320">
+</div>
+<div class="top-box project-header">
 </div>
 <div class="hide-print top-box project-header" style=>
   <h3>Actions</h3>
   <div onclick="printReport()" style="color: #322B6A; cursor: pointer;"><i class="fas fa-print"></i> PRINT</div>
   <a href="/project-summary?project_id=<%= @project.project.id %>&version_id=<%= @project.id %>">Back to Summary</a>
 </div>
+<h2><%= @project.project.title %> (<%= @project.version_name %>)</h2>
+<h3>Draughting Sheet</h3>
 <div class="top-box">
   <div class="table">
       <div class="table-row">
