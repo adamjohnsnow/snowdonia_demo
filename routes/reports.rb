@@ -108,10 +108,22 @@ class FactorySettingsElemental < Sinatra::Base
     filename = "./report_outputs/user_#{session[:user_id]}_#{@project.project.title}_#{@project.version_name}_#{@type.to_s}.csv"
     make_costcode_rows if @type == :costcode_report
     make_ordersheet_rows if @type == :ordersheet
+    make_draughting_rows if @type == :draughting
     IO.write(filename, @rows.map(&:to_csv).join)
   end
 
   def make_ordersheet_rows
+    @rows = [['Costcode', 'Description', 'Supplier', 'Unit Cost', 'Qty', 'Total Cost']]
+    @materials.materials.all(:order => [ :costcode_id.asc ]).each do |material|
+      cost = @materials.first(:material_id => material.id).price
+      qty = @materials.all(:material_id => material.id).sum(:units)
+      if qty > 0
+        @rows << [material.costcode.code, material.description, material.supplier, cost, qty, (cost * qty).round(2)]
+      end
+    end
+  end
+
+  def make_draughting_rows
     @rows = [['Costcode', 'Description', 'Supplier', 'Unit Cost', 'Qty', 'Total Cost']]
     @materials.materials.all(:order => [ :costcode_id.asc ]).each do |material|
       cost = @materials.first(:material_id => material.id).price

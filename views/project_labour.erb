@@ -6,9 +6,9 @@
 </div>
 <div class="top-box project-header">
   <h3>Reports</h3>
-  <a href="/costcode-report?version_id=<%= @current_version.id %>">Costcode Breakdown</a><br>
-  <a href="/drafting-sheet?version_id=<%= @current_version.id %>">Drafting Sheet</a><br>
-  <a href="/ordersheet?version_id=<%= @current_version.id %>">Ordersheet</a>
+  <a href="/report?type=costcode_report&version_id=<%= @current_version.id %>">Costcode Breakdown</a><br>
+  <a href="/report?type=draughting&version_id=<%= @current_version.id %>">Drafting Sheet</a><br>
+  <a href="/report?type=ordersheet&version_id=<%= @current_version.id %>">Ordersheet</a>
 </div>
 <form class="top-box" action="/save-project" method="post">
   <input type="hidden" name="project_id" value="<%= @project.id %>">
