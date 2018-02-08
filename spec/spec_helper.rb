@@ -10,7 +10,7 @@ require 'database_cleaner'
 require_relative '../models/price_updater'
 require_relative '../models/version_updater'
 require_relative '../models/totals'
-require_relative './web_helpers'
+require_relative './helpers'
 require_relative '../app'
 require_relative '../data_mapper_setup'
 
