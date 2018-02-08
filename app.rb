@@ -23,8 +23,8 @@ class FactorySettingsElemental < Sinatra::Base
   get '/home' do
     @user = User.get(session[:user_id])
     @projects = @user.projects.project_versions.all(:current_version => true)
-    @projects = @projects - @user.projects.project_versions.all(:status => 'Cancelled')
-    @projects = @projects - @user.projects.project_versions.all(:status => 'Complete')
+    @projects = @projects - @projects.all(:status => 'Cancelled')
+    @projects = @projects - @projects.all(:status => 'Complete')
     erb :home
   end
 

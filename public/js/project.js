@@ -13,7 +13,7 @@ var updateCost = function(id) {
   var price = document.getElementById(id + " cost").innerHTML;
   var num = parseFloat(price.replace('£', ''));
   var element = document.getElementById(id + " total");
-  element.innerHTML = formatter.format(qty * Math.ceil(num));
+  element.innerHTML = formatter.format(Math.ceil((qty * num) / 10) * 10);
 }
 
 var updateTotal = function(){

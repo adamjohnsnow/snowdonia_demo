@@ -26,7 +26,8 @@ def set_up_projects
   @new_project.save!
   @pv = ProjectVersion.create(
     :version_name => 'v1',
-    :project_id => @new_project.id
+    :project_id => @new_project.id,
+    :status => 'New'
   )
   @new_project = Project.create(
     :title => 'First Project',
@@ -38,7 +39,8 @@ def set_up_projects
   @new_project.save!
   @pv = ProjectVersion.create(
     :version_name => 'v1',
-    :project_id => @new_project.id
+    :project_id => @new_project.id,
+    :status => 'Tender'
   )
 end
 

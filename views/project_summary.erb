@@ -3,17 +3,19 @@
 <div class="top-box project-header">
   <h2><%= @project.title %> Summary</h2>
   <h3>Version: <%= @current_version.version_name %></h3>
-</div>
-<div class="top-box project-header">
-  <h3>Actions</h3>
-  <a href="/report?type=costcode_report&version_id=<%= @current_version.id %>">Costcode Breakdown</a><br>
-  <a href="/report?type=draughting&version_id=<%= @current_version.id %>">Drafting Sheet</a><br>
-  <a href="/report?type=ordersheet&version_id=<%= @current_version.id %>">Ordersheet</a><br>
+  <br>
   <% if @project.users.get(session[:user_id]) %>
     <a href="/remove-my?project_id=<%= @project.id %>">Remove from My Projects</a>
   <% else %>
     <a href="/add-my?project_id=<%= @project.id %>">Add to My Projects</a>
   <% end %>
+</div>
+<div class="top-box project-header">
+  <h3>Actions</h3>
+  <a href="/report?type=costcode_report&version_id=<%= @current_version.id %>">Costcode Breakdown</a><br>
+  <a href="/report?type=drafting&version_id=<%= @current_version.id %>">Drafting Sheet</a><br>
+  <a href="/report?type=ordersheet&version_id=<%= @current_version.id %>">Ordersheet</a><br>
+  <a href="/report?type=quotation&version_id=<%= @current_version.id %>">Quotation</a><br>
 </div>
 <form class="top-box" action="/save-project" method="post">
   <input type="hidden" name="project_id" value="<%= @project.id %>">

@@ -7,7 +7,7 @@ class FactorySettingsElemental < Sinatra::Base
     :scenic,
     :onsite_paint,
     :onsite_day,
-    :draughting,
+    :drafting,
     :project_management
   ]
 
@@ -19,10 +19,11 @@ class FactorySettingsElemental < Sinatra::Base
     @type = params[:type].to_sym
     @project = ProjectVersion.get(params[:version_id])
     @materials = @project.elements.element_materials.all
+    @totals = Totals.new.summarise_project(@project) if @type == :quotation
     if @project.current_version
       PriceUpdater.new(@materials, @materials.materials.all)
     end
-    write_csvs if @type != :draughting
+    write_csvs if @type != :quotation
     erb @type
   end
 
@@ -64,7 +65,7 @@ class FactorySettingsElemental < Sinatra::Base
       :scenic,
       :onsite_paint,
       :onsite_day,
-      :draughting,
+      :drafting,
       :project_management
     )
   end
@@ -78,7 +79,7 @@ class FactorySettingsElemental < Sinatra::Base
       sub_total += (labour[:scenic] * labour[:scenic_cost])
       sub_total += (labour[:onsite_paint] * labour[:onsite_paint_cost])
       sub_total += (labour[:onsite_day] * labour[:onsite_day_cost])
-      sub_total += (labour[:draughting] * labour[:draughting_cost])
+      sub_total += (labour[:drafting] * labour[:drafting_cost])
       sub_total += (labour[:project_management] * labour[:project_management_cost])
       total += sub_total
       sub_total = sub_total * (1 + labour.element.contingency / 100)
@@ -108,6 +109,8 @@ class FactorySettingsElemental < Sinatra::Base
     filename = "./report_outputs/user_#{session[:user_id]}_#{@project.project.title}_#{@project.version_name}_#{@type.to_s}.csv"
     make_costcode_rows if @type == :costcode_report
     make_ordersheet_rows if @type == :ordersheet
+    make_drafting_rows if @type == :drafting
+    make_quotation_rows if @type == :quotation
     IO.write(filename, @rows.map(&:to_csv).join)
   end
 
@@ -119,6 +122,24 @@ class FactorySettingsElemental < Sinatra::Base
       if qty > 0
         @rows << [material.costcode.code, material.description, material.supplier, cost, qty, (cost * qty).round(2)]
       end
+    end
+  end
+
+  def make_drafting_rows
+    @rows = [['Costcode', 'Our Ref', 'Client Ref', 'Description', 'Unit', 'Qty']]
+    @project.elements.each do |element|
+      @rows << ['', element.reference, element.client_ref, element.title, '', '']
+      element.element_materials.each do |material|
+        @rows << [
+          material.material.costcode.code,
+          '',
+          '',
+          material.material.description.to_s + '(' + material.material.supplier.to_s + ')',
+          material.material.unit,
+          material.units
+          ]
+      end
+      p @rows
     end
   end
 
@@ -135,5 +156,12 @@ class FactorySettingsElemental < Sinatra::Base
       @rows << [cc.code, cc.description, '', total.round(2), markup.round(2)]
     end
     @rows << ['Labour', '', total_labour_days.flatten.inject(:+), total_labour_costs[0].round(2), total_labour_costs[1].round(2)]
+  end
+
+  def get_element_total(id)
+    sum = 0
+    element = @totals.select { |hash| hash[:id] == id }
+    sum = (element[0][:labour] + element[0][:materials] + element[0][:markup])
+    ((sum / 10).ceil ) * 10
   end
 end

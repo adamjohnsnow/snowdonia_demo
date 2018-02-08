@@ -7,7 +7,7 @@
 <div class="top-box project-header">
   <h3>Reports</h3>
   <a href="/report?type=costcode_report&version_id=<%= @current_version.id %>">Costcode Breakdown</a><br>
-  <a href="/report?type=draughting&version_id=<%= @current_version.id %>">Drafting Sheet</a><br>
+  <a href="/report?type=drafting&version_id=<%= @current_version.id %>">Drafting Sheet</a><br>
   <a href="/report?type=ordersheet&version_id=<%= @current_version.id %>">Ordersheet</a>
 </div>
 <form class="top-box" action="/save-project" method="post">
@@ -158,7 +158,7 @@
         <div class="table-cell">Scenic</div>
         <div class="table-cell">Onsite Paint</div>
         <div class="table-cell">Onsite Days</div>
-        <div class="table-cell">Draughting</div>
+        <div class="table-cell">Drafting</div>
         <div class="table-cell">PM</div>
         <div class="table-cell">Days</div>
         <div class="table-cell">Total Cost</div>
@@ -189,8 +189,8 @@
             <input type="hidden" class="<%= element.element_labour.id %> rate" id="<%= element.element_labour.id %> onsite_day-cost" value="<%= element.element_labour.onsite_day_cost %>">
           </div>
           <div class="table-cell grey-cell">
-            <input class="single-digit <%=element.element_labour.id %> days" type="number" name="<%= element.element_labour.id %> draughting" id="<%= element.id %> quantity" value="<%= element.element_labour.draughting %>" onchange="updateLabour(<%= element.element_labour.id %>)">
-            <input type="hidden" class="<%= element.element_labour.id %> rate" id="<%= element.element_labour.id %> draughting-cost" value="<%= element.element_labour.draughting_cost %>">
+            <input class="single-digit <%=element.element_labour.id %> days" type="number" name="<%= element.element_labour.id %> drafting" id="<%= element.id %> quantity" value="<%= element.element_labour.drafting %>" onchange="updateLabour(<%= element.element_labour.id %>)">
+            <input type="hidden" class="<%= element.element_labour.id %> rate" id="<%= element.element_labour.id %> drafting-cost" value="<%= element.element_labour.drafting_cost %>">
           </div>
           <div class="table-cell grey-cell">
             <input class="single-digit <%=element.element_labour.id %> days" type="number" name="<%= element.element_labour.id %> project_management" id="<%= element.id %> quantity" value="<%= element.element_labour.project_management %>" onchange="updateLabour(<%= element.element_labour.id %>)">

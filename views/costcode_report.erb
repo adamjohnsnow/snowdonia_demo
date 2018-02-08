@@ -1,63 +1,5 @@
-<div class="top-box project-header">
-  <img src="fs_logo_title.jpg" width="320">
-</div>
-<div class="hide-print top-box project-header" style=>
-  <h3>Actions</h3>
-  <a href="/download?type=cc&report=user_<%= session[:user_id ].to_s + '_' + @project.project.title %>_<%= @project.version_name %>_costcode_report.csv" style="color: #322B6A;">
-    <i class="fas fa-cloud-download-alt"></i> CSV
-  </a>
-  <br>
-  <div onclick="printReport()" style="color: #322B6A; cursor: pointer;"><i class="fas fa-print"></i> PRINT</div>
-  <a href="/project-summary?project_id=<%= @project.project.id %>&version_id=<%= @project.id %>">Back to Summary</a>
-</div>
-<h2><%= @project.project.title %></h2>
+<%= erb :report_header %>
 <h3>Costcode Breakdown</h3>
-<div class="top-box">
-  <div class="table">
-      <div class="table-row">
-        <div class="table-cell">
-          Version: <%= @project.version_name %>
-        </div>
-        <div class="table-cell">
-          Status: <%= @project.status %>
-        </div>
-      </div>
-      <div class="table-row">
-        <div class="table-cell">
-          Job Code: <%= @project.project.job_code %>
-        </div>
-        <div class="table-cell">
-          Factory Settings PM: <%= @project.project.user.firstname %> <%= @project.project.user.surname %>
-        </div>
-      </div>
-      <div class="table-row">
-        <div class="table-cell">
-          Workshop Deadline: <%= @project.project.workshop_deadline.strftime("%d/%m/%Y") %>
-        </div>
-        <div class="table-cell">
-          Client: <%= @project.project.client.name %>
-        </div>
-      </div>
-      <div class="table-row">
-        <div class="table-cell">
-          On Site Deadline: <%= @project.project.on_site.strftime("%d/%m/%Y") %>
-        </div>
-        <div class="table-cell">
-          Site: <%= @project.project.site.name %>
-        </div>
-      </div>
-      <div class="table-row">
-        <div class="table-cell">
-          Project Summary<br>
-          <textarea cols="50" rows="3" name="summary"><%= @project.project.summary %></textarea>
-        </div>
-        <div class="table-cell">
-          Technical Site Requirements<br>
-          <textarea cols="50" rows="3" name="technical_requirements"><%= @project.project.technical_requirements %></textarea>
-        </div>
-      </div>
-    </div>
-</div>
 <div class="table">
   <div class="table-row header-row">
     <div class="table-cell arrows" style="width: 15px;">
@@ -178,69 +120,45 @@
   <% end %>
 </div>
 <script>
-var printReport = function(){
-  document.getElementsByClassName('menu')[0].style.display = 'none';
-  var hides1 = document.getElementsByClassName('hide-print');
-  var hides2 = document.getElementsByClassName('arrows');
-  for (i = 0; i < hides1.length; i++) {
-    var remember1 = hides1[i].style.display
-    hides1[i].style.display = 'none';
+  var expand = function(id) {
+    var plus = document.getElementById('expand ' + id);
+    var minus = document.getElementById('collapse ' + id);
+    var rows = document.getElementsByClassName('table-row ' + id);
+    console.log(rows);
+    plus.style.display = 'none';
+    minus.style.display = 'inline';
+    for (i = 0; i < rows.length; i++) {
+      rows[i].style.display = 'table-row'
+    }
   }
-  for (i = 0; i < hides2.length; i++) {
-    var remember2 = hides2[i].style.display
-    hides2[i].style.display = 'none';
+  var collapse = function(id) {
+    var plus = document.getElementById('expand ' + id);
+    var minus = document.getElementById('collapse ' + id);
+    var rows = document.getElementsByClassName('table-row ' + id);
+    plus.style.display = 'inline';
+    minus.style.display = 'none';
+    for (i = 0; i < rows.length; i++) {
+      rows[i].style.display = 'none'
+    }
   }
-  document.body.style.backgroundColor = "white"
-  window.print();
-  document.getElementsByClassName('menu')[0].style.display = 'table-cell';
-  for (i = 0; i < hides1.length; i++) {
-    hides1[i].style.display = remember1;
+  var expandAll = function(){
+    var allRows = document.getElementsByName('cc-code');
+    for (r = 0; r < allRows.length; r++) {
+      expand(allRows[r].innerHTML);
+    }
+    var allPlus = document.getElementById('expand-all');
+    var allMinus = document.getElementById('collapse-all');
+    allPlus.style.display = 'none';
+    allMinus.style.display = 'inline';
   }
-  for (i = 0; i < hides2.length; i++) {
-    hides2[i].style.display = 'table-cell';
+  var collapseAll = function(){
+    var allRows = document.getElementsByName('cc-code');
+    for (r = 0; r < allRows.length; r++) {
+      collapse(allRows[r].innerHTML);
+    }
+    var allPlus = document.getElementById('expand-all');
+    var allMinus = document.getElementById('collapse-all');
+    allPlus.style.display = 'inline';
+    allMinus.style.display = 'none';
   }
-  document.body.style.backgroundColor = "#eeeeee40"
-}
-
-var expand = function(id) {
-  var plus = document.getElementById('expand ' + id);
-  var minus = document.getElementById('collapse ' + id);
-  var rows = document.getElementsByClassName('table-row ' + id);
-  console.log(rows);
-  plus.style.display = 'none';
-  minus.style.display = 'inline';
-  for (i = 0; i < rows.length; i++) {
-    rows[i].style.display = 'table-row'
-  }
-}
-var collapse = function(id) {
-  var plus = document.getElementById('expand ' + id);
-  var minus = document.getElementById('collapse ' + id);
-  var rows = document.getElementsByClassName('table-row ' + id);
-  plus.style.display = 'inline';
-  minus.style.display = 'none';
-  for (i = 0; i < rows.length; i++) {
-    rows[i].style.display = 'none'
-  }
-}
-var expandAll = function(){
-  var allRows = document.getElementsByName('cc-code');
-  for (r = 0; r < allRows.length; r++) {
-    expand(allRows[r].innerHTML);
-  }
-  var allPlus = document.getElementById('expand-all');
-  var allMinus = document.getElementById('collapse-all');
-  allPlus.style.display = 'none';
-  allMinus.style.display = 'inline';
-}
-var collapseAll = function(){
-  var allRows = document.getElementsByName('cc-code');
-  for (r = 0; r < allRows.length; r++) {
-    collapse(allRows[r].innerHTML);
-  }
-  var allPlus = document.getElementById('expand-all');
-  var allMinus = document.getElementById('collapse-all');
-  allPlus.style.display = 'inline';
-  allMinus.style.display = 'none';
-}
 </script>
