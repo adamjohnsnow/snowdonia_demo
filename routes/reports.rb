@@ -110,7 +110,6 @@ class FactorySettingsElemental < Sinatra::Base
     make_costcode_rows if @type == :costcode_report
     make_ordersheet_rows if @type == :ordersheet
     make_drafting_rows if @type == :drafting
-    make_quotation_rows if @type == :quotation
     IO.write(filename, @rows.map(&:to_csv).join)
   end
 

@@ -3,10 +3,12 @@
 </div>
 <div class="hide-print top-box project-header" style=>
   <h3>Actions</h3>
+  <% if @type != :quotation %>
   <a href="/download?type=cc&report=user_<%= session[:user_id ].to_s + '_' + @project.project.title %>_<%= @project.version_name %>_<%= @type.to_s %>.csv" style="color: #322B6A;">
     <i class="fas fa-cloud-download-alt"></i> CSV
   </a>
   <br>
+  <% end %>
   <div onclick="printReport()" style="color: #322B6A; cursor: pointer;"><i class="fas fa-print"></i> PRINT</div>
   <br>
   <a href="/project-summary?project_id=<%= @project.project.id %>&version_id=<%= @project.id %>">Back to Summary</a>
