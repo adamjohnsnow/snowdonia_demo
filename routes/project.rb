@@ -95,6 +95,17 @@ class FactorySettingsElemental < Sinatra::Base
     redirect '/project-summary?project_id=' + params[:project_id]
   end
 
+  get '/remove-my' do
+    ProjectUser.get(session[:user_id], params[:project_id]).destroy!
+    redirect '/home'
+  end
+
+  get '/add-my' do
+    project = Project.get(params[:project_id])
+    project.users << User.get(session[:user_id])
+    project.save!
+    redirect '/project-summary?project_id=' + params[:project_id]
+  end
   private
 
   def new_project(params)

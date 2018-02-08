@@ -15,7 +15,9 @@ require_relative './models/price_updater'
 require_relative './models/markup_updater'
 require_relative './models/totals'
 
-if ENV['RACK_ENV'] == 'test'
+if ENV['DATABASE_URL']
+  @database = 'Heroku Postgres'
+elsif ENV['RACK_ENV'] == 'test'
   @database = "postgres://localhost/factory_setting_test"
 else
   @database = "postgres://localhost/factory_setting_dev"

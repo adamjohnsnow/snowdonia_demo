@@ -10,7 +10,7 @@ class FactorySettingsElemental < Sinatra::Base
   set :session_secret, ENV['SESSION_SECRET'] || 'something'
   register Sinatra::Flash
 
-  STATUS = ['New', 'Tender', 'In Design', 'In Build', 'On Site', 'Complete', 'Cancelled']
+  STATUS = ['New', 'Tender', 'In Design', 'In Build', 'On Site', 'Site Clearance', 'Complete', 'Cancelled']
 
   before do
     redirect '/' unless session[:user_id] || request.path_info == '/' || request.path_info == '/sign-in'
@@ -22,7 +22,9 @@ class FactorySettingsElemental < Sinatra::Base
 
   get '/home' do
     @user = User.get(session[:user_id])
-    @projects = @user.projects.all
+    @projects = @user.projects.project_versions.all(:current_version => true)
+    @projects = @projects - @user.projects.project_versions.all(:status => 'Cancelled')
+    @projects = @projects - @user.projects.project_versions.all(:status => 'Complete')
     erb :home
   end
 

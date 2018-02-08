@@ -8,19 +8,28 @@
 <br>
 <br>
 <div class="top-box">
-<h3>Current Projects</h3>
-<div class="table border">
-  <div class="table-body">
+  <h3>Projects</h3>
+  <span id="complete" onclick="show('complete')" style="cursor: pointer;">Show Completed</span>
+  &emsp;
+  <span id="cancelled" onclick="show('cancelled')" style="cursor: pointer;">Show Cancelled</span>
+  <br>
+  <div class="table border">
     <div class="table-row header-row">
-      <div class="table-cell">Title</div>
+      <div class="table-cell" style="min-width: 280px;">Title</div>
       <div class="table-cell">Workshop Deadline</div>
       <div class="table-cell">On Site Deadline</div>
       <div class="table-cell">Client</div>
       <div class="table-cell">Project Status</div>
       <div class="table-cell">Lead PM</div>
     </div>
-    <% @projects.each do |project| %>
-      <div class="table-row">
+    <% @projects.each do |project|
+      if project.project_versions.last(:current_version => true).status == "Cancelled" %>
+        <div class="table-row cancelled" style="display: none;">
+      <% elsif project.project_versions.last(:current_version => true).status == "Complete" %>
+        <div class="table-row complete" style="display: none;">
+      <% else %>
+        <div class="table-row active">
+      <% end %>
         <div class="table-cell"><a href="/project-summary?project_id=<%= project.id %>"><%= project.title %></a></div>
         <div class="table-cell"><%= project.workshop_deadline.strftime("%d/%m/%Y") %></div>
         <div class="table-cell"><%= project.on_site.strftime("%d/%m/%Y") %></div>
@@ -31,4 +40,13 @@
     <% end %>
   </div>
 </div>
-</div>
+<script type="text/javascript">
+  var show = function(type) {
+    var rows = document.getElementsByClassName(type);
+    for (i = 0; i < rows.length; i++) {
+      rows[i].style.display = 'table-row'
+    }
+    button = document.getElementById(type).style.display = 'none'
+    console.log(button);
+  }
+</script>
