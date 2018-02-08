@@ -34,6 +34,18 @@ DataMapper.auto_upgrade!
 def set_up_test
   destroy_all
   new_project = Project.create(
+    :title => 'Second Project',
+    :user_id => 1,
+    :site_id => 1,
+    :client_id => 1
+  )
+  new_project.users << User.get(1)
+  new_project.save!
+  pv = ProjectVersion.create(
+    :version_name => 'v1',
+    :project_id => new_project.id
+  )
+  new_project = Project.create(
     :title => 'First Project',
     :user_id => 1,
     :site_id => 1,
@@ -46,16 +58,15 @@ def set_up_test
     :project_id => new_project.id
   )
   element_1 = Element.create(
-    :project_version_id => new_project.project_versions.last.id,
+    :project_version_id => pv.id,
     :title => 'First Element',
     :el_order => 1
   )
   ElementLabour.create(
     :element_id => element_1.id,
   )
-
   element_2 = Element.create(
-    :project_version_id => new_project.project_versions.last.id,
+    :project_version_id => pv.id,
     :title => 'Second Element',
     :el_order => 2
   )
