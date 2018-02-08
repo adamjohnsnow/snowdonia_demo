@@ -92,6 +92,7 @@ end
 def destroy_all
   ElementMaterial.all.destroy!
   Material.all.destroy!
+  ElementLabour.all.destroy!
   Element.all.destroy!
   ProjectVersion.all.destroy!
   User.first.projects.all.destroy!

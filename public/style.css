@@ -224,3 +224,8 @@ h2 {
   vertical-align: middle;
   padding: 80px;
 }
+
+.remove-link {
+  color: #722F4B;
+  padding-top: 8px;
+}

@@ -86,6 +86,8 @@
 
     <% if @element.project_version.current_version %>
       <input class="btn" type="submit" value="Update Element">
+      <br>
+      <div class="remove-link" onclick="showDelete()" style="cursor: pointer"><i class="far fa-trash-alt"></i> Remove</div>
     <% end %>
   </form>
 </div>
@@ -157,7 +159,23 @@
   </form>
 </div>
 <% end %>
-<br><br>
+<br>
+<div class="top-box" id="delete" style="display: none;">
+  <i class="fas fa-exclamation-circle" style="color: red;"></i><br>
+  Are you sure you want to remove this element from <%= @element.project_version.project.title %>?<br>
+  <i>This cannot be undone!</i><br>
+  <a href="/delete-element?element_id=<%= @element.id %>" style="color: red;">Yes, Remove Material</a><br>
+  <span onclick="hideDelete()" style="cursor: pointer">No, Cancel</span>
+</div>
+<script type="text/javascript">
+  var showDelete = function() {
+    document.getElementById('delete').style.display = 'inline-block';
+  }
+  var hideDelete = function() {
+    document.getElementById('delete').style.display = 'none';
+  }
+</script>
+<br>
 <div class="top-box">
 <h3>Materials</h3>
 <form id='materials' action="/update-materials?element_id=<%= @element.id %>" method="post">

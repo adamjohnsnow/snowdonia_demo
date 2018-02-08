@@ -45,6 +45,13 @@ class FactorySettingsElemental < Sinatra::Base
     redirect '/element?id=' + @el_id + '#new-material'
   end
 
+  get '/delete-element' do
+    element = Element.get(params[:element_id])
+    project_version = element.project_version
+    destroy_element(element)
+    redirect '/project-summary?project_id=' + project_version.project.id.to_s + '&version_id=' + project_version.id.to_s
+  end
+
   private
 
   def make_new_element(params)
@@ -132,5 +139,11 @@ class FactorySettingsElemental < Sinatra::Base
     Element.get(id).element_materials.each do |material|
       add_material(material.material_id)
     end
+  end
+
+  def destroy_element(element)
+    element.element_materials.all.destroy!
+    element.element_labour.destroy!
+    element.destroy!
   end
 end

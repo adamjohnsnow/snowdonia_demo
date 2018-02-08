@@ -1,6 +1,6 @@
 <h3><a href="/element?id=<%= @el_mat.element.id %>">Back to <%= @el_mat.element.project_version.project.title %> : <%= @el_mat.element.title %></a></h3>
 <div class="top-box">
-  <form action="/update-element-material?elmat_id=<%= @el_mat.id %>&element_id=<%= @el_mat.element_id %>" method="post">
+  <form action="/update-element-material?elmat_id=<%= @el_mat.id %>" method="post">
     <div class="table">
       <div class="table-body">
         <div class="table-row">
@@ -34,7 +34,7 @@
         <div class="table-row">
           <div class="table-cell">
             Units for this element <input class="single-digit" type="number" name="units" step="0.01" value="<%= @el_mat.units %>">
-            Units after drawing <input class="single-digit" type="number" name="units_after_drawing" step="0.01" value="<%= @el_mat.units_after_drawing %>">
+            Units after drawing <input class="single-digit" type="number" name="units_after_drawing" value="<%= @el_mat.units_after_drawing %>">
           </div>
         </div>
         <div class="table-row">
@@ -62,8 +62,6 @@
             <% else %>
               <div class="table">
                 <% end %>
-
-
                 <div class="table-row">
                   <div class="table-cell">
                     Contingency<br>
@@ -90,7 +88,25 @@
     </div>
     <br>
     <% if @el_mat.element.project_version.current_version %>
-    <input class="btn" type="submit" value="Update Material">
+    <input class="btn" type="submit" value="Save Changes">
+    <br>
+    <div class="remove-link" onclick="showDelete()" style="cursor: pointer"><i class="far fa-trash-alt"></i> Remove</div>
     <% end %>
   </form>
 </div>
+<br>
+<div class="top-box" id="delete" style="display: none;">
+  <i class="fas fa-exclamation-circle" style="color: red;"></i><br>
+  Are you sure you want to remove this material from <%= @el_mat.element.title %>?<br>
+  <i>This cannot be undone!</i><br>
+  <a href="/delete-element-material?material_id=<%= @el_mat.id %>" style="color: red;">Yes, Remove Material</a><br>
+  <span onclick="hideDelete()" style="cursor: pointer">No, Cancel</span>
+</div>
+<script type="text/javascript">
+  var showDelete = function() {
+    document.getElementById('delete').style.display = 'inline-block';
+  }
+  var hideDelete = function() {
+    document.getElementById('delete').style.display = 'none';
+  }
+</script>
