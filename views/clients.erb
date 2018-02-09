@@ -1,3 +1,4 @@
+<%if session[:user_auth] > 2 %>
 <form class="top-box" action="/add-client" method="post">
   <h3>New Client</h3>
   <input type="text" name="name" placeholder="Company Name">
@@ -16,6 +17,7 @@
   <input type="text" name="phone" placeholder="Phone Number"><br>
   <input type="submit" class="btn" value="Create Site">
 </form>
+<% end %>
 <br>
 <div class="top-box">
   <h3>Clients</h3>
