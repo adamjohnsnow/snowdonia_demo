@@ -2,7 +2,7 @@
 <h3>Quotation</h3>
 <div class="table">
   <% @total = 0
-  @project.elements.all.each do |element|
+  @project.elements.all(:order => [ :el_order.asc ]).each do |element|
   if element.quote_include
     element_total = get_element_total(element.id)
     @total += (element_total * element.quantity) %>

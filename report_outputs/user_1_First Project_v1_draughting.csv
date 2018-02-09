@@ -1,0 +1,7 @@
+Costcode,Our Ref,Client Ref,Description,Unit,Qty
+"",A201,3.1.2,Second Element,"",""
+C002,"","",Second Material(),m2,1
+C001,"","",First Material(),m2,1
+"",A101,123,First Element,"",""
+C001,"","",First Material(),m2,3
+C002,"","",Second Material(),m2,3

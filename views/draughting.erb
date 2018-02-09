@@ -21,7 +21,7 @@
       Qty
     </div>
   </div>
-<% @materials.elements.all.each do |element| %>
+<% @materials.elements.all(:order => [ :el_order.asc ]).each do |element| %>
   <div class="table-row">
     <div class="table-cell grey-cell">
     </div>
@@ -39,7 +39,7 @@
     <div class="table-cell grey-cell">
     </div>
   </div>
-  <% @materials.all(:element_id => element.id).each do |mat|
+  <% @materials.all(:element_id => element.id, :order => [ :mat_order.asc ]).each do |mat|
     if mat.units > 0 %>
       <div class="table-row el<%= element.id %>" name="el-row">
         <div class="table-cell">

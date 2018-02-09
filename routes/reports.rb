@@ -126,9 +126,9 @@ class FactorySettingsElemental < Sinatra::Base
 
   def make_draughting_rows
     @rows = [['Costcode', 'Our Ref', 'Client Ref', 'Description', 'Unit', 'Qty']]
-    @project.elements.each do |element|
+    @project.elements.all(:order => [ :el_order.asc ]).each do |element|
       @rows << ['', element.reference, element.client_ref, element.title, '', '']
-      element.element_materials.each do |material|
+      element.element_materials.all(:order => [ :mat_order.asc ]).each do |material|
         @rows << [
           material.material.costcode.code,
           '',
