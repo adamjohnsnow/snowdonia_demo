@@ -44,7 +44,7 @@ class Totals
     total += (labour[:scenic] * labour[:scenic_cost])
     total += (labour[:onsite_paint] * labour[:onsite_paint_cost])
     total += (labour[:onsite_day] * labour[:onsite_day_cost])
-    total += (labour[:drafting] * labour[:drafting_cost])
+    total += (labour[:draughting] * labour[:draughting_cost])
     total += (labour[:project_management] * labour[:project_management_cost])
     return total
   end

@@ -7,7 +7,7 @@ class FactorySettingsElemental < Sinatra::Base
     :scenic,
     :onsite_paint,
     :onsite_day,
-    :drafting,
+    :draughting,
     :project_management
   ]
 
@@ -65,7 +65,7 @@ class FactorySettingsElemental < Sinatra::Base
       :scenic,
       :onsite_paint,
       :onsite_day,
-      :drafting,
+      :draughting,
       :project_management
     )
   end
@@ -79,7 +79,7 @@ class FactorySettingsElemental < Sinatra::Base
       sub_total += (labour[:scenic] * labour[:scenic_cost])
       sub_total += (labour[:onsite_paint] * labour[:onsite_paint_cost])
       sub_total += (labour[:onsite_day] * labour[:onsite_day_cost])
-      sub_total += (labour[:drafting] * labour[:drafting_cost])
+      sub_total += (labour[:draughting] * labour[:draughting_cost])
       sub_total += (labour[:project_management] * labour[:project_management_cost])
       total += sub_total
       sub_total = sub_total * (1 + labour.element.contingency / 100)
@@ -109,7 +109,7 @@ class FactorySettingsElemental < Sinatra::Base
     filename = "./report_outputs/user_#{session[:user_id]}_#{@project.project.title}_#{@project.version_name}_#{@type.to_s}.csv"
     make_costcode_rows if @type == :costcode_report
     make_ordersheet_rows if @type == :ordersheet
-    make_drafting_rows if @type == :drafting
+    make_draughting_rows if @type == :draughting
     IO.write(filename, @rows.map(&:to_csv).join)
   end
 
@@ -124,7 +124,7 @@ class FactorySettingsElemental < Sinatra::Base
     end
   end
 
-  def make_drafting_rows
+  def make_draughting_rows
     @rows = [['Costcode', 'Our Ref', 'Client Ref', 'Description', 'Unit', 'Qty']]
     @project.elements.each do |element|
       @rows << ['', element.reference, element.client_ref, element.title, '', '']
@@ -138,7 +138,6 @@ class FactorySettingsElemental < Sinatra::Base
           material.units
           ]
       end
-      p @rows
     end
   end
 

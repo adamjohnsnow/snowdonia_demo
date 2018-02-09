@@ -8,7 +8,6 @@ class FactorySettingsElemental < Sinatra::Base
   post '/update-element-material' do
     params[:subcontract] ? params[:subcontract] = true : params[:subcontract] = false
     params[:markup_defaults] ? params[:markup_defaults] = true : params[:markup_defaults] = false
-    p params[:units_after_drawing]
     el_mat = ElementMaterial.get(params[:elmat_id])
     el_mat.update(
       :units => params[:units].to_f,
@@ -20,11 +19,6 @@ class FactorySettingsElemental < Sinatra::Base
       :profit => params[:profit].to_f,
       :subcontractor => params[:subcontractor].to_f
     )
-    if params[:units_after_drawing] != ""
-      el_mat.update(:units_after_drawing => params[:units_after_drawing].to_f)
-    else
-      el_mat.update(:units_after_drawing => nil)
-    end
     MarkupUpdater.new.update_element(el_mat.element, el_mat.element.project_version)
     redirect '/element-material?elmat_id=' + params[:elmat_id]
   end

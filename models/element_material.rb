@@ -12,7 +12,6 @@ class ElementMaterial
   property :profit, Float, :default => 10.0
   property :subcontractor, Float, :default => 20.0
   property :markup_defaults, Boolean, :default => true
-  property :units_after_drawing, Integer
   property :subcontract, Boolean, :default => false
   property :last_update, String
   property :mat_order, Integer

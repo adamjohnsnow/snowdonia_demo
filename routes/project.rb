@@ -48,9 +48,6 @@ class FactorySettingsElemental < Sinatra::Base
       elsif param[0].include? 'notes'
         mat_id = param[0].chomp(' notes').to_i
         ElementMaterial.get(mat_id).update(:notes => param[1])
-      elsif (param[0].include? 'after') && (param[1] != "")
-        mat_id = param[0].chomp(' after').to_i
-        ElementMaterial.get(mat_id).update(:units_after_drawing => param[1].to_i)
       end
     end
     Element.get(params[:element_id]).project_version.update(

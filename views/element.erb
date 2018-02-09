@@ -190,7 +190,6 @@
         <div class="table-cell">Units</div>
         <div class="table-cell">At Cost</div>
         <div class="table-cell">Notes</div>
-        <div class="table-cell">Units After Drawing</div>
       </div>
       <% @element.element_materials.all(:order => [ :mat_order.asc ]).each do |unit| %>
         <div class="table-row fade-fast" id="<%= unit.id %>-row">
@@ -212,9 +211,6 @@
           <div class="table-cell grey-cell">
             <textarea name="<%= unit.id %> notes" cols="15" rows="1"><%= unit.notes %></textarea>
           </div>
-          <div class="table-cell grey-cell">
-            <input name="<%= unit.id %> after" type="number" class="single-digit" value="<%= unit.units_after_drawing %>">
-          </div>
         </div>
         <script>updateCost(<%=unit.id %>);</script>
       <% end %>
@@ -226,7 +222,6 @@
         <div class="table-cell"></div>
         <div class="table-cell">Totals:</div>
         <div class="table-cell" id="cost-total">jsfail</div>
-        <div class="table-cell"></div>
         <div class="table-cell"></div>
       </div>
     </div>
@@ -251,7 +246,7 @@
       <div class="table-cell">Scenic</div>
       <div class="table-cell">Onsite Paint</div>
       <div class="table-cell">Onsite Days</div>
-      <div class="table-cell">Drafting</div>
+      <div class="table-cell">Draughting</div>
       <div class="table-cell">PM</div>
       <div class="table-cell">Total</div>
     </div>
@@ -273,7 +268,7 @@
           <input class="double-digit lab-day" type="number" onclick="updateLabour('onsite_day')" name="onsite_day" value="<%= @element.element_labour.onsite_day %>">
         </div>
         <div class="table-cell">
-          <input class="double-digit lab-day" type="number" onclick="updateLabour('drafting')" name="drafting" value="<%= @element.element_labour.drafting %>">
+          <input class="double-digit lab-day" type="number" onclick="updateLabour('draughting')" name="draughting" value="<%= @element.element_labour.draughting %>">
         </div>
         <div class="table-cell">
           <input class="double-digit lab-day" type="number" onclick="updateLabour('project_management')" name="project_management" value="<%= @element.element_labour.project_management %>">
@@ -299,7 +294,7 @@
           <input class="double-digit lab-cost" type="number" onclick="updateLabour('onsite_day')" name="onsite_day_cost" value="<%= @element.element_labour.onsite_day_cost %>">
         </div>
         <div class="table-cell">
-          <input class="double-digit lab-cost" type="number" onclick="updateLabour('drafting')" name="drafting_cost" value="<%= @element.element_labour.drafting_cost %>">
+          <input class="double-digit lab-cost" type="number" onclick="updateLabour('draughting')" name="draughting_cost" value="<%= @element.element_labour.draughting_cost %>">
         </div>
         <div class="table-cell">
           <input class="double-digit lab-cost" type="number" onclick="updateLabour('project_management')" name="project_management_cost" value="<%= @element.element_labour.project_management_cost %>">
@@ -318,8 +313,8 @@
         <script>updateLabour('onsite_paint');</script>
         <div class="table-cell onsite_day-total">jsfail</div>
         <script>updateLabour('onsite_day');</script>
-        <div class="table-cell drafting-total">jsfail</div>
-        <script>updateLabour('drafting');</script>
+        <div class="table-cell draughting-total">jsfail</div>
+        <script>updateLabour('draughting');</script>
         <div class="table-cell project_management-total">jsfail</div>
         <script>updateLabour('project_management');</script>
         <div class="table-cell" id="lab-total">jsfail</div>

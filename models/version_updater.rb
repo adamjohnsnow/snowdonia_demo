@@ -4,7 +4,7 @@ class VersionUpdater
     @new_version = new_version
     @old_version.update(:current_version => false)
     duplicate_elements
-    @new_version.update(:contracted => false)
+    @new_version.update(:contracted => false, :status => @old_version.status)
   end
 
   private
