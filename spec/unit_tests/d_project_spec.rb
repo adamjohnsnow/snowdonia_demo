@@ -1,8 +1,4 @@
 describe Project do
-  before do
-    DatabaseCleaner.clean
-  end
-
   context 'project creation' do
 
     it 'create project' do

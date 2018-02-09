@@ -1,22 +1,57 @@
-
-<h3>Clients</h3>
-<div class="table border">
-  <div class="table-body">
-    <div class="table-row header-row">
-      <div class="table-cell">Company</div>
-      <div class="table-cell">Address</div>
-      <div class="table-cell">Contact Name</div>
-      <div class="table-cell">Email</div>
-      <div class="table-cell">Phone</div>
-    </div>
-    <% @clients.each do |client| %>
-      <div class="table-row">
-        <div class="table-cell"><%= client.name %></div>
-        <div class="table-cell"><%= client.address %></div>
-        <div class="table-cell"><%= client.manager %></div>
-        <div class="table-cell"><%= client.email %></div>
-        <div class="table-cell"><%= client.phone %></div>
+<form class="top-box" action="/add-client" method="post">
+  <h3>New Client</h3>
+  <input type="text" name="name" placeholder="Company Name">
+  <input type="text" name="manager" placeholder="Contact Name"><br>
+  <input type="text" name="address" placeholder="Company Address" size="44"><br>
+  <input type="email" name="email" placeholder="Email Address">
+  <input type="text" name="phone" placeholder="Phone Number"><br>
+  <input type="submit" class="btn" value="Create Client">
+</form>
+<form class="top-box" action="/add-site" method="post">
+  <h3>New Site</h3>
+  <input type="text" name="name" placeholder="Site Name">
+  <input type="text" name="contact_name" placeholder="Contact Name"><br>
+  <input type="text" name="address" placeholder="Site Address" size="44"><br>
+  <input type="email" name="email" placeholder="Email Address">
+  <input type="text" name="phone" placeholder="Phone Number"><br>
+  <input type="submit" class="btn" value="Create Site">
+</form>
+<br>
+<div class="top-box">
+  <h3>Clients</h3>
+  <div class="table border">
+    <div class="table-body">
+      <div class="table-row header-row">
+        <div class="table-cell" style="width: 250px;">Company</div>
       </div>
-    <% end %>
+      <% @clients.each do |client| %>
+        <div class="table-row">
+          <div class="table-cell">
+            <a href="/client-site?client_id=<%= client.id %>">
+              <%= client.name %>
+            </a>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+<div class="top-box">
+  <h3>Sites</h3>
+  <div class="table border">
+    <div class="table-body">
+      <div class="table-row header-row">
+        <div class="table-cell" style="width: 250px;">Site</div>
+      </div>
+      <% @sites.each do |site| %>
+      <div class="table-row">
+      <div class="table-cell">
+        <a href="/client-site?site_id=<%= site.id %>">
+          <%= site.name %>
+        </a>
+      </div>
+    </div>
+      <% end %>
+    </div>
   </div>
 </div>

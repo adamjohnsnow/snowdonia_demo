@@ -114,7 +114,7 @@ class FactorySettingsElemental < Sinatra::Base
   end
 
   def make_ordersheet_rows
-    @rows = [['Costcode', 'Description', 'Supplier', 'Unit Cost', 'Qty', 'Total Cost']]
+    @rows = [['Account Code', 'Description', 'Supplier', 'Unit Cost', 'Qty', 'Total Cost']]
     @materials.materials.all(:order => [ :costcode_id.asc ]).each do |material|
       cost = @materials.first(:material_id => material.id).price
       qty = @materials.all(:material_id => material.id).sum(:units)
@@ -125,7 +125,7 @@ class FactorySettingsElemental < Sinatra::Base
   end
 
   def make_draughting_rows
-    @rows = [['Costcode', 'Our Ref', 'Client Ref', 'Description', 'Unit', 'Qty']]
+    @rows = [['Account Code', 'Our Ref', 'Client Ref', 'Description', 'Unit', 'Qty']]
     @project.elements.all(:order => [ :el_order.asc ]).each do |element|
       @rows << ['', element.reference, element.client_ref, element.title, '', '']
       element.element_materials.all(:order => [ :mat_order.asc ]).each do |material|
@@ -142,7 +142,7 @@ class FactorySettingsElemental < Sinatra::Base
   end
 
   def make_costcode_rows
-    @rows = [['Costcode', 'Description', 'Qty', 'Total Cost', 'With Markup']]
+    @rows = [['Account Code', 'Description', 'Qty', 'Total Cost', 'With Markup']]
     @materials.materials.costcodes.all.each do |cc|
       total = 0
       markup = 0

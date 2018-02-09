@@ -34,7 +34,8 @@ class FactorySettingsElemental < Sinatra::Base
   end
 
   get '/clients' do
-    @clients = Client.all
+    @clients = Client.all(:order => [ :name.asc ])
+    @sites = Site.all(:order => [ :name.asc ])
     erb :clients
   end
 

@@ -1,7 +1,4 @@
 describe ElementMaterial do
-  before do
-    DatabaseCleaner.clean
-  end
 
   context 'element material creation' do
 

@@ -1,0 +1,37 @@
+
+
+<div class="top-box">
+  <h3>Edit Site</h3>
+  <form class="register-form" action="/save-site?site_id=<%= @site.id %>" method="post">
+    Site Name <input type="text" name="name" value="<%= @site.name %>">
+    Contact <input type="text" name="contact_name" value="<%= @site.contact_name %>"><br>
+    Address <input type="text" name="address" value="<%= @site.address %>" size="50"><br>
+    Email <input type="email" name="email" value="<%= @site.email %>">
+    Phone <input type="text" name="phone" value="<%= @site.phone %>"><br>
+    <input class="btn" type="submit" value="Save Site">
+  </form>
+</div>
+<h3>Current Projects</h3>
+<div class="table border">
+  <div class="table-body">
+    <div class="table-row header-row">
+      <div class="table-cell">Title</div>
+      <div class="table-cell">Workshop Deadline</div>
+      <div class="table-cell">On Site Deadline</div>
+      <div class="table-cell">Client</div>
+      <div class="table-cell">Project Status</div>
+      <div class="table-cell">Lead PM</div>
+    </div>
+    <% @site.projects.each do |project| %>
+    <% current_version = project.project_versions.last(:current_version => true) %>
+      <div class="table-row">
+        <div class="table-cell"><a href="/project-summary?project_id=<%= project.id %>"><%= project.title %></a></div>
+        <div class="table-cell"><%= project.workshop_deadline.strftime("%d/%m/%Y") %></div>
+        <div class="table-cell"><%= project.on_site.strftime("%d/%m/%Y") %></div>
+        <div class="table-cell"><%= project.client.name %></div>
+        <div class="table-cell"><%= current_version.status %></div>
+        <div class="table-cell"><%= project.user.firstname %> <%= project.user.surname %></div>
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -11,8 +11,8 @@ def destroy_all
   ElementLabour.all.destroy!
   Element.all.destroy!
   ProjectVersion.all.destroy!
-  Project.all.destroy!
   User.all.projects.all.destroy!
+  Project.all.destroy!
 end
 
 def set_up_projects

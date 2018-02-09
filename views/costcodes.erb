@@ -1,5 +1,5 @@
 <div class="top-box">
-  <h3>Costcoes</h3>
+  <h3>Account Codes</h3>
   <div class="table">
     <div class="table-body">
       <div class="table-row header-row">
@@ -19,7 +19,7 @@
 </div>
 <% if session[:user_auth] > 2 %>
 <div class="top-box">
-  <h3>Add New Costcode</h3>
+  <h3>Add New Account Code</h3>
   <div><%= flash[:notice] %></div>
   <form class="register-form" action="/new-costcode" method="post">
     <input type="text" name="code" placeholder="Code (ie C001)" size="12">
