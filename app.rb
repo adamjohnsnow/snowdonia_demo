@@ -44,15 +44,34 @@ class FactorySettingsElemental < Sinatra::Base
   end
 
   get '/materials' do
-    sort = params[:sort_by].to_sym
+    @sort = params[:sort_by].to_sym
     if params[:direction] == 'asc'
-      @materials = Material.all(:order => [ sort.asc ])
+      @materials = Material.all(:active => true, :order => [ @sort.asc ])
       @order = 'desc'
     else
-      @materials = Material.all(:order => [ sort.desc ])
+      @materials = Material.all(:active => true, :order => [ @sort.desc ])
       @order = 'asc'
     end
     erb :materials
+  end
+
+  get '/delete-material' do
+    Material.get(params[:id]).update(:active => false)
+    redirect '/materials?sort_by=' + params[:sort_by] + '&direction=' + params[:direction]
+  end
+
+  post '/update-all-materials' do
+    params.each do |param|
+      if param[0].include? 'current_price'
+        mat_id = param[0].chomp('_current_price').to_i
+        Material.get(mat_id).update(:current_price => param[1].to_f)
+        ProjectVersion.all(:current_version => true).elements.element_materials(:material_id => mat_id).update(:price => param[1].to_f)
+      elsif param[0].include? 'global'
+        mat_id = param[0].chomp('_global').to_i
+        Material.get(mat_id).update(:global => true)
+      end
+    end
+    redirect '/materials?sort_by=' + params[:sort_by] + '&direction=' + params[:direction]
   end
 
   get '/costcodes' do

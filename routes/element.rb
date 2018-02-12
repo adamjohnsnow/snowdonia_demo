@@ -8,7 +8,7 @@ class FactorySettingsElemental < Sinatra::Base
 
   get '/element' do
     @element = Element.get(params[:id])
-    @matlist = Material.all(:project_id => @element.project_version.project.id) + Material.all(:global => true)
+    @matlist = Material.all(:project_id => @element.project_version.project.id, :active => true) + Material.all(:global => true, :active => true)
     @costcodes = Costcode.all
     erb :element
   end

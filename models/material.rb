@@ -10,6 +10,7 @@ class Material
   property :unit, Text
   property :price_updated, Date, :default => Date.today
   property :global, Boolean, :default => false
+  property :active, Boolean, :default => true
 
   belongs_to :project
   belongs_to :costcode

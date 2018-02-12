@@ -164,8 +164,8 @@
   <i class="fas fa-exclamation-circle" style="color: red;"></i><br>
   Are you sure you want to remove this element from <%= @element.project_version.project.title %>?<br>
   <i>This cannot be undone!</i><br>
-  <a href="/delete-element?element_id=<%= @element.id %>" style="color: red;">Yes, Remove Material</a><br>
-  <span onclick="hideDelete()" style="cursor: pointer">No, Cancel</span>
+  <a href="/delete-element?element_id=<%= @element.id %>" style="color: red;">Yes, Remove Element</a><br>
+  <span onclick="hideDelete()" style="cursor: pointer">No, Keep Element</span>
 </div>
 <script type="text/javascript">
   var showDelete = function() {

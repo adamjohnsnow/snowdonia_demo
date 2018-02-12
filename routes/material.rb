@@ -29,7 +29,7 @@ class FactorySettingsElemental < Sinatra::Base
     material.destroy!
     redirect '/element?id=' + element.to_s
   end
-
+  
   private
 
 end
