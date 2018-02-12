@@ -29,7 +29,6 @@ class FactorySettingsElemental < Sinatra::Base
     project = Project.get(params[:project_id])
     current_version = project.project_versions.last(:current_version => true)
     current_version.update(
-      :status => params[:status],
       :last_update => Date.today.strftime("%d/%m/%Y") + ' by ' + session[:user]
     )
     loop_through_elements(params)
