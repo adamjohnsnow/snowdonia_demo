@@ -11,10 +11,6 @@ class FactorySettingsElemental < Sinatra::Base
     :project_management
   ]
 
-  get '/costcode-report' do
-    erb :costcode_report
-  end
-
   get '/report' do
     @type = params[:type].to_sym
     @project = ProjectVersion.get(params[:version_id])
@@ -110,6 +106,7 @@ class FactorySettingsElemental < Sinatra::Base
     make_costcode_rows if @type == :costcode_report
     make_ordersheet_rows if @type == :ordersheet
     make_draughting_rows if @type == :draughting
+    make_labour_rows if @type == :laboursheet
     IO.write(filename, @rows.map(&:to_csv).join)
   end
 
@@ -154,6 +151,24 @@ class FactorySettingsElemental < Sinatra::Base
       @rows << [cc.code, cc.description, '', total.round(2), markup.round(2)]
     end
     @rows << ['Labour', '', total_labour_days.flatten.inject(:+), total_labour_costs[0].round(2), total_labour_costs[1].round(2)]
+  end
+
+  def make_labour_rows
+    @rows = [
+      ['Our Ref', 'Client Ref', 'Description', 'Days'],
+      ['', '', 'Totals', '']
+    ]
+    LABOURTYPES.each do |labour|
+      @rows << ['', '', labour.to_s.gsub('_', ' ').split.map(&:capitalize).join(' '), @project.elements.all.element_labours.sum(labour)]
+    end
+    @project.elements.all(:order => [ :el_order.asc ]).each do |element|
+      @rows << [element.reference, element.client_ref, element.title, '']
+      LABOURTYPES.each do |labour|
+        if element.element_labour[labour] > 0
+          @rows << ['', '', labour.to_s.gsub('_', ' ').split.map(&:capitalize).join(' '), element.element_labour[labour]]
+        end
+      end
+    end
   end
 
   def get_element_total(id)

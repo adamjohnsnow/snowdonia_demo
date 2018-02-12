@@ -1,0 +1,24 @@
+Our Ref,Client Ref,Description,Days
+"","",Totals,""
+"","",Carpentry,7.0
+"","",Steelwork,5.0
+"","",Scenic,7.0
+"","",Onsite Paint,6.0
+"","",Onsite Day,6.0
+"","",Draughting,2.0
+"","",Project Management,5.0
+1,A,Element #1,""
+"","",Carpentry,3.0
+"","",Steelwork,4.0
+"","",Scenic,6.0
+"","",Onsite Paint,2.0
+"","",Onsite Day,6.0
+"","",Draughting,1.0
+"","",Project Management,2.0
+2,B,Element #2,""
+"","",Carpentry,4.0
+"","",Steelwork,1.0
+"","",Scenic,1.0
+"","",Onsite Paint,4.0
+"","",Draughting,1.0
+"","",Project Management,3.0
