@@ -205,7 +205,7 @@
           <div class="table-cell grey-cell"><%= unit.material.supplier %></div>
           <div class="table-cell grey-cell" id="<%= unit.id %> price">£<%= sprintf('%.2f', unit.price) %></div>
           <div class="table-cell grey-cell">
-            <input id="<%= unit.id %> units" name="<%= unit.id %> units" type="number" step="any" class="single-digit" value="<%= unit.units %>" onchange="updateCost(<%= unit.id %>)">
+            <input id="<%= unit.id %> units" name="<%= unit.id %> units" type="number" step="any" class="double-digit" value="<%= unit.units %>" onchange="updateCost(<%= unit.id %>)">
           </div>
           <div class="table-cell grey-cell cost" id="<%= unit.id %> cost">jsfail</div>
           <div class="table-cell grey-cell">

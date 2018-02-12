@@ -41,10 +41,10 @@ class FactorySettingsElemental < Sinatra::Base
     params.each do |param|
       if param[0].include? 'order'
         mat_id = param[0].chomp(' order').to_i
-        ElementMaterial.get(mat_id).update(:mat_order => param[1].to_i)
+        ElementMaterial.get(mat_id).update(:mat_order => param[1])
       elsif param[0].include? 'units'
         mat_id = param[0].chomp(' units').to_i
-        ElementMaterial.get(mat_id).update(:units => param[1].to_i)
+        ElementMaterial.get(mat_id).update(:units => param[1].to_f)
       elsif param[0].include? 'notes'
         mat_id = param[0].chomp(' notes').to_i
         ElementMaterial.get(mat_id).update(:notes => param[1])
@@ -166,8 +166,8 @@ class FactorySettingsElemental < Sinatra::Base
         @el_id = param[0].chomp(' el_order').to_i
         Element.get(@el_id).update(:el_order => param[1].to_i)
       elsif param[0].include? 'quantity'
-        @el_id = param[0].chomp(' quantity').to_i
-        Element.get(@el_id).update(:quantity => param[1].to_i)
+        @el_id = param[0].chomp(' quantity')
+        Element.get(@el_id).update(:quantity => param[1])
       elsif param[0].include? 'include'
         @el_id = param[0].chomp(' include').to_i
         Element.get(@el_id).update(:quote_include => true)
