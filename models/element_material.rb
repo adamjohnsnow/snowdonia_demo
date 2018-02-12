@@ -4,7 +4,7 @@ class ElementMaterial
   include DataMapper::Resource
 
   property :id, Serial
-  property :units, Integer, :default => 1
+  property :units, Float, :default => 1
   property :notes, String
   property :price, Float
   property :contingency, Float, :default => 10.0

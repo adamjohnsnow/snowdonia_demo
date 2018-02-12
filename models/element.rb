@@ -7,7 +7,7 @@ class Element
   property :title, String, :default => 'Unnamed Element'
   property :reference, String
   property :client_ref, String
-  property :quantity, Integer, :default => 1
+  property :quantity, Float, :default => 1
   property :notes, Text
   property :build_start, Date
   property :build_end, Date
