@@ -15,7 +15,7 @@
         </div>
         <div class="table-row">
           <div class="table-cell">
-            Quantity<input type="number" name="quantity" value="<%= @element.quantity %>" style="width: 50px;">
+            Quantity<input type="number" step="any" name="quantity" value="<%= @element.quantity %>" style="width: 50px;">
                Include in Quote
             <% if @element.quote_include == true %>
               <input type="checkbox" name="quote_include" checked>
@@ -65,19 +65,19 @@
         <div class="table-row">
           <div class="table-cell">
             Contingency<br>
-            <input type="number" class="single-digit" step="0.5" name="contingency" value="<%= @element.contingency %>">
+            <input type="number" class="single-digit" step="any" name="contingency" value="<%= @element.contingency %>">
           </div>
           <div class="table-cell">
             Overhead<br>
-            <input type="number" class="single-digit" step="0.5" name="overhead" value="<%= @element.overhead %>">
+            <input type="number" class="single-digit" step="any" name="overhead" value="<%= @element.overhead %>">
           </div>
           <div class="table-cell">
             Profit<br>
-            <input type="number" class="single-digit" step="0.5" name="profit" value="<%= @element.profit %>">
+            <input type="number" class="single-digit" step="any" name="profit" value="<%= @element.profit %>">
           </div>
           <div class="table-cell">
             Subcontractor<br>
-            <input type="number" class="single-digit" step="0.5" name="subcontractor" value="<%= @element.subcontractor %>">
+            <input type="number" class="single-digit" step="any" name="subcontractor" value="<%= @element.subcontractor %>">
           </div>
         </div>
       </div>
@@ -109,7 +109,7 @@
     <input type="text" name="description" placeholder="Description"><br>
     <input type="text" name="supplier" placeholder="Supplier">
     <br>
-    £<input type="number" name="current_price"class="double-digit" step="0.01">per
+    £<input type="number" name="current_price"class="double-digit" step="any">per
     <input type="text" name="unit" placeholder="Unit" class="double-digit">
     <br><br>
     <i>- or -</i>
@@ -205,7 +205,7 @@
           <div class="table-cell grey-cell"><%= unit.material.supplier %></div>
           <div class="table-cell grey-cell" id="<%= unit.id %> price">£<%= sprintf('%.2f', unit.price) %></div>
           <div class="table-cell grey-cell">
-            <input id="<%= unit.id %> units" name="<%= unit.id %> units" type="number" class="single-digit" value="<%= unit.units %>" onchange="updateCost(<%= unit.id %>)">
+            <input id="<%= unit.id %> units" name="<%= unit.id %> units" type="number" step="any" class="single-digit" value="<%= unit.units %>" onchange="updateCost(<%= unit.id %>)">
           </div>
           <div class="table-cell grey-cell cost" id="<%= unit.id %> cost">jsfail</div>
           <div class="table-cell grey-cell">
@@ -253,25 +253,25 @@
       <div class="table-row grey-cell">
         <div class="table-cell">Days</div>
         <div class="table-cell">
-          <input class="double-digit lab-day" type="number" onclick="updateLabour('carpentry')" name="carpentry" value="<%= @element.element_labour.carpentry %>">
+          <input class="double-digit lab-day" type="number" step="any" onclick="updateLabour('carpentry')" name="carpentry" value="<%= @element.element_labour.carpentry %>">
         </div>
         <div class="table-cell">
-          <input class="double-digit lab-day" type="number" onclick="updateLabour('steelwork')" name="steelwork" value="<%= @element.element_labour.steelwork %>">
+          <input class="double-digit lab-day" type="number" step="any" onclick="updateLabour('steelwork')" name="steelwork" value="<%= @element.element_labour.steelwork %>">
         </div>
         <div class="table-cell">
-          <input class="double-digit lab-day" type="number" onclick="updateLabour('scenic')" name="scenic" value="<%= @element.element_labour.scenic %>">
+          <input class="double-digit lab-day" type="number" step="any" onclick="updateLabour('scenic')" name="scenic" value="<%= @element.element_labour.scenic %>">
         </div>
         <div class="table-cell">
-          <input class="double-digit lab-day" type="number" onclick="updateLabour('onsite_paint')" name="onsite_paint" value="<%= @element.element_labour.onsite_paint %>">
+          <input class="double-digit lab-day" type="number" step="any" onclick="updateLabour('onsite_paint')" name="onsite_paint" value="<%= @element.element_labour.onsite_paint %>">
         </div>
         <div class="table-cell">
-          <input class="double-digit lab-day" type="number" onclick="updateLabour('onsite_day')" name="onsite_day" value="<%= @element.element_labour.onsite_day %>">
+          <input class="double-digit lab-day" type="number" step="any" onclick="updateLabour('onsite_day')" name="onsite_day" value="<%= @element.element_labour.onsite_day %>">
         </div>
         <div class="table-cell">
-          <input class="double-digit lab-day" type="number" onclick="updateLabour('draughting')" name="draughting" value="<%= @element.element_labour.draughting %>">
+          <input class="double-digit lab-day" type="number" step="any" onclick="updateLabour('draughting')" name="draughting" value="<%= @element.element_labour.draughting %>">
         </div>
         <div class="table-cell">
-          <input class="double-digit lab-day" type="number" onclick="updateLabour('project_management')" name="project_management" value="<%= @element.element_labour.project_management %>">
+          <input class="double-digit lab-day" type="number" step="any" onclick="updateLabour('project_management')" name="project_management" value="<%= @element.element_labour.project_management %>">
         </div>
         <div class="table-cell" id="day-total">jsfail</div>
       </div>
@@ -279,25 +279,25 @@
         <% cost = 0 %>
         <div class="table-cell">Rate (£)</div>
         <div class="table-cell">
-          <input class="double-digit lab-cost" type="number" onclick="updateLabour('carpentry')" name="carpentry_cost" value="<%= @element.element_labour.carpentry_cost %>">
+          <input class="double-digit lab-cost" type="number" step="any" onclick="updateLabour('carpentry')" name="carpentry_cost" value="<%= @element.element_labour.carpentry_cost %>">
         </div>
         <div class="table-cell">
-          <input class="double-digit lab-cost" type="number" onclick="updateLabour('steelwork')" name="steelwork_cost" value="<%= @element.element_labour.steelwork_cost %>">
+          <input class="double-digit lab-cost" type="number" step="any" onclick="updateLabour('steelwork')" name="steelwork_cost" value="<%= @element.element_labour.steelwork_cost %>">
         </div>
         <div class="table-cell">
-          <input class="double-digit lab-cost" type="number" onclick="updateLabour('scenic')" name="scenic_cost" value="<%= @element.element_labour.scenic_cost %>">
+          <input class="double-digit lab-cost" type="number" step="any" onclick="updateLabour('scenic')" name="scenic_cost" value="<%= @element.element_labour.scenic_cost %>">
         </div>
         <div class="table-cell">
-          <input class="double-digit lab-cost" type="number" onclick="updateLabour('onsite_paint')" name="onsite_paint_cost" value="<%= @element.element_labour.onsite_paint_cost %>">
+          <input class="double-digit lab-cost" type="number" step="any" onclick="updateLabour('onsite_paint')" name="onsite_paint_cost" value="<%= @element.element_labour.onsite_paint_cost %>">
         </div>
         <div class="table-cell">
-          <input class="double-digit lab-cost" type="number" onclick="updateLabour('onsite_day')" name="onsite_day_cost" value="<%= @element.element_labour.onsite_day_cost %>">
+          <input class="double-digit lab-cost" type="number" step="any" onclick="updateLabour('onsite_day')" name="onsite_day_cost" value="<%= @element.element_labour.onsite_day_cost %>">
         </div>
         <div class="table-cell">
-          <input class="double-digit lab-cost" type="number" onclick="updateLabour('draughting')" name="draughting_cost" value="<%= @element.element_labour.draughting_cost %>">
+          <input class="double-digit lab-cost" type="number" step="any" onclick="updateLabour('draughting')" name="draughting_cost" value="<%= @element.element_labour.draughting_cost %>">
         </div>
         <div class="table-cell">
-          <input class="double-digit lab-cost" type="number" onclick="updateLabour('project_management')" name="project_management_cost" value="<%= @element.element_labour.project_management_cost %>">
+          <input class="double-digit lab-cost" type="number" step="any" onclick="updateLabour('project_management')" name="project_management_cost" value="<%= @element.element_labour.project_management_cost %>">
         </div>
         <div class="table-cell"></div>
       </div>

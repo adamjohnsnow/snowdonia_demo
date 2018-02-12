@@ -48,7 +48,7 @@
         <div class="table-cell grey-cell">£<%= sprintf('%.2f', element_totals[0][:markup]) %></div>
         <div class="table-cell grey-cell" id="<%= element.id %> cost">£<%= sprintf('%.2f', element_totals[0][:materials] + element_totals[0][:labour] + element_totals[0][:markup]) %></div>
         <div class="table-cell grey-cell">
-          <input class="single-digit" type="number" name="<%= element.id %> quantity" id="<%= element.id %> quantity" value="<%= element.quantity %>" onchange="updateElement(<%= element.id %>)">
+          <input class="single-digit" type="number"step="any" name="<%= element.id %> quantity" id="<%= element.id %> quantity" value="<%= element.quantity %>" onchange="updateElement(<%= element.id %>)">
         </div>
         <div class="table-cell grey-cell cost" id="<%= element.id %> total">jsfail</div>
         <div class="table-cell grey-cell">

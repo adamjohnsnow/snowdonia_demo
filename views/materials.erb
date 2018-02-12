@@ -30,7 +30,7 @@
         <div class="table-cell"><%= material.supplier %></div>
         <div class="table-cell"><%= material.unit %></div>
         <div class="table-cell">£
-          <input name="<%= material.id %>_current_price" class="double-digit" type="number" value="<%= sprintf('%.2f',material.current_price) %>">
+          <input name="<%= material.id %>_current_price" class="double-digit" type="number" step="any" value="<%= sprintf('%.2f',material.current_price) %>">
         </div>
         <div class="table-cell"><%= material.price_updated.strftime("%d/%m/%Y") %></div>
         <div class="table-cell"><%= material.project.title %></div>
