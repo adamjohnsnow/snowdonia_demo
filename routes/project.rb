@@ -27,12 +27,13 @@ class FactorySettingsElemental < Sinatra::Base
 
   post '/update-project' do
     project = Project.get(params[:project_id])
-    current_version = project.project_versions.last(:current_version => true)
-    current_version.update(
+    @current_version = project.project_versions.last(:current_version => true)
+    @current_version.update(
       :last_update => Date.today.strftime("%d/%m/%Y") + ' by ' + session[:user]
     )
+    @current_version.elements.all.update(:quote_include => false)
     loop_through_elements(params)
-    MarkupUpdater.new.update_project(current_version)
+    MarkupUpdater.new.update_project(@current_version)
     redirect '/project-summary?project_id=' + params[:project_id]
   end
 
@@ -172,8 +173,6 @@ class FactorySettingsElemental < Sinatra::Base
         Element.get(@el_id).update(:quote_include => true)
       end
     end
-    inc_param = "#{@el_id} include"
-    Element.get(@el_id.to_i).update(:quote_include => false) if !params[inc_param]
   end
 
   def update_labour(params)
