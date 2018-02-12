@@ -5,10 +5,11 @@
   <div><%= flash[:notice] %></div>
   <form class="register-form" action="/edit-user" method="post">
     <input type="hidden" name="user_id" value="<%= @user.id %>">
-    First Name<input type="text" name="firstname" value="<%= @user.firstname %>">
-    Surname<input type="text" name="surname" value="<%= @user.surname %>"><br>
-    Email<input type="text" name="email" value="<%= @user.email %>" size="50">
-    Role<input type="text" name="role" value="<%= @user.role %>"><br>
+    First Name <input type="text" name="firstname" value="<%= @user.firstname %>">
+    Surname <input type="text" name="surname" value="<%= @user.surname %>"><br>
+    Email <input type="text" name="email" value="<%= @user.email %>" size="50"><br>
+    Phone <input type="text" name="phone" value="<%= @user.phone %>" size="18">
+    Role <input type="text" name="role" value="<%= @user.role %>"><br>
     Authorised Level <select name="level">
       <% [1, 2, 3].each do |i| %>
         <% if i == @user.level %>

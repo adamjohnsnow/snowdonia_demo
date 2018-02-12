@@ -1,4 +1,6 @@
 require 'csv'
+require_relative '../models/report_writer'
+
 class FactorySettingsElemental < Sinatra::Base
 
   LABOURTYPES= [
@@ -15,11 +17,13 @@ class FactorySettingsElemental < Sinatra::Base
     @type = params[:type].to_sym
     @project = ProjectVersion.get(params[:version_id])
     @materials = @project.elements.element_materials.all
-    @totals = Totals.new.summarise_project(@project) if @type == :quotation
+    @totals = Totals.new.summarise_project(@project)
+    @grand_totals = @totals.inject{|memo, el| memo.merge( el ){|k, old_v, new_v| old_v + new_v}}
+    @grand_totals.tap{ |keys| keys.delete(:id) }
     if @project.current_version
       PriceUpdater.new(@materials, @materials.materials.all)
     end
-    write_csvs if @type != :quotation
+    ReportWriter.new(@type, @project, @materials, session[:user_id]) if @type != :quotation && @type != :terms
     erb @type
   end
 
@@ -99,76 +103,6 @@ class FactorySettingsElemental < Sinatra::Base
       markup += sub_total
     end
     [total, markup]
-  end
-
-  def write_csvs
-    filename = "./report_outputs/user_#{session[:user_id]}_#{@project.project.title}_#{@project.version_name}_#{@type.to_s}.csv"
-    make_costcode_rows if @type == :costcode_report
-    make_ordersheet_rows if @type == :ordersheet
-    make_draughting_rows if @type == :draughting
-    make_labour_rows if @type == :laboursheet
-    IO.write(filename, @rows.map(&:to_csv).join)
-  end
-
-  def make_ordersheet_rows
-    @rows = [['Account Code', 'Description', 'Supplier', 'Unit Cost', 'Qty', 'Total Cost']]
-    @materials.materials.all(:order => [ :costcode_id.asc ]).each do |material|
-      cost = @materials.first(:material_id => material.id).price
-      qty = @materials.all(:material_id => material.id).sum(:units)
-      if qty > 0
-        @rows << [material.costcode.code, material.description, material.supplier, cost, qty, (cost * qty).round(2)]
-      end
-    end
-  end
-
-  def make_draughting_rows
-    @rows = [['Account Code', 'Our Ref', 'Client Ref', 'Description', 'Unit', 'Qty']]
-    @project.elements.all(:order => [ :el_order.asc ]).each do |element|
-      @rows << ['', element.reference, element.client_ref, element.title, '', '']
-      element.element_materials.all(:order => [ :mat_order.asc ]).each do |material|
-        @rows << [
-          material.material.costcode.code,
-          '',
-          '',
-          material.material.description.to_s + '(' + material.material.supplier.to_s + ')',
-          material.material.unit,
-          material.units
-          ]
-      end
-    end
-  end
-
-  def make_costcode_rows
-    @rows = [['Account Code', 'Description', 'Qty', 'Total Cost', 'With Markup']]
-    @materials.materials.costcodes.all.each do |cc|
-      total = 0
-      markup = 0
-      @materials.materials.all(:costcode_id => cc.id).each do |mat|
-        element_materials = @materials.all(:material_id => mat.id)
-        total += element_materials[0].price * element_materials.sum(:units)
-        markup += sum_markup(element_materials)
-      end
-      @rows << [cc.code, cc.description, '', total.round(2), markup.round(2)]
-    end
-    @rows << ['Labour', '', total_labour_days.flatten.inject(:+), total_labour_costs[0].round(2), total_labour_costs[1].round(2)]
-  end
-
-  def make_labour_rows
-    @rows = [
-      ['Our Ref', 'Client Ref', 'Description', 'Days'],
-      ['', '', 'Totals', '']
-    ]
-    LABOURTYPES.each do |labour|
-      @rows << ['', '', labour.to_s.gsub('_', ' ').split.map(&:capitalize).join(' '), @project.elements.all.element_labours.sum(labour)]
-    end
-    @project.elements.all(:order => [ :el_order.asc ]).each do |element|
-      @rows << [element.reference, element.client_ref, element.title, '']
-      LABOURTYPES.each do |labour|
-        if element.element_labour[labour] > 0
-          @rows << ['', '', labour.to_s.gsub('_', ' ').split.map(&:capitalize).join(' '), element.element_labour[labour]]
-        end
-      end
-    end
   end
 
   def get_element_total(id)

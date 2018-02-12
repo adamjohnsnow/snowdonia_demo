@@ -155,7 +155,8 @@ class FactorySettingsElemental < Sinatra::Base
       :client_id => params[:client_id],
       :site_id => params[:site_id],
       :summary => params[:summary],
-      :technical_requirements => params[:technical_requirements]
+      :technical_requirements => params[:technical_requirements],
+      :terms => params[:terms]
     )
   end
 

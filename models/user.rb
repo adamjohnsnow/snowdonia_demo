@@ -9,6 +9,7 @@ class User
   property :firstname, String
   property :surname, String
   property :email, String, :unique => true
+  property :phone, String
   property :password_digest, Text
   property :role, String
   property :level, Integer, :default => 1

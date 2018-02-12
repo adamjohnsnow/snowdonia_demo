@@ -248,3 +248,10 @@ h2 {
   font-size: 12px;
   font-style: italic;
 }
+.terms-body {
+  margin: 30px;
+  text-align: left;
+}
+.terms-section {
+  padding: 15px;
+}

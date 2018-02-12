@@ -1,0 +1,121 @@
+<div class="terms-section hide-print">
+  <a href="/project-summary?project_id=<%= @project.project.id %>&version_id=<%= @project.id %>">Back to Summary</a>
+  <br>
+  <div onclick="printReport()" style="color: #322B6A; cursor: pointer;"><i class="fas fa-print"></i> PRINT</div>
+</div>
+<h2>FACTORY SETTINGS LIMITED</h2>
+<h3>COMMERCIAL TERMS SCHEDULE</h3>
+<div class="terms-body">
+  <div class="terms-section">
+    This Schedule sets out the main commercial terms for the agreement between the parties detailed below; it is to be read in conjunction with the attached Factory Settings Terms and Conditions, and together with such Terms and Conditions, is intended to be a fully enforceable and binding contract between such parties.
+  </div>
+  <div class="terms-section">
+    1. Date: <%= Date.today.strftime("%d/%m%Y") %>
+  </div>
+  <div class="terms-section">
+    2. Parties;
+    <br>
+    (1) Factory Settings Limited of Unit 10, Orient Industrial Park, Simonds Road, London E10 7DE (“Factory Settings”);
+    <br>
+    and,
+    <br>
+    (2) <%= @project.project.client.manager %> of <%= @project.project.client.name %>, <%= @project.project.client.address %> (“Customer”).
+  </div>
+  <div class="terms-section">
+    3. Services; (short description of Services/work to be carried out with ref to any spec or other relevant document and for what exhibition/other event):
+    <br>
+    <%= @project.project.summary %>
+  </div>
+  <div class="terms-section">
+    4. Technical/site requirements:
+    <br>
+    <%= @project.project.technical_requirements %>
+  </div>
+  <div class="terms-section">
+    5. Time and form (if any) for delivery of finished product. <%= @project.project.on_site.strftime("%d %B %Y") %>
+    <br>
+    Address for delivery (person to authorise sign-off, if not below):
+    <br>
+    <%= @project.project.site.name %>, <%= @project.project.site.address %>
+  </div>
+  <div class="terms-section">
+    6. Charges for the Services; £<%= (@grand_totals.values.map.reduce(:+) / 10 ).to_i * 10 %> (plus VAT) as detailed on invoice supplied on conclusion of work/delivery of finished product.
+    <br>
+    50% of the Charges are required within 3 days of signature, the balance of 50% to be paid within 14 days of delivery of the Services. Payment for materials may be required in advance.
+  </div>
+  <div class="terms-section">
+    7. Special Terms (if any)
+    <br>
+    <%= @project.project.terms %>
+  </div>
+  <div class="terms-section">
+    8. Contacts;
+    <br>
+    Factory Settings; <%= @project.project.user.firstname %> <%= @project.project.user.surname %>, <%= @project.project.user.phone %>, <%= @project.project.user.email %>
+    <br>
+    Customer; <%= @project.project.client.name %>, <%= @project.project.client.phone %>, <%= @project.project.client.email %>
+  </div>
+  <div class="terms-section">
+    Factory Settings Limited, incorporated in England and Wales, with registered number 05605257
+    <br>
+    Registered office, Unit 10, Orient Industrial Park, Simonds Road, London E10 7DE
+    <br>
+    VAT number GB 872918681
+    <br>
+    TO INDICATE YOUR ACCEPTANCE OF THIS COMMERCIAL TERMS SCHEDULE AND THE ATTACHED TERMS AND CONDITIONS PLEASE SIGN WHERE INDICATED BELOW.
+  </div>
+  <div class="terms-section">
+  <div class="table">
+    <div class="table-row" style="height: 150px;">
+      <div class="table-cell" style="width: 10px; vertical-align: bottom;">
+        ......................................................................................
+        <br>
+        For and on behalf of Factory Settings
+      </div>
+      <div class="table-cell" style="width: 100px; vertical-align: bottom;">
+        ...............................................
+        <br>
+        Positon/title
+      </div>
+      <div class="table-cell" style="width: 50px; vertical-align: bottom;">
+        .......................
+        <br>
+        Date
+      </div>
+    </div>
+    <div class="table-row" style="height: 150px;">
+      <div class="table-cell" style="width: 10px; vertical-align: bottom;">
+        ......................................................................................
+        <br>
+        For and on behalf of Customer
+      </div>
+      <div class="table-cell" style="width: 100px; vertical-align: bottom;">
+        ...............................................
+        <br>
+        Positon/title
+      </div>
+      <div class="table-cell" style="width: 50px; vertical-align: bottom;">
+        .......................
+        <br>
+        Date
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+var printReport = function(){
+  document.getElementsByClassName('menu')[0].style.display = 'none';
+  var hides1 = document.getElementsByClassName('hide-print');
+  for (i = 0; i < hides1.length; i++) {
+    var remember1 = hides1[i].style.display
+    hides1[i].style.display = 'none';
+  }
+  document.body.style.backgroundColor = "white"
+  window.print();
+  document.getElementsByClassName('menu')[0].style.display = 'table-cell';
+  for (i = 0; i < hides1.length; i++) {
+    hides1[i].style.display = remember1;
+  }
+  document.body.style.backgroundColor = "#eeeeee40"
+}
+</script>
