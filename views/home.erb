@@ -2,10 +2,10 @@
 
 
 <div class="top-box top-limit">
-  <h2>Your Projects</h2>
+  <h2>Your <i class="fas fa-thumbtack"></i> Projects <span onclick="showEdit()" style="font-size: 12px; cursor: pointer;"><i class="fas fa-edit" style="margin-bottom: 3px;"></i></h2>
         <% @projects.each do |project| %>
           <div>
-            <a class="project-link" href="/project-summary?project_id=<%= project.project.id %>"><%= project.project.title %></a>
+            <a class="project-link" href="/project-summary?project_id=<%= project.project.id %>"><%= project.project.title %></a><a href="remove-my?project_id=<%= project.id %>" class="trash" style="display: none;"><i class="fas fa-trash" style="margin: 2px;"></i></a>
           </div>
         <% end %>
 </div>
@@ -13,3 +13,12 @@
   <h2>Your Tasks</h2>
   COMING SOON
 </div>
+<script type="text/javascript">
+var showEdit = function() {
+  var rows = document.getElementsByClassName('trash')
+  console.log(rows);
+    for (i = 0; i < rows.length; i++) {
+      rows[i].style.display = 'inline'
+    }
+}
+</script>

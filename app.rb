@@ -7,10 +7,14 @@ ENV['RACK_ENV'] ||= 'development'
 
 class FactorySettingsElemental < Sinatra::Base
   enable :sessions
-  set :session_secret, ENV['SESSION_SECRET'] || 'something'
+  configure do
+    use Rack::Session::Cookie,
+    :expire_after => 43200,
+    :secret => ENV['SESSION_SECRET'] || 'something'
+  end
   register Sinatra::Flash
 
-  STATUS = ['New', 'Tender', 'In Design', 'In Build', 'On Site', 'Site Clearance', 'Complete', 'Cancelled']
+  STATUS = ['New', 'Costing', 'Draughting', 'In Build', 'On Site', 'Site Clearance', 'Complete', 'Cancelled']
 
   before do
     redirect '/' unless session[:user_id] || request.path_info == '/' || request.path_info == '/sign-in'

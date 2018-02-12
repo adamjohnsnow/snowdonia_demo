@@ -3,7 +3,7 @@ class FactorySettingsElemental < Sinatra::Base
   post '/new-element' do
     params[:title] = 'Unnamed Element' if params[:title] == ''
     make_new_element(params)
-    redirect '/project-summary?project_id=' + params[:project_id] + '&version_id=' + params[:project_v_id]
+    redirect '/project-summary?project_id=' + params[:project_id] + '&version_id=' + params[:project_v_id] + '#elements-list'
   end
 
   get '/element' do

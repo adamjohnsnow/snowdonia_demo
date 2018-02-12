@@ -42,10 +42,10 @@
     <div class="table-cell grey-cell">
     </div>
     <div class="table-cell grey-cell">
-      <strong>£<%= sprintf('%.2f', total_cc(cc.id)[0]) %></strong>
+      <strong>£<%= sprintf('%.2f', @reporter.total_cc(cc.id)[0]) %></strong>
     </div>
     <div class="table-cell grey-cell">
-      <strong>£<%= sprintf('%.2f', total_cc(cc.id)[1]) %></strong>
+      <strong>£<%= sprintf('%.2f', @reporter.total_cc(cc.id)[1]) %></strong>
     </div>
   </div>
   <% @materials.materials.all(:costcode_id => cc.id).each do |mat|
@@ -68,7 +68,7 @@
           £<%= sprintf('%.2f', element_materials.sum(:units) * element_materials[0].price) %>
         </div>
         <div class="table-cell">
-          £<%= sprintf('%.2f', sum_markup(element_materials)) %>
+          £<%= sprintf('%.2f', @reporter.sum_markup(element_materials)) %>
         </div>
       </div>
     <% end %>
@@ -86,13 +86,13 @@
     <div class="table-cell grey-cell">
     </div>
     <div class="table-cell grey-cell">
-      <strong><%= total_labour_days.flatten.inject(:+) %></strong>
+      <strong><%= @reporter.total_labour_days.flatten.inject(:+) %></strong>
     </div>
     <div class="table-cell grey-cell">
-      <strong>£<%= sprintf('%.2f', total_labour_costs[0])%></strong>
+      <strong>£<%= sprintf('%.2f', @reporter.total_labour_costs[0])%></strong>
     </div>
     <div class="table-cell grey-cell">
-      <strong>£<%= sprintf('%.2f', total_labour_costs[1]) %></strong>
+      <strong>£<%= sprintf('%.2f', @reporter.total_labour_costs[1]) %></strong>
     </div>
   </div>
   <% LABOURTYPES.each do |type| %>
@@ -111,10 +111,10 @@
       <%= @project.elements.element_labour.sum(type) %>
     </div>
     <div class="table-cell">
-      £<%= sprintf('%.2f', summarise_labour(type)[0]) %>
+      £<%= sprintf('%.2f',  @reporter.summarise_labour(type)[0]) %>
     </div>
     <div class="table-cell">
-      £<%= sprintf('%.2f', summarise_labour(type)[1]) %>
+      £<%= sprintf('%.2f',  @reporter.summarise_labour(type)[1]) %>
     </div>
   </div>
   <% end %>

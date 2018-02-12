@@ -4,7 +4,7 @@
   <% @total = 0
   @project.elements.all(:order => [ :el_order.asc ]).each do |element|
   if element.quote_include
-    element_total = get_element_total(element.id)
+    element_total = @reporter.get_element_total(element.id)
     @total += (element_total * element.quantity) %>
       <div class="table-row">
         <div class="table-cell quotation-element" style="width: 60px">

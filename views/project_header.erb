@@ -1,6 +1,16 @@
 <div class="top-box project-header">
   <h2><%= @project.title %> Summary</h2>
   <h3>Version: <%= @current_version.version_name %></h3>
+  <div style="height: 20px"></div>
+  Current Version:
+  <%= @current_version.current_version ? 'Yes' : 'No' %>
+  <br>
+  <a href='/versions?id=<%= @project.id %>'>Total Versions:
+  <%= @project.project_versions.all.count %></a>
+  <br>
+  <% if !@project.users.first(:id => session[:user_id]) %>
+  <a href="/add-my?project_id=<%= @project.id %>"><i class="fas fa-thumbtack"></i> My Projects</a>
+  <% end %>
 </div>
 <div class="top-box project-header">
   <h3>Reports</h3>
@@ -79,16 +89,6 @@
                 <% end %>
             <% end %>
           </select>
-        </div>
-      </div>
-      <div class="table-row">
-        <div class="table-cell">
-          Current Version:
-          <%= @current_version.current_version ? 'Yes' : 'No' %>
-        </div>
-        <div class="table-cell">
-          <a href='/versions?id=<%= @project.id %>'>Total Versions:
-          <%= @project.project_versions.all.count %></a>
         </div>
       </div>
       <div class="table-row">

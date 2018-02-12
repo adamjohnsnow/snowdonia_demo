@@ -10,14 +10,29 @@ class ReportWriter
     :project_management
   ]
 
-  def initialize(type, project, materials, id)
+  def initialize(type, project, materials, totals, id)
     @type = type
     @project = project
     @materials = materials
+    @totals = totals
     filename = "./report_outputs/user_#{id}_#{@project.project.title}_#{@project.version_name}_#{@type.to_s}.csv"
     send("make_#{@type.to_s}_rows")
     IO.write(filename, @rows.map(&:to_csv).join)
     @rows
+  end
+
+  def make_quotation_rows
+      @rows = [['', 'Quotation', '']]
+      @total = 0
+      @project.elements.all(:order => [ :el_order.asc ]).each do |element|
+        if element.quote_include
+          element_total = get_element_total(element.id)
+          @total += (element_total * element.quantity)
+          @rows << [element.client_ref, element.title, element_total * element.quantity]
+          @rows << ['', element.notes, '']
+        end
+      end
+      @rows << ['Total', '', @total]
   end
 
   def make_ordersheet_rows
@@ -111,5 +126,54 @@ class ReportWriter
         end
       end
     end
+  end
+
+  def get_element_total(id)
+    sum = 0
+    element = @totals.select { |hash| hash[:id] == id }
+    sum = (element[0][:labour] + element[0][:materials] + element[0][:markup])
+    ((sum / 10).ceil ) * 10
+  end
+
+  def sum_markup(element_materials)
+    markup = 0
+    element_materials.each do |el_mat|
+      if el_mat.subcontract
+        markup += el_mat.price * el_mat.units * (1 + el_mat.subcontractor / 100)
+      else
+        markup += (
+          (
+            el_mat.price * el_mat.units * (1 + el_mat.contingency / 100)
+            ) * (1 + el_mat.overhead / 100)
+          ) * (1 + el_mat.profit / 100)
+      end
+    end
+    markup
+  end
+
+  def total_cc(cc_id)
+    total = 0
+    markup = 0
+    @materials.materials.all(:costcode_id => cc_id).each do |mat|
+      element_materials = @materials.all(:material_id => mat.id)
+      total += element_materials[0].price * element_materials.sum(:units)
+      markup += sum_markup(element_materials)
+    end
+    [total, markup]
+  end
+
+  def summarise_labour(symbol)
+    total = 0
+    markup = 0
+    @project.elements.element_labours.each do |labour|
+      cost_sym = (symbol.to_s + '_cost').to_sym
+      sub_total = (labour[symbol] * labour[cost_sym])
+      total += sub_total
+      sub_total = sub_total * (1 + labour.element.contingency / 100)
+      sub_total = sub_total * (1 + labour.element.overhead / 100)
+      sub_total = sub_total * (1 + labour.element.profit / 100)
+      markup += sub_total
+    end
+    [total, markup]
   end
 end
