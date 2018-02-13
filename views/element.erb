@@ -86,7 +86,6 @@
 
     <% if @element.project_version.current_version %>
       <input class="btn" type="submit" value="Update Element">
-      <br>
       <div class="remove-link" onclick="showDelete()" style="cursor: pointer"><i class="far fa-trash-alt"></i> Remove</div>
     <% end %>
   </form>
@@ -143,6 +142,7 @@
     <br>
     <input class="btn" type="submit" value="Add Material">
   </form>
+  <div class="flash"><%= flash[:notice] %></div>
   <form action='/element' method="get">
     <br>Jump to elements<br>
     <select name="id" class="mat-dropdown">
@@ -248,7 +248,7 @@
       <div class="table-cell">Onsite Days</div>
       <div class="table-cell">Draughting</div>
       <div class="table-cell">PM</div>
-      <div class="table-cell" style="min-width: 80px">Total</div>
+      <div class="table-cell" style="min-width: 100px">Total</div>
     </div>
       <div class="table-row grey-cell">
         <div class="table-cell">Days</div>

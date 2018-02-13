@@ -37,6 +37,10 @@ class FactorySettingsElemental < Sinatra::Base
 
   post '/add-material' do
     @el_id = params[:element_id]
+    if params[:costcode_id] == '' && params[:materials] =='' && params[:import] == ''
+      flash[:notice] = 'Please select either new, existing or import material'
+      redirect '/element?id=' + @el_id
+    end
     params.tap{ |keys| keys.delete(:element_id) && keys.delete(:captures) }
     process_material(params)
     Element.get(@el_id).project_version.update(
@@ -108,6 +112,9 @@ class FactorySettingsElemental < Sinatra::Base
       add_material(params[:materials].to_i)
     elsif params[:import] != ""
       import_materials(params[:import])
+    elsif params[:costcode_id] != '' && (params[:description] == '' || params[:supplier] == '' || params[:current_price] == '')
+      flash[:notice] = 'Please enter description, supplier and price for new material'
+      redirect '/element?id=' + @el_id
     else
       make_new_material(params)
     end

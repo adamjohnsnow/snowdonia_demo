@@ -88,14 +88,14 @@ def add_materials
     :element_id => @element_1.id,
     :material_id => @mat1.id,
     :price => @mat1.current_price,
-    :units => rand(1..50),
+    :units => rand(1..50).to_f,
     :mat_order => 1
   )
   ElementMaterial.create(
     :element_id => @element_1.id,
     :material_id => @mat2.id,
     :price => @mat2.current_price,
-    :units => rand(3..25),
+    :units => rand(3..25).to_f,
     :mat_order => 2
   )
 end
