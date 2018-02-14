@@ -5,7 +5,7 @@ require_relative './data_mapper_setup'
 
 ENV['RACK_ENV'] ||= 'development'
 
-class FactorySettingsElemental < Sinatra::Base
+class SnowdoniaFestival < Sinatra::Base
   enable :sessions
   configure do
     use Rack::Session::Cookie,
