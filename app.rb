@@ -75,7 +75,7 @@ class FactorySettingsElemental < Sinatra::Base
   end
 
   get '/costcodes' do
-    @costcodes = Costcode.all
+    @costcodes = Costcode.all(:order => [:code.asc])
     erb :costcodes
   end
 

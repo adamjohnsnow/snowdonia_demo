@@ -1,7 +1,7 @@
-<div class="top-box project-header">
+<div class="top-box report-header">
   <img src="fs_logo_title.jpg" width="320">
 </div>
-<div class="hide-print top-box project-header" style=>
+<div class="hide-print top-box report-header" style=>
   <h3>Actions</h3>
   <a href="/download?type=cc&report=user_<%= session[:user_id ].to_s + '_' + @project.project.title %>_<%= @project.version_name %>_<%= @type.to_s %>.csv" style="color: #322B6A;">
     <i class="fas fa-cloud-download-alt"></i> CSV</a>
@@ -20,7 +20,7 @@ Version: <%= @project.version_name %>
         Date:
       </div>
       <div class="table-cell">
-        <%= Date.today.strftime("%d/%m%Y") %>
+        <%= Date.today.strftime("%d/%m/%Y") %>
       </div>
       <div class="table-cell report-key">
         Status:

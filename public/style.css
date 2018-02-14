@@ -168,6 +168,10 @@ h2 {
   padding: 30px 50px 30px 50px;
   min-height: 150px;
 }
+.report-header {
+  padding: 25px 40px 25px 40px;
+  min-height: 110px;
+}
 .top-limit {
   min-width: 200px;
   min-height: 430px;
