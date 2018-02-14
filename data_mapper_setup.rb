@@ -1,27 +1,13 @@
 require 'data_mapper'
 require 'dm-postgres-adapter'
 require_relative './spec/helpers'
-require_relative './models/user'
-require_relative './models/project'
-require_relative './models/element'
-require_relative './models/costcode'
-require_relative './models/material'
-require_relative './models/client'
-require_relative './models/site'
-require_relative './models/element_material'
-require_relative './models/element_labour'
-require_relative './models/project_version'
-require_relative './models/version_updater'
-require_relative './models/price_updater'
-require_relative './models/markup_updater'
-require_relative './models/totals'
 
 if ENV['DATABASE_URL']
   @database = 'Heroku Postgres'
 elsif ENV['RACK_ENV'] == 'test'
-  @database = "postgres://localhost/factory_setting_test"
+  @database = "postgres://localhost/snowdonia_festival_test"
 else
-  @database = "postgres://localhost/factory_setting_dev"
+  @database = "postgres://localhost/snowdonia_festival_dev"
 end
 
 

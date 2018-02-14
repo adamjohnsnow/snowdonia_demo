@@ -1,7 +1,7 @@
 <head>
   <link rel="stylesheet" href="style.css" type="text/css" />
 <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
-  <title>FACTORY SETTINGS elemental</title>
+  <title>Snowdonia Festival</title>
 </head>
 
 <div class="table content">
@@ -17,11 +17,6 @@
       <div class="menu-item"><a href="/projects">Projects</a></div>
       <div class="menu-item"><a href="/clients">Clients & Sites</a></div>
       <div class="menu-item"><a href="/materials?sort_by=description&direction=asc">Materials</a></div>
-      <% if session[:user_auth] > 1 %>
-      <div class="menu-item"><a href="/users">Users</a></div>
-      <div class="menu-item"><a href="/costcodes">Account Codes</a></div>
-      <% end %>
-      <div class="menu-item"><a href="/logout">Log Out</a></div>
     </div>
     <div class="main table-cell fade-quick"><%= yield %></div>
   </div>
